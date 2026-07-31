@@ -1,0 +1,555 @@
+<title>Limpa Código Fonte</title>
+<style>
+:root{
+  --bg: #f4f5f3;
+  --panel: #ffffff;
+  --ink: #1c1e1c;
+  --ink-dim: #5b615c;
+  --line: #d9dcd6;
+  --accent: #b5622f;
+  --accent-ink: #ffffff;
+  --removed: #fde8d9;
+  --removed-ink: #8a4420;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Consolas, "Liberation Mono", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg: #16181a;
+    --panel: #1f2224;
+    --ink: #e9ebe8;
+    --ink-dim: #9aa19b;
+    --line: #33373a;
+    --accent: #e08a53;
+    --accent-ink: #1c1000;
+    --removed: #3a2416;
+    --removed-ink: #f0b48a;
+  }
+}
+:root[data-theme="dark"]{
+  --bg: #16181a; --panel: #1f2224; --ink: #e9ebe8; --ink-dim: #9aa19b;
+  --line: #33373a; --accent: #e08a53; --accent-ink: #1c1000;
+  --removed: #3a2416; --removed-ink: #f0b48a;
+}
+:root[data-theme="light"]{
+  --bg: #f4f5f3; --panel: #ffffff; --ink: #1c1e1c; --ink-dim: #5b615c;
+  --line: #d9dcd6; --accent: #b5622f; --accent-ink: #ffffff;
+  --removed: #fde8d9; --removed-ink: #8a4420;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  min-height:100vh;
+  padding:2rem 1.5rem 3rem;
+}
+
+.wrap{max-width:1180px;margin:0 auto;}
+
+header{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+  margin-bottom:1.75rem;
+  border-bottom:1px solid var(--line);
+  padding-bottom:1.25rem;
+}
+.brand{display:flex;align-items:baseline;gap:.6rem;}
+.brand .mark{
+  font-family:var(--mono);
+  font-size:1.05rem;
+  color:var(--accent);
+  letter-spacing:-0.02em;
+}
+h1{
+  font-size:1.35rem;
+  font-weight:650;
+  margin:0;
+  letter-spacing:-0.01em;
+}
+.tagline{
+  color:var(--ink-dim);
+  font-size:.88rem;
+  margin:0;
+}
+
+.toolbar{
+  display:flex;
+  align-items:center;
+  gap:.75rem;
+  flex-wrap:wrap;
+  margin-bottom:1.25rem;
+}
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:.3rem;
+}
+.field label{
+  font-size:.68rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:var(--ink-dim);
+  font-weight:600;
+}
+select{
+  font:inherit;
+  font-family:var(--mono);
+  font-size:.85rem;
+  background:var(--panel);
+  color:var(--ink);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:.5rem .7rem;
+  min-width:220px;
+  cursor:pointer;
+}
+select:focus-visible, button:focus-visible, textarea:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:1px;
+}
+
+.spacer{flex:1;}
+
+.btn{
+  font:inherit;
+  font-size:.82rem;
+  font-weight:600;
+  border-radius:6px;
+  padding:.55rem 1rem;
+  border:1px solid var(--line);
+  background:var(--panel);
+  color:var(--ink);
+  cursor:pointer;
+  transition:border-color .15s ease;
+}
+.btn:hover{border-color:var(--ink-dim);}
+.btn.primary{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:var(--accent-ink);
+}
+.btn.primary:hover{filter:brightness(1.06);}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+.btn:disabled:hover{border-color:var(--line);filter:none;}
+
+.stats{
+  font-family:var(--mono);
+  font-size:.78rem;
+  color:var(--ink-dim);
+  display:flex;
+  gap:1rem;
+  align-items:center;
+}
+.stats strong{color:var(--ink);font-weight:600;}
+
+.panes{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.1rem;
+}
+@media (max-width:860px){
+  .panes{grid-template-columns:1fr;}
+}
+
+.pane{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:10px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.pane-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:.6rem .85rem;
+  border-bottom:1px solid var(--line);
+}
+.pane-head h2{
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:650;
+  color:var(--ink-dim);
+  margin:0;
+}
+.pane-head .mini{
+  font-family:var(--mono);
+  font-size:.72rem;
+  color:var(--ink-dim);
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:.2rem .4rem;
+}
+.pane-head .mini:hover{color:var(--ink);}
+
+textarea{
+  width:100%;
+  min-height:520px;
+  resize:vertical;
+  border:none;
+  background:transparent;
+  color:var(--ink);
+  font-family:var(--mono);
+  font-size:.82rem;
+  line-height:1.55;
+  padding:.85rem;
+  tab-size:2;
+}
+textarea::placeholder{color:var(--ink-dim);}
+
+#output{
+  white-space:pre;
+  overflow:auto;
+  counter-reset:none;
+}
+
+.removed-line{background:var(--removed);}
+
+footer{
+  margin-top:1.75rem;
+  color:var(--ink-dim);
+  font-size:.78rem;
+  line-height:1.6;
+  border-top:1px solid var(--line);
+  padding-top:1rem;
+}
+footer code{font-family:var(--mono);background:var(--panel);border:1px solid var(--line);padding:0 .3rem;border-radius:4px;}
+
+@media (prefers-reduced-motion:reduce){
+  .btn{transition:none;}
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <span class="mark">/**/</span>
+      <div>
+        <h1>Descomentador de código-fonte</h1>
+        <p class="tagline">Remove comentários preservando a contagem de linhas original.</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="field">
+      <label for="lang">Linguagem</label>
+      <select id="lang"></select>
+    </div>
+    <div class="field">
+      <label for="file">Carregar arquivo</label>
+      <input type="file" id="file" class="btn" style="min-width:auto;">
+    </div>
+    <div class="spacer"></div>
+    <button class="btn primary" id="run">Remover comentários</button>
+    <button class="btn" id="clear">Limpar</button>
+  </div>
+
+  <div class="panes">
+    <div class="pane">
+      <div class="pane-head">
+        <h2>Entrada</h2>
+        <button class="mini" id="paste">Colar</button>
+      </div>
+      <textarea id="input" placeholder="Cole ou carregue seu código-fonte aqui..." spellcheck="false"></textarea>
+    </div>
+    <div class="pane">
+      <div class="pane-head">
+        <h2>Saída</h2>
+        <div style="display:flex;gap:.9rem;align-items:center;">
+          <span class="stats" id="stats"></span>
+          <button class="mini" id="copy">Copiar</button>
+          <button class="mini" id="download">Baixar</button>
+        </div>
+      </div>
+      <textarea id="output" placeholder="O código sem comentários aparecerá aqui..." spellcheck="false" readonly></textarea>
+    </div>
+  </div>
+
+  <footer>
+    Bruno Difante - Melhor aluno
+  </footer>
+</div>
+
+<script>
+
+const LANGS = {
+  javascript: {
+    label: "JavaScript / TypeScript",
+    lineComments: ["//"],
+    blockComments: [["/*", "*/"]],
+    strings: [{ q: '"', escape: true }, { q: "'", escape: true }, { q: "`", escape: true }],
+  },
+  java: {
+    label: "Java",
+    lineComments: ["//"],
+    blockComments: [["/*", "*/"]],
+    strings: [{ q: '"', escape: true }, { q: "'", escape: true }],
+  },
+  csharp: {
+    label: "C#",
+    lineComments: ["//"],
+    blockComments: [["/*", "*/"]],
+    strings: [{ q: '"', escape: true }, { q: "'", escape: true }],
+  },
+  c: {
+    label: "C / C++",
+    lineComments: ["//"],
+    blockComments: [["/*", "*/"]],
+    strings: [{ q: '"', escape: true }, { q: "'", escape: true }],
+  },
+  go: {
+    label: "Go",
+    lineComments: ["//"],
+    blockComments: [["/*", "*/"]],
+    strings: [{ q: '"', escape: true }, { q: "'", escape: true }, { q: "`", escape: false }],
+  },
+  php: {
+    label: "PHP",
+    lineComments: ["//", "#"],
+    blockComments: [["/*", "*/"]],
+    strings: [{ q: '"', escape: true }, { q: "'", escape: true }],
+  },
+  swift: {
+    label: "Swift",
+    lineComments: ["//"],
+    blockComments: [["/*", "*/"]],
+    strings: [{ q: '"', escape: true }],
+  },
+  kotlin: {
+    label: "Kotlin",
+    lineComments: ["//"],
+    blockComments: [["/*", "*/"]],
+    strings: [{ q: '"', escape: true }, { q: "'", escape: true }],
+  },
+  rust: {
+    label: "Rust",
+    lineComments: ["//"],
+    blockComments: [["/*", "*/"]],
+    strings: [{ q: '"', escape: true }, { q: "'", escape: true }],
+  },
+  python: {
+    label: "Python",
+    lineComments: ["#"],
+    blockComments: [],
+    strings: [
+      { q: '"""', escape: true },
+      { q: "'''", escape: true },
+      { q: '"', escape: true },
+      { q: "'", escape: true },
+    ],
+  },
+  ruby: {
+    label: "Ruby",
+    lineComments: ["#"],
+    blockComments: [],
+    strings: [{ q: '"', escape: true }, { q: "'", escape: true }],
+  },
+  shell: {
+    label: "Shell / Bash",
+    lineComments: ["#"],
+    blockComments: [],
+    strings: [{ q: '"', escape: true }, { q: "'", escape: false }],
+  },
+  sql: {
+    label: "SQL",
+    lineComments: ["--"],
+    blockComments: [["/*", "*/"]],
+    strings: [{ q: "'", escape: false }],
+  },
+  css: {
+    label: "CSS",
+    lineComments: [],
+    blockComments: [["/*", "*/"]],
+    strings: [{ q: '"', escape: true }, { q: "'", escape: true }],
+  },
+  html: {
+    label: "HTML / XML",
+    lineComments: [],
+    blockComments: [["<!--", "-->"]],
+    strings: [],
+  },
+  lua: {
+    label: "Lua",
+    lineComments: ["--"],
+    blockComments: [["--[[", "]]"]],
+    strings: [{ q: '"', escape: true }, { q: "'", escape: true }],
+  },
+};
+
+const langSelect = document.getElementById("lang");
+for (const [key, def] of Object.entries(LANGS)) {
+  const opt = document.createElement("option");
+  opt.value = key;
+  opt.textContent = def.label;
+  langSelect.appendChild(opt);
+}
+langSelect.value = "javascript";
+
+// ---- Core removal engine ---------------------------------------------------
+// Walks the source char by char, tracking whether we're inside a string,
+// a line comment, or a block comment. Newlines are always preserved so the
+// output has exactly as many lines as the input.
+
+function stripComments(src, langKey) {
+  const lang = LANGS[langKey];
+  const n = src.length;
+  let i = 0;
+  let out = "";
+  let removedCount = 0;
+
+  const startsWith = (str, pos) => src.startsWith(str, pos);
+
+  while (i < n) {
+    const ch = src[i];
+
+    // Newline always passes through untouched.
+    if (ch === "\n") {
+      out += "\n";
+      i++;
+      continue;
+    }
+
+    // Try line comment start
+    let matchedLine = null;
+    for (const lc of lang.lineComments) {
+      if (startsWith(lc, i)) { matchedLine = lc; break; }
+    }
+    if (matchedLine) {
+      removedCount++;
+      i += matchedLine.length;
+      while (i < n && src[i] !== "\n") i++;
+      continue;
+    }
+
+    // Try block comment start
+    let matchedBlock = null;
+    for (const [bs, be] of lang.blockComments) {
+      if (startsWith(bs, i)) { matchedBlock = [bs, be]; break; }
+    }
+    if (matchedBlock) {
+      removedCount++;
+      const [bs, be] = matchedBlock;
+      i += bs.length;
+      while (i < n && !startsWith(be, i)) {
+        out += src[i] === "\n" ? "\n" : "";
+        i++;
+      }
+      if (i < n) i += be.length;
+      continue;
+    }
+
+    let matchedStr = null;
+    for (const s of lang.strings) {
+      if (startsWith(s.q, i)) { matchedStr = s; break; }
+    }
+    if (matchedStr) {
+      const q = matchedStr.q;
+      out += q;
+      i += q.length;
+      while (i < n && !startsWith(q, i)) {
+        if (matchedStr.escape && src[i] === "\\" && i + 1 < n) {
+          out += src[i] + src[i + 1];
+          i += 2;
+          continue;
+        }
+        out += src[i];
+        i++;
+      }
+      if (i < n) { out += q; i += q.length; }
+      continue;
+    }
+
+    out += ch;
+    i++;
+  }
+
+  return { code: out, removedCount };
+}
+
+const input = document.getElementById("input");
+const output = document.getElementById("output");
+const statsEl = document.getElementById("stats");
+const fileInput = document.getElementById("file");
+
+const EXT_MAP = {
+  javascript: "js", java: "java", csharp: "cs", c: "c", go: "go", php: "php",
+  swift: "swift", kotlin: "kt", rust: "rs", python: "py", ruby: "rb",
+  shell: "sh", sql: "sql", css: "css", html: "html", lua: "lua",
+};
+
+function run() {
+  const src = input.value;
+  const langKey = langSelect.value;
+  if (!src) { output.value = ""; statsEl.textContent = ""; return; }
+
+  const { code, removedCount } = stripComments(src, langKey);
+  output.value = code;
+
+  const inLines = src.split("\n").length;
+  const outLines = code.split("\n").length;
+  statsEl.innerHTML =
+    `<strong>${inLines}</strong> linhas &rarr; <strong>${outLines}</strong> linhas` +
+    (inLines === outLines ? "" : " ⚠") +
+    ` · <strong>${removedCount}</strong> bloco(s) de comentário removidos`;
+}
+
+document.getElementById("run").addEventListener("click", run);
+
+document.getElementById("clear").addEventListener("click", () => {
+  input.value = "";
+  output.value = "";
+  statsEl.textContent = "";
+  input.focus();
+});
+
+document.getElementById("paste").addEventListener("click", async () => {
+  try {
+    const text = await navigator.clipboard.readText();
+    input.value = text;
+  } catch (e) {
+    input.focus();
+  }
+});
+
+document.getElementById("copy").addEventListener("click", async () => {
+  if (!output.value) return;
+  try { await navigator.clipboard.writeText(output.value); } catch (e) {}
+});
+
+document.getElementById("download").addEventListener("click", () => {
+  if (!output.value) return;
+  const ext = EXT_MAP[langSelect.value] || "txt";
+  const blob = new Blob([output.value], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `sem-comentarios.${ext}`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+fileInput.addEventListener("change", () => {
+  const f = fileInput.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    input.value = reader.result;
+    const ext = f.name.split(".").pop().toLowerCase();
+    const guess = Object.keys(EXT_MAP).find((k) => EXT_MAP[k] === ext);
+    if (guess) langSelect.value = guess;
+  };
+  reader.readAsText(f);
+});
+
+langSelect.addEventListener("change", () => { if (input.value) run(); });
+</script>
