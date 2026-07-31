@@ -1,0 +1,4 @@
+Construa um programa que receba como input um arquivo de código fonte (.c) e remova os comentários.
+São considerados os comentários // e /* ... */
+O programa devem manter a estrutura (linhas e colunas) do arquivo original, removendo apenas os caracteres
+entre (e após) os comentários.
