@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleanCode - Removedor de Comentários</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1e1e1e;
+            --panel-bg: #1e1e1e;
+            --header-bg: #252526;
+            --accent: #007acc;
+            --accent-hover: #005f9e;
+            --text-main: #cccccc;
+            --text-muted: #969696;
+            --border-color: #333333;
+            --success: #4caf50;
+            --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --font-code: 'Fira Code', Consolas, 'Courier New', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Header Styles */
+        .app-header {
+            background-color: var(--header-bg);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .header-title svg {
+            width: 28px;
+            height: 28px;
+            color: var(--accent);
+        }
+
+        .header-title h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-group label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        select {
+            background-color: #3c3c3c;
+            color: #ffffff;
+            border: 1px solid #3c3c3c;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            font-family: var(--font-ui);
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        select:focus, select:hover {
+            border-color: var(--accent);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1.25rem;
+            border: none;
+            border-radius: 4px;
+            font-family: var(--font-ui);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 204, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255,255,255,0.05);
+            border-color: var(--text-muted);
+        }
+
+        .btn-success {
+            background-color: var(--success) !important;
+            color: white !important;
+            border-color: var(--success) !important;
+        }
+
+        /* Main Area */
+        .app-main {
+            flex: 1;
+            display: flex;
+            gap: 1px;
+            background-color: var(--border-color);
+            overflow: hidden;
+        }
+
+        .panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--panel-bg);
+            min-width: 0;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background-color: #252526;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .panel-title {
+            font-size: 0.8rem;
+            color: #cccccc;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .panel-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stats-text {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .code-area {
+            flex: 1;
+            width: 100%;
+            resize: none;
+            border: none;
+            background-color: transparent;
+            color: #d4d4d4;
+            font-family: var(--font-code);
+            font-size: 14px;
+            line-height: 1.6;
+            padding: 1rem;
+            outline: none;
+            white-space: pre;
+            overflow-wrap: normal;
+            overflow-x: auto;
+        }
+        
+        .code-area::placeholder {
+            color: #555;
+            font-style: italic;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #464646; 
+            border: 3px solid var(--panel-bg);
+            border-radius: 6px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555555; 
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .app-main {
+                flex-direction: column;
+            }
+            .app-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .header-controls {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            .btn {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-title">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+                <line x1="12" y1="2" x2="12" y2="22" stroke-dasharray="2 4"></line>
+            </svg>
+            <div>
+                <h1>CleanCode Parser</h1>
+                <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 400; letter-spacing: 0.3px;">Desenvolvido por: Matheus Nogueira Albuquerque</span>
+            </div>
+        </div>
+        <div class="header-controls">
+            <div class="control-group">
+                <label for="lang-select">Linguagem:</label>
+                <select id="lang-select">
+                    <option value="c" selected>C</option>
+                    <option value="cpp">C++</option>
+                    <option value="csharp">C#</option>
+                    <option value="java">Java</option>
+                    <option value="javascript">JavaScript / TS</option>
+                    <option value="python">Python</option>
+                    <option value="php">PHP</option>
+                    <option value="css">CSS</option>
+                </select>
+            </div>
+            <button id="btn-process" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                Remover Comentários
+            </button>
+        </div>
+    </header>
+    <main class="app-main">
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">Código Original</span>
+                <div class="panel-actions">
+                    <input type="file" id="file-input" style="display: none;" accept=".js,.ts,.c,.cpp,.h,.hpp,.java,.cs,.py,.php,.css,.txt">
+                    <button id="btn-import" class="btn btn-secondary" style="padding: 0.3rem 0.75rem; font-size: 0.8rem;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        Importar Arquivo
+                    </button>
+                </div>
+            </div>
+            <textarea id="code-input" class="code-area" placeholder="Cole seu código fonte aqui..." spellcheck="false"></textarea>
+        </div>
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">Resultado Limpo</span>
+                <div class="panel-actions">
+                    <span id="stats-display" class="stats-text"></span>
+                    <button id="btn-format" class="btn btn-secondary" style="padding: 0.3rem 0.75rem; font-size: 0.8rem;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="3" y2="18"></line></svg>
+                        Formatar
+                    </button>
+                    <button id="btn-copy" class="btn btn-secondary" style="padding: 0.3rem 0.75rem; font-size: 0.8rem;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        Copiar
+                    </button>
+                    <button id="btn-download" class="btn btn-secondary" style="padding: 0.3rem 0.75rem; font-size: 0.8rem;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Baixar
+                    </button>
+                </div>
+            </div>
+            <textarea id="code-output" class="code-area" readonly placeholder="O código sem comentários aparecerá aqui..." spellcheck="false"></textarea>
+        </div>
+    </main>
+
+    <script>
+        /**
+         * Motor de Remoção de Comentários (Custom Tokenizer)
+         * Implementado com máquina de estados para evitar falhas de regex globais.
+         */
+        function removeComments(code, language) {
+            let result = '';
+            let state = 'NORMAL'; 
+            let stringChar = '';
+            let i = 0;
+            let removedCharsCount = 0;
+            
+            const isCStyle = ['c', 'cpp', 'java', 'javascript', 'csharp', 'php'].includes(language);
+            const isPython = language === 'python';
+            const isCSS = language === 'css';
+            const isPHP = language === 'php';
+
+            while (i < code.length) {
+                let char = code[i];
+                let nextChar = code[i + 1] || '';
+
+                if (state === 'NORMAL') {
+                    // Strings em Python (inclui suporte para aspas triplas)
+                    if (isPython && (char === '"' || char === '\'')) {
+                        let isTriple = (code.substring(i, i + 3) === char + char + char);
+                        if (isTriple) {
+                            state = 'IN_TRIPLE_STRING';
+                            stringChar = char;
+                            result += code.substring(i, i + 3);
+                            i += 3;
+                            continue;
+                        } else {
+                            state = 'IN_STRING';
+                            stringChar = char;
+                            result += char;
+                            i++;
+                            continue;
+                        }
+                    }
+                    
+                    // Strings em C, C++, Java, JS, C#, PHP
+                    if (!isCSS && !isPython && (char === '"' || char === '\'' || (char === '`' && isCStyle))) {
+                        state = 'IN_STRING';
+                        stringChar = char;
+                        result += char;
+                        i++;
+                        continue;
+                    }
+
+                    // Strings em CSS
+                    if (isCSS && (char === '"' || char === '\'')) {
+                        state = 'IN_STRING';
+                        stringChar = char;
+                        result += char;
+                        i++;
+                        continue;
+                    }
+
+                    // Comentários de Linha Única
+                    if (isCStyle && char === '/' && nextChar === '/') {
+                        state = 'IN_SINGLE_LINE_COMMENT';
+                        removedCharsCount += 2;
+                        i += 2;
+                        continue;
+                    }
+                    if ((isPython || isPHP) && char === '#') {
+                        state = 'IN_SINGLE_LINE_COMMENT';
+                        removedCharsCount += 1;
+                        i++;
+                        continue;
+                    }
+
+                    // Comentários de Múltiplas Linhas
+                    if ((isCStyle || isCSS || isPHP) && char === '/' && nextChar === '*') {
+                        state = 'IN_MULTI_LINE_COMMENT';
+                        removedCharsCount += 2;
+                        i += 2;
+                        continue;
+                    }
+
+                    // Se não for nada disso, é código normal (ex: barra de divisão '/')
+                    result += char;
+                    i++;
+                } 
+                else if (state === 'IN_STRING') {
+                    result += char;
+                    // Ignora o próximo caractere se for escapado (ex: \")
+                    if (char === '\\') {
+                        if (nextChar) {
+                            result += nextChar;
+                            i += 2;
+                        } else {
+                            i++;
+                        }
+                        continue;
+                    }
+                    if (char === stringChar) {
+                        state = 'NORMAL';
+                    }
+                    i++;
+                } 
+                else if (state === 'IN_TRIPLE_STRING') {
+                    if (char === '\\') {
+                        result += char;
+                        if (nextChar) {
+                            result += nextChar;
+                            i += 2;
+                        } else {
+                            i++;
+                        }
+                        continue;
+                    }
+                    let isTriple = (code.substring(i, i + 3) === stringChar + stringChar + stringChar);
+                    if (isTriple) {
+                        state = 'NORMAL';
+                        result += code.substring(i, i + 3);
+                        i += 3;
+                        continue;
+                    }
+                    result += char;
+                    i++;
+                } 
+                else if (state === 'IN_SINGLE_LINE_COMMENT') {
+                    // Mantém as quebras de linha para não quebrar a estrutura original
+                    if (char === '\n' || char === '\r') {
+                        state = 'NORMAL';
+                        result += char;
+                    } else {
+                        removedCharsCount++;
+                    }
+                    i++;
+                } 
+                else if (state === 'IN_MULTI_LINE_COMMENT') {
+                    if (char === '*' && nextChar === '/') {
+                        state = 'NORMAL';
+                        removedCharsCount += 2;
+                        i += 2;
+                    } else {
+                        removedCharsCount++;
+                        i++;
+                    }
+                }
+            }
+
+            return { result, removedCharsCount };
+        }
+
+        /**
+         * Motor de Formatação (Custom Heuristic Formatter)
+         * Um formatador heurístico leve que alinha parênteses, chaves e ajusta a indentação.
+         */
+        function formatCode(code, language) {
+            // Python baseia-se em indentação semântica.
+            // Para não quebrar a lógica, apenas limpamos linhas vazias excessivas e espaços finais.
+            if (language === 'python') {
+                return code.split(/\r?\n/).map(line => line.trimEnd()).filter(line => line.length > 0).join('\n');
+            }
+
+            let result = '';
+            let indent = 0;
+            let inString = false;
+            let stringChar = '';
+            let parenDepth = 0;
+            let isNewLine = true;
+
+            for (let i = 0; i < code.length; i++) {
+                let char = code[i];
+                let nextChar = code[i + 1] || '';
+                let prevChar = i > 0 ? code[i - 1] : '';
+
+                if (!inString) {
+                    // Início de String
+                    if (char === '"' || char === '\'' || char === '`') {
+                        inString = true;
+                        stringChar = char;
+                        if (isNewLine) { result += '    '.repeat(indent); isNewLine = false; }
+                        result += char;
+                        continue;
+                    }
+
+                    // Diretivas de Pré-processador (ex: #include)
+                    if (char === '#' && isNewLine && ['c', 'cpp', 'csharp', 'php'].includes(language)) {
+                        result += '    '.repeat(indent) + char;
+                        i++;
+                        while (i < code.length && code[i] !== '\n' && code[i] !== '\r') {
+                            result += code[i];
+                            i++;
+                        }
+                        result += '\n';
+                        isNewLine = true;
+                        continue;
+                    }
+
+                    // Controle de Profundidade para Parênteses/Colchetes (ex: For loop, arrays)
+                    if (char === '(' || char === '[') {
+                        parenDepth++;
+                        if (isNewLine) { result += '    '.repeat(indent); isNewLine = false; }
+                        result += char;
+                        continue;
+                    }
+
+                    if (char === ')' || char === ']') {
+                        parenDepth = Math.max(0, parenDepth - 1);
+                        if (isNewLine) { result += '    '.repeat(indent); isNewLine = false; }
+                        result += char;
+                        continue;
+                    }
+
+                    // Abertura de Bloco
+                    if (char === '{') {
+                        if (!isNewLine && result.slice(-1) !== ' ') {
+                            result += ' '; // espaço antes da chave
+                        }
+                        if (isNewLine) { result += '    '.repeat(indent); isNewLine = false; }
+                        result += char + '\n';
+                        indent++;
+                        isNewLine = true;
+                        while (code[i + 1] === ' ' || code[i + 1] === '\n' || code[i + 1] === '\r' || code[i + 1] === '\t') i++;
+                        continue;
+                    }
+
+                    // Fechamento de Bloco
+                    if (char === '}') {
+                        indent = Math.max(0, indent - 1);
+                        if (!isNewLine) { result += '\n'; }
+                        result += '    '.repeat(indent) + char;
+                        isNewLine = false;
+
+                        // Se for seguido de ponto e vírgula ou vírgula (ex: }; ou }, em objetos)
+                        if (nextChar === ';' || nextChar === ',') {
+                            result += nextChar;
+                            i++;
+                        }
+                        result += '\n';
+                        isNewLine = true;
+                        while (code[i + 1] === ' ' || code[i + 1] === '\n' || code[i + 1] === '\r' || code[i + 1] === '\t') i++;
+                        continue;
+                    }
+
+                    // Ponto e Vírgula (Fim de instrução, mas não quebra se estiver dentro de um for(;;))
+                    if (char === ';') {
+                        if (isNewLine) { result += '    '.repeat(indent); isNewLine = false; }
+                        result += char;
+                        if (parenDepth === 0) {
+                            result += '\n';
+                            isNewLine = true;
+                            while (code[i + 1] === ' ' || code[i + 1] === '\n' || code[i + 1] === '\r' || code[i + 1] === '\t') i++;
+                        }
+                        continue;
+                    }
+
+                    // Vírgula (ex: propriedades de objeto)
+                    if (char === ',') {
+                        if (isNewLine) { result += '    '.repeat(indent); isNewLine = false; }
+                        result += char;
+                        if (parenDepth === 0) {
+                            result += '\n';
+                            isNewLine = true;
+                            while (code[i + 1] === ' ' || code[i + 1] === '\n' || code[i + 1] === '\r' || code[i + 1] === '\t') i++;
+                        }
+                        continue;
+                    }
+
+                    // Preservar quebras de linha manuais do usuário
+                    if (char === '\n' || char === '\r') {
+                        if (!isNewLine) {
+                            result += '\n';
+                            isNewLine = true;
+                        }
+                        continue;
+                    }
+
+                    // Colapsar espaços extras
+                    if (char === ' ' || char === '\t') {
+                        if (isNewLine) continue; // ignora espaços no início da linha
+                        if (prevChar === ' ' || prevChar === '\t') continue; // ignora espaços repetidos
+                        result += ' ';
+                        continue;
+                    }
+
+                    if (isNewLine) {
+                        result += '    '.repeat(indent);
+                        isNewLine = false;
+                    }
+                    result += char;
+
+                } else {
+                    // Lógica dentro de String
+                    if (char === '\\') {
+                        result += char;
+                        if (nextChar) {
+                            result += nextChar;
+                            i++;
+                        }
+                        continue;
+                    }
+                    if (char === stringChar) {
+                        inString = false;
+                    }
+                    result += char;
+                }
+            }
+
+            // Remove quebras de linha triplas
+            return result.replace(/\n{3,}/g, '\n\n').trim();
+        }
+
+        // Interações da UI
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnProcess = document.getElementById('btn-process');
+            const btnCopy = document.getElementById('btn-copy');
+            const btnImport = document.getElementById('btn-import');
+            const btnDownload = document.getElementById('btn-download');
+            const btnFormat = document.getElementById('btn-format');
+            const fileInput = document.getElementById('file-input');
+            const inputArea = document.getElementById('code-input');
+            const outputArea = document.getElementById('code-output');
+            const langSelect = document.getElementById('lang-select');
+            const statsDisplay = document.getElementById('stats-display');
+            let currentFileName = 'codigo_limpo.txt';
+
+            // Atualiza automaticamente quando a linguagem é alterada e já existe código
+            langSelect.addEventListener('change', () => {
+                if (inputArea.value.trim().length > 0) {
+                    processCode();
+                }
+            });
+
+            function processCode() {
+                const code = inputArea.value;
+                if (!code.trim()) {
+                    outputArea.value = '';
+                    statsDisplay.textContent = '';
+                    return;
+                }
+
+                const lang = langSelect.value;
+                const { result, removedCharsCount } = removeComments(code, lang);
+                
+                outputArea.value = result;
+                
+                const originalLength = code.length;
+                if (originalLength === 0) return;
+                const percentage = ((removedCharsCount / originalLength) * 100).toFixed(1);
+                
+                statsDisplay.textContent = `${removedCharsCount} caracteres removidos (${percentage}%)`;
+            }
+
+            btnProcess.addEventListener('click', processCode);
+
+            btnCopy.addEventListener('click', () => {
+                if (!outputArea.value) return;
+                
+                navigator.clipboard.writeText(outputArea.value).then(() => {
+                    const originalHTML = btnCopy.innerHTML;
+                    btnCopy.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Copiado!';
+                    btnCopy.classList.add('btn-success');
+                    setTimeout(() => {
+                        btnCopy.innerHTML = originalHTML;
+                        btnCopy.classList.remove('btn-success');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Falha ao copiar:', err);
+                    alert('Falha ao copiar o texto.');
+                });
+            });
+
+            // Formatar Resultado
+            btnFormat.addEventListener('click', () => {
+                if (!outputArea.value) return;
+                const lang = langSelect.value;
+                outputArea.value = formatCode(outputArea.value, lang);
+            });
+
+            // Importar Arquivo
+            btnImport.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                // Prepara um nome padrão para o download com o sufixo _limpo
+                if (file.name.includes('.')) {
+                    currentFileName = file.name.replace(/\.([^.]+)$/, '_limpo.$1');
+                } else {
+                    currentFileName = file.name + '_limpo.txt';
+                }
+                
+                // Mapeamento de extensão para selecionar a linguagem automaticamente
+                const ext = file.name.split('.').pop().toLowerCase();
+                const extMap = {
+                    'js': 'javascript', 'ts': 'javascript', 'jsx': 'javascript', 'tsx': 'javascript',
+                    'c': 'c', 'h': 'c',
+                    'cpp': 'cpp', 'hpp': 'cpp', 'cc': 'cpp', 'cxx': 'cpp',
+                    'java': 'java',
+                    'cs': 'csharp',
+                    'py': 'python',
+                    'php': 'php',
+                    'css': 'css'
+                };
+                
+                if (extMap[ext]) {
+                    langSelect.value = extMap[ext];
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    inputArea.value = e.target.result;
+                    processCode(); // processa automaticamente
+                };
+                reader.readAsText(file);
+                
+                // Reseta o input para permitir importar o mesmo arquivo novamente, se necessário
+                event.target.value = '';
+            });
+
+            // Exportar / Baixar Arquivo
+            btnDownload.addEventListener('click', () => {
+                if (!outputArea.value) return;
+                
+                const blob = new Blob([outputArea.value], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = currentFileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        });
+    </script>
+</body>
+</html>
