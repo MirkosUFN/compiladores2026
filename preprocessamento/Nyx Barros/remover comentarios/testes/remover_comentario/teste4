@@ -1,0 +1,14 @@
+#include <stdio.h>
+
+/**/ // Bloco vazio seguido de linha única
+int main() {
+    //linha1
+    //linha2
+    //linha3
+    int x = 1;
+    /*-------------------------
+     * Divisor de código visual
+     *-------------------------*/
+    printf("%d\n", x);
+    return 0;
+}

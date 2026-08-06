@@ -1,0 +1,11 @@
+#include <stdio.h>
+
+int main() {
+    int a = 5 /* comentário aqui */ + 10;
+    
+    if (a > 10) /* testando condição */ {
+        printf("Resultado: %d\n", a);
+    }
+    
+    return 0;
+}

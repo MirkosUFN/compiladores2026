@@ -1,0 +1,13 @@
+#include <stdio.h>
+
+int main() {
+    printf("Exemplo de escape: \\/\\/ não é comentário\n");
+    
+    /* 
+    int codigo_morto = 99;
+    printf("Isto não deve ser executado %d\n", codigo_morto);
+    // Comentário aninhado de linha dentro de bloco
+    */
+
+    return 0;
+}

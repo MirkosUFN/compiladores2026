@@ -1,0 +1,9 @@
+#include <stdio.h>
+
+/* Este é um comentário de bloco básico
+   que ocupa múltiplas linhas. */
+int main() {
+    // Este é um comentário de linha única
+    printf("Olá, Mundo!\n"); // Comentário após um comando
+    return 0;
+}

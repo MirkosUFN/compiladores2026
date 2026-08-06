@@ -1,0 +1,10 @@
+#include <stdio.h>
+
+int main() {
+                                              
+    char url[] = "https:                                         
+    char texto[] = "Isto não é um                  válido"; 
+    
+    printf("%s\n%s\n", url, texto);
+    return 0;
+}

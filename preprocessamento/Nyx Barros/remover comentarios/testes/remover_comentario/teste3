@@ -1,0 +1,10 @@
+#include <stdio.h>
+
+int main() {
+    // O seu programa DEVE remover esta linha.
+    char url[] = "https://exemplo.com"; // Não remova o // da URL
+    char texto[] = "Isto não é um /* comentário */ válido"; 
+    
+    printf("%s\n%s\n", url, texto);
+    return 0;
+}

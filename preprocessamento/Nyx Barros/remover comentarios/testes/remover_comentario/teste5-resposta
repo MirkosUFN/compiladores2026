@@ -1,0 +1,13 @@
+#include <stdio.h>
+
+int main() {
+    printf("Exemplo de escape: \\/\\/ não é comentário\n");
+    
+       
+                          
+                                                             
+                                                   
+      
+
+    return 0;
+}
