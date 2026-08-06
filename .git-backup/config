@@ -1,0 +1,15 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = git@github.com:MirkosUFN/compiladores2026.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+	sshkey = /home/capivara/.ssh/id_rsa
+[branch "main"]
+	remote = origin
+	merge = refs/heads/main
+[user]
+	email = nyxbarros6@proton.me
+	name = Nyx barros

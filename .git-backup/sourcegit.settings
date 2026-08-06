@@ -1,0 +1,10 @@
+{
+  "DefaultRemote": "origin",
+  "PreferredMergeMode": 0,
+  "ConventionalTypesOverride": "",
+  "EnableRecursiveWhenAutoUpdatingSubmodules": true,
+  "AskBeforeAutoUpdatingSubmodules": false,
+  "PreferredOpenAIService": "---",
+  "CommitTemplates": [],
+  "CustomActions": []
+}
