@@ -1,0 +1,5 @@
+ID,token,tipo,linha
+1,54,INTEIRO,1
+2,5,INTEIRO,2
+3,19.4,FRACIONADO,3
+4,$,None,4
