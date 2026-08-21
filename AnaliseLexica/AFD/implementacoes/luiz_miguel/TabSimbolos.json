@@ -1,0 +1,20 @@
+[
+    {
+        "ID": 1,
+        "TOKEN": "30",
+        "TIPO": "INTEIRO",
+        "LINHA": 1
+    },
+    {
+        "ID": 2,
+        "TOKEN": "-15",
+        "TIPO": "INTEIRO",
+        "LINHA": 2
+    },
+    {
+        "ID": 3,
+        "TOKEN": "ABCD",
+        "TIPO": "NOMEVARIAVEL",
+        "LINHA": 3
+    }
+]
