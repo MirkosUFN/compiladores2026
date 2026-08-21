@@ -1,0 +1,1 @@
+Nessa pasta estão as implementações das versões dos alunos para o AFD que faz Análise Léxica.
