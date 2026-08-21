@@ -1,0 +1,26 @@
+[
+    {
+        "ID": 1,
+        "token": "54",
+        "tipo": "INTEIRO",
+        "linha": 1
+    },
+    {
+        "ID": 2,
+        "token": "5",
+        "tipo": "INTEIRO",
+        "linha": 2
+    },
+    {
+        "ID": 3,
+        "token": "19.4",
+        "tipo": "FRACIONADO",
+        "linha": 3
+    },
+    {
+        "ID": 4,
+        "token": "$",
+        "tipo": null,
+        "linha": 4
+    }
+]
