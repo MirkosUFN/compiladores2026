@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "token": "1",
+    "tipo": "INTEIRO",
+    "linha": 1
+  },
+  {
+    "id": 2,
+    "token": "2.231",
+    "tipo": "FRACIONÁRIO",
+    "linha": 2
+  },
+  {
+    "id": 3,
+    "token": "12",
+    "tipo": "INTEIRO",
+    "linha": 3
+  },
+  {
+    "id": 4,
+    "token": "41451",
+    "tipo": "INTEIRO",
+    "linha": 4
+  },
+  {
+    "id": 5,
+    "token": "0.1234",
+    "tipo": "FRACIONÁRIO",
+    "linha": 5
+  },
+  {
+    "id": 6,
+    "token": "0.0",
+    "tipo": "FRACIONÁRIO",
+    "linha": 6
+  },
+  {
+    "id": 7,
+    "token": "teste",
+    "tipo": "NOMEVARIAVEL",
+    "linha": 8
+  },
+  {
+    "id": 8,
+    "token": "testee123",
+    "tipo": "NOMEVARIAVEL",
+    "linha": 9
+  },
+  {
+    "id": 9,
+    "token": "const",
+    "tipo": "NOMEVARIAVEL",
+    "linha": 10
+  }
+]
