@@ -1,0 +1,14 @@
+float
+Float
+FLOAT
+int
+Int
+while
+While
+_oi
+carro
+2Variavel
+1
+-15
+2.3
+-2.75
