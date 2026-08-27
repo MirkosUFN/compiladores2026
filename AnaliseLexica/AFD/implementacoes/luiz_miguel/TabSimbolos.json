@@ -124,5 +124,53 @@
         "TOKEN": "j",
         "TIPO": "NOMEVARIAVEL",
         "LINHA": 7
+    },
+    {
+        "ID": 22,
+        "TOKEN": "x",
+        "TIPO": "NOMEVARIAVEL",
+        "LINHA": 8
+    },
+    {
+        "ID": 23,
+        "TOKEN": ",",
+        "TIPO": "VIRGULA",
+        "LINHA": 8
+    },
+    {
+        "ID": 24,
+        "TOKEN": "y",
+        "TIPO": "NOMEVARIAVEL",
+        "LINHA": 8
+    },
+    {
+        "ID": 25,
+        "TOKEN": "=",
+        "TIPO": "ATRIBUICAO",
+        "LINHA": 8
+    },
+    {
+        "ID": 26,
+        "TOKEN": "10",
+        "TIPO": "INTEIRO",
+        "LINHA": 8
+    },
+    {
+        "ID": 27,
+        "TOKEN": ",",
+        "TIPO": "VIRGULA",
+        "LINHA": 8
+    },
+    {
+        "ID": 28,
+        "TOKEN": "20",
+        "TIPO": "INTEIRO",
+        "LINHA": 8
+    },
+    {
+        "ID": 29,
+        "TOKEN": ";",
+        "TIPO": "PONTOEVIRGULA",
+        "LINHA": 8
     }
 ]

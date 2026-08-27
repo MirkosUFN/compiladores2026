@@ -32,33 +32,11 @@ def carregar_afd(caminho_config):
     return estado_inicial, simbolos, estados_finais, transicoes
 
 
-def reconhecer_termo(termo, estado_inicial, simbolos, estados_finais, transicoes):
-    """
-    Processa um termo pelo AFD e retorna o TIPO (categoria) se for válido.
-    """
-    estado_atual = estado_inicial
-
-    for caractere in termo:
-        if caractere not in simbolos:
-            return None
-        
-        chave = (estado_atual, caractere)
-        if chave in transicoes:
-            estado_atual = transicoes[chave]
-        else:
-            return None
-
-    if estado_atual in estados_finais:
-        return estados_finais[estado_atual]
-    return None
-
-
 def extrair_proximo_token(linha, inicio, estado_inicial, simbolos, estados_finais, transicoes):
     """
-    Extrai o maior token válido a partir da posição 'inicio' usando o AFD (Maximal Crunch).
+    Extrai o maior token válido a partir da posição 'inicio' usando o AFD.
     """
     i = inicio
-    # Ignora espaços em branco
     while i < len(linha) and linha[i].isspace():
         i += 1
 
@@ -86,9 +64,7 @@ def extrair_proximo_token(linha, inicio, estado_inicial, simbolos, estados_finai
         else:
             break
 
-    # Se nenhum token válido foi reconhecido
     if ultimo_token_valido is None:
-        # Pega ao menos o caractere atual como erro
         termo_erro = linha[i]
         return (termo_erro, "ERRO_LEXICO"), i + 1
 
@@ -97,7 +73,7 @@ def extrair_proximo_token(linha, inicio, estado_inicial, simbolos, estados_finai
 
 def processar_codigo_fonte(caminho_fonte, estado_inicial, simbolos, estados_finais, transicoes):
     """
-    Lê o arquivo de código-fonte linha por linha e constrói a Tabela de Símbolos.
+    Lê o arquivo de código-fonte e gera a Tabela de Símbolos.
     """
     tabela_simbolos = []
     id_counter = 1
@@ -148,10 +124,8 @@ def main():
         print(f"Erro: Arquivo '{caminho_config}' não encontrado.")
         return
 
-    # 1. Carrega as regras do AFD
     estado_inicial, simbolos, estados_finais, transicoes = carregar_afd(caminho_config)
 
-    # 2. Processa o código-fonte e gera o JSON
     if os.path.exists(caminho_fonte):
         print(f"Lendo código-fonte: {os.path.basename(caminho_fonte)}...")
         tabela = processar_codigo_fonte(caminho_fonte, estado_inicial, simbolos, estados_finais, transicoes)
