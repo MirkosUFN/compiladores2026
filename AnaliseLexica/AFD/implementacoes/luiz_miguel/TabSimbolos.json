@@ -1,20 +1,128 @@
 [
     {
         "ID": 1,
-        "TOKEN": "30",
-        "TIPO": "INTEIRO",
+        "TOKEN": "x",
+        "TIPO": "NOMEVARIAVEL",
         "LINHA": 1
     },
     {
         "ID": 2,
-        "TOKEN": "-15",
+        "TOKEN": "=",
+        "TIPO": "ATRIBUICAO",
+        "LINHA": 1
+    },
+    {
+        "ID": 3,
+        "TOKEN": "10",
+        "TIPO": "INTEIRO",
+        "LINHA": 1
+    },
+    {
+        "ID": 4,
+        "TOKEN": "y",
+        "TIPO": "NOMEVARIAVEL",
+        "LINHA": 2
+    },
+    {
+        "ID": 5,
+        "TOKEN": "==",
+        "TIPO": "SINALCOMPARACAO",
+        "LINHA": 2
+    },
+    {
+        "ID": 6,
+        "TOKEN": "20",
         "TIPO": "INTEIRO",
         "LINHA": 2
     },
     {
-        "ID": 3,
-        "TOKEN": "ABCD",
+        "ID": 7,
+        "TOKEN": "a",
         "TIPO": "NOMEVARIAVEL",
         "LINHA": 3
+    },
+    {
+        "ID": 8,
+        "TOKEN": ">=",
+        "TIPO": "SINALCOMPARACAO",
+        "LINHA": 3
+    },
+    {
+        "ID": 9,
+        "TOKEN": "b",
+        "TIPO": "NOMEVARIAVEL",
+        "LINHA": 3
+    },
+    {
+        "ID": 10,
+        "TOKEN": "c",
+        "TIPO": "NOMEVARIAVEL",
+        "LINHA": 4
+    },
+    {
+        "ID": 11,
+        "TOKEN": "<=",
+        "TIPO": "SINALCOMPARACAO",
+        "LINHA": 4
+    },
+    {
+        "ID": 12,
+        "TOKEN": "d",
+        "TIPO": "NOMEVARIAVEL",
+        "LINHA": 4
+    },
+    {
+        "ID": 13,
+        "TOKEN": "e",
+        "TIPO": "NOMEVARIAVEL",
+        "LINHA": 5
+    },
+    {
+        "ID": 14,
+        "TOKEN": "!=",
+        "TIPO": "SINALCOMPARACAO",
+        "LINHA": 5
+    },
+    {
+        "ID": 15,
+        "TOKEN": "f",
+        "TIPO": "NOMEVARIAVEL",
+        "LINHA": 5
+    },
+    {
+        "ID": 16,
+        "TOKEN": "g",
+        "TIPO": "NOMEVARIAVEL",
+        "LINHA": 6
+    },
+    {
+        "ID": 17,
+        "TOKEN": ">",
+        "TIPO": "SINALCOMPARACAO",
+        "LINHA": 6
+    },
+    {
+        "ID": 18,
+        "TOKEN": "h",
+        "TIPO": "NOMEVARIAVEL",
+        "LINHA": 6
+    },
+    {
+        "ID": 19,
+        "TOKEN": "i",
+        "TIPO": "NOMEVARIAVEL",
+        "LINHA": 7
+    },
+    {
+        "ID": 20,
+        "TOKEN": "<",
+        "TIPO": "SINALCOMPARACAO",
+        "LINHA": 7
+    },
+    {
+        "ID": 21,
+        "TOKEN": "j",
+        "TIPO": "NOMEVARIAVEL",
+        "LINHA": 7
     }
 ]

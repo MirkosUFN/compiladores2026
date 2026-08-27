@@ -53,6 +53,48 @@ def reconhecer_termo(termo, estado_inicial, simbolos, estados_finais, transicoes
     return None
 
 
+def extrair_proximo_token(linha, inicio, estado_inicial, simbolos, estados_finais, transicoes):
+    """
+    Extrai o maior token válido a partir da posição 'inicio' usando o AFD (Maximal Crunch).
+    """
+    i = inicio
+    # Ignora espaços em branco
+    while i < len(linha) and linha[i].isspace():
+        i += 1
+
+    if i >= len(linha):
+        return None, i
+
+    estado_atual = estado_inicial
+    ultimo_token_valido = None
+    ultimo_tipo_valido = None
+    posicao_fim_valida = i
+
+    for j in range(i, len(linha)):
+        caractere = linha[j]
+        
+        if caractere not in simbolos:
+            break
+
+        chave = (estado_atual, caractere)
+        if chave in transicoes:
+            estado_atual = transicoes[chave]
+            if estado_atual in estados_finais:
+                ultimo_token_valido = linha[i:j+1]
+                ultimo_tipo_valido = estados_finais[estado_atual]
+                posicao_fim_valida = j + 1
+        else:
+            break
+
+    # Se nenhum token válido foi reconhecido
+    if ultimo_token_valido is None:
+        # Pega ao menos o caractere atual como erro
+        termo_erro = linha[i]
+        return (termo_erro, "ERRO_LEXICO"), i + 1
+
+    return (ultimo_token_valido, ultimo_tipo_valido), posicao_fim_valida
+
+
 def processar_codigo_fonte(caminho_fonte, estado_inicial, simbolos, estados_finais, transicoes):
     """
     Lê o arquivo de código-fonte linha por linha e constrói a Tabela de Símbolos.
@@ -62,17 +104,27 @@ def processar_codigo_fonte(caminho_fonte, estado_inicial, simbolos, estados_fina
 
     with open(caminho_fonte, 'r', encoding='utf-8') as f:
         for num_linha, linha in enumerate(f, start=1):
-            termos = linha.strip().split()
-            for termo in termos:
-                tipo = reconhecer_termo(termo, estado_inicial, simbolos, estados_finais, transicoes)
-                
+            posicao = 0
+            tamanho = len(linha)
+
+            while posicao < tamanho:
+                resultado, proxima_pos = extrair_proximo_token(
+                    linha, posicao, estado_inicial, simbolos, estados_finais, transicoes
+                )
+
+                if resultado is None:
+                    break
+
+                termo, tipo = resultado
+
                 tabela_simbolos.append({
                     "ID": id_counter,
                     "TOKEN": termo,
-                    "TIPO": tipo if tipo else "ERRO_LEXICO",
+                    "TIPO": tipo,
                     "LINHA": num_linha
                 })
                 id_counter += 1
+                posicao = proxima_pos
 
     return tabela_simbolos
 
