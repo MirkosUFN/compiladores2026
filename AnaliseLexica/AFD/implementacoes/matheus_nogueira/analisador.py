@@ -1,6 +1,7 @@
 import csv
 import os
 import re
+import unicodedata
 from dataclasses import dataclass
 from typing import Dict, Optional, Set, Tuple
 
@@ -19,6 +20,33 @@ PALAVRAS_RESERVADAS_C = {
 }
 
 ESTADO_ERRO = "QE"
+
+
+TIPOS_CANONICOS = {
+    "INTEIRO": "INTEIRO",
+    "FRACIONARIO": "FRACIONARIO",
+    "FRACIONADO": "FRACIONARIO",
+    "NOMEVARIAVEL": "NOMEVARIAVEL",
+    "NOME_VARIAVEL": "NOMEVARIAVEL",
+    "ATRIBUICAO": "ATRIBUIÇÃO",
+    "ATRIUCAO": "ATRIBUIÇÃO",
+    "SINALCOMPARACAO": "SINAL_COMPARAÇÃO",
+    "COMPARACAO": "SINAL_COMPARAÇÃO",
+    "VIRGULA": "VÍRGULA",
+    "PONTOVIRGULA": "PONTO_VIRGULA",
+    "PONTOEVIRGULA": "PONTO_VIRGULA",
+}
+
+
+def normalizar_tipo(tipo: str) -> str:
+    """Converte classificações antigas do projeto para os nomes da tarefa."""
+    sem_acentos = "".join(
+        caractere
+        for caractere in unicodedata.normalize("NFD", tipo.upper())
+        if not unicodedata.combining(caractere)
+    )
+    chave = sem_acentos.replace("_", "")
+    return TIPOS_CANONICOS.get(chave, tipo)
 
 
 @dataclass
@@ -239,7 +267,7 @@ def analisar_lexema(
         return ResultadoAnalise(
             aceito=False,
             token="ERRO",
-            tipo="NOME_VARIAVEL_INVALIDO",
+            tipo="NOMEVARIAVEL_INVALIDO",
             estado_final=estado_final,
             mensagem=(
                 f"'{lexema}' parece um nome de variável, mas é inválido "
@@ -256,6 +284,8 @@ def analisar_lexema(
             estado_final=estado_final,
             mensagem=erro or "Termo não reconhecido.",
         )
+
+    classificacao = normalizar_tipo(classificacao)
 
     if classificacao == "INTEIRO":
         return ResultadoAnalise(
@@ -282,7 +312,7 @@ def analisar_lexema(
             return ResultadoAnalise(
                 aceito=False,
                 token="ERRO",
-                tipo="NOME_VARIAVEL_INVALIDO",
+                tipo="NOMEVARIAVEL_INVALIDO",
                 estado_final=estado_final,
                 mensagem=mensagem,
             )
@@ -290,14 +320,14 @@ def analisar_lexema(
         return ResultadoAnalise(
             aceito=True,
             token=lexema,
-            tipo="NOME_VARIAVEL",
+            tipo="NOMEVARIAVEL",
             estado_final=estado_final,
             mensagem=mensagem,
         )
 
     return ResultadoAnalise(
         aceito=True,
-        token="DESCONHECIDO",
+        token=lexema,
         tipo=classificacao,
         estado_final=estado_final,
         mensagem="Termo reconhecido.",
@@ -314,8 +344,8 @@ def criar_tabela_simbolos(caminho_csv: str):
         newline="",
         encoding="utf-8-sig",
     ) as arquivo:
-        escritor = csv.writer(arquivo, delimiter=";")
-        escritor.writerow(["ID", "TOKEN", "TIPO", "LINHA"])
+        escritor = csv.writer(arquivo, delimiter=";", lineterminator="\n")
+        escritor.writerow(["ID", "token", "tipo", "linha", "coluna"])
 
 
 def adicionar_tabela_simbolos(
@@ -323,6 +353,7 @@ def adicionar_tabela_simbolos(
     id_registro: int,
     resultado: ResultadoAnalise,
     linha: int,
+    coluna: int = 1,
 ):
     """
     Adiciona um lexema aceito à tabela de símbolos.
@@ -333,12 +364,13 @@ def adicionar_tabela_simbolos(
         newline="",
         encoding="utf-8-sig",
     ) as arquivo:
-        escritor = csv.writer(arquivo, delimiter=";")
+        escritor = csv.writer(arquivo, delimiter=";", lineterminator="\n")
         escritor.writerow([
             id_registro,
             resultado.token,
             resultado.tipo,
             linha,
+            coluna,
         ])
 
 
@@ -366,32 +398,37 @@ def processar_arquivo(
     """
     with open(caminho_entrada, "r", encoding="utf-8") as arquivo:
         for numero_linha, linha in enumerate(arquivo, start=1):
-            lexema = linha.strip()
+            for correspondencia in re.finditer(r"\S+", linha):
+                lexema = correspondencia.group(0)
+                coluna = correspondencia.start() + 1
 
-            if not lexema:
-                continue
+                resultado = analisar_lexema(lexema, afd)
+                mostrar_resultado(resultado)
 
-            resultado = analisar_lexema(lexema, afd)
-            mostrar_resultado(resultado)
-
-            if resultado.aceito:
-                adicionar_tabela_simbolos(
-                    caminho_csv,
-                    proximo_id,
-                    resultado,
-                    numero_linha,
-                )
-                proximo_id += 1
+                if resultado.aceito:
+                    adicionar_tabela_simbolos(
+                        caminho_csv,
+                        proximo_id,
+                        resultado,
+                        numero_linha,
+                        coluna,
+                    )
+                    proximo_id += 1
 
     return proximo_id
 
 
-def main():
-    """Inicializa o analisador léxico em modo de arquivo e modo interativo."""
+def main_interativo_legado():
+    """Mantém a rotina interativa antiga para compatibilidade manual."""
     diretorio = os.path.dirname(os.path.abspath(__file__))
 
-    caminho_config = os.path.join(diretorio, "configAfd.md")
-    caminho_entrada = os.path.join(diretorio, "entrada.txt")
+    caminho_config = os.path.join(diretorio, "AFD_config.txt")
+    if not os.path.exists(caminho_config):
+        caminho_config = os.path.join(diretorio, "configAfd.md")
+
+    caminho_entrada = os.path.join(diretorio, "input.c")
+    if not os.path.exists(caminho_entrada):
+        caminho_entrada = os.path.join(diretorio, "entrada.txt")
     caminho_csv = os.path.join(diretorio, "tabela_simbolos.csv")
 
     afd = carregar_afd(caminho_config)
@@ -466,6 +503,36 @@ def main():
             break
 
     print(f"\nTabela de símbolos salva em:\n{caminho_csv}")
+    print("\nAnalisador encerrado.")
+
+
+def main():
+    """Executa a análise do arquivo input.c e gera a tabela de símbolos."""
+    diretorio = os.path.dirname(os.path.abspath(__file__))
+
+    caminho_config = os.path.join(diretorio, "AFD_config.txt")
+    if not os.path.exists(caminho_config):
+        caminho_config = os.path.join(diretorio, "configAfd.md")
+
+    caminho_entrada = os.path.join(diretorio, "input.c")
+    if not os.path.exists(caminho_entrada):
+        caminho_entrada = os.path.join(diretorio, "entrada.txt")
+
+    if not os.path.exists(caminho_entrada):
+        raise FileNotFoundError(
+            "Nenhum arquivo de entrada encontrado. Crie input.c na pasta do analisador."
+        )
+
+    caminho_csv = os.path.join(diretorio, "tabela_simbolos.csv")
+    afd = carregar_afd(caminho_config)
+    criar_tabela_simbolos(caminho_csv)
+
+    print("=" * 67)
+    print(" ANALISADOR LEXICO - AFD")
+    print("=" * 67)
+    print(f"\nProcessando {os.path.basename(caminho_entrada)}...")
+    processar_arquivo(caminho_entrada, caminho_csv, afd, 1)
+    print(f"\nTabela de simbolos salva em:\n{caminho_csv}")
     print("\nAnalisador encerrado.")
 
 
