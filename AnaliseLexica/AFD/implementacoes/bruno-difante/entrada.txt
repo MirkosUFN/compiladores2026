@@ -1,3 +1,0 @@
-30 -30 3.5 abc _oi
-idade nome123 12.75 -8 x
-100 y_var 0.1 @erro #
