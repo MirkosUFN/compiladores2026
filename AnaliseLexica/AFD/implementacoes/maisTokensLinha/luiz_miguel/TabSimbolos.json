@@ -1,0 +1,212 @@
+[
+    {
+        "ID": 1,
+        "token": "x",
+        "tipo": "NOMEVARIAVEL",
+        "linha": 1,
+        "coluna": 1
+    },
+    {
+        "ID": 2,
+        "token": "=",
+        "tipo": "ATRIBUIÇÃO",
+        "linha": 1,
+        "coluna": 3
+    },
+    {
+        "ID": 3,
+        "token": "10",
+        "tipo": "INTEIRO",
+        "linha": 1,
+        "coluna": 5
+    },
+    {
+        "ID": 4,
+        "token": ";",
+        "tipo": "PONTO_VIRGULA",
+        "linha": 1,
+        "coluna": 8
+    },
+    {
+        "ID": 5,
+        "token": "y",
+        "tipo": "NOMEVARIAVEL",
+        "linha": 2,
+        "coluna": 1
+    },
+    {
+        "ID": 6,
+        "token": "=",
+        "tipo": "ATRIBUIÇÃO",
+        "linha": 2,
+        "coluna": 3
+    },
+    {
+        "ID": 7,
+        "token": "20.5",
+        "tipo": "FRACIONARIO",
+        "linha": 2,
+        "coluna": 5
+    },
+    {
+        "ID": 8,
+        "token": ";",
+        "tipo": "PONTO_VIRGULA",
+        "linha": 2,
+        "coluna": 10
+    },
+    {
+        "ID": 9,
+        "token": "a",
+        "tipo": "NOMEVARIAVEL",
+        "linha": 3,
+        "coluna": 1
+    },
+    {
+        "ID": 10,
+        "token": ">=",
+        "tipo": "SINAL_COMPARAÇÃO",
+        "linha": 3,
+        "coluna": 3
+    },
+    {
+        "ID": 11,
+        "token": "b",
+        "tipo": "NOMEVARIAVEL",
+        "linha": 3,
+        "coluna": 6
+    },
+    {
+        "ID": 12,
+        "token": ",",
+        "tipo": "VÍRGULA",
+        "linha": 3,
+        "coluna": 8
+    },
+    {
+        "ID": 13,
+        "token": "c",
+        "tipo": "NOMEVARIAVEL",
+        "linha": 3,
+        "coluna": 10
+    },
+    {
+        "ID": 14,
+        "token": "<=",
+        "tipo": "SINAL_COMPARAÇÃO",
+        "linha": 3,
+        "coluna": 12
+    },
+    {
+        "ID": 15,
+        "token": "d",
+        "tipo": "NOMEVARIAVEL",
+        "linha": 3,
+        "coluna": 15
+    },
+    {
+        "ID": 16,
+        "token": ";",
+        "tipo": "PONTO_VIRGULA",
+        "linha": 3,
+        "coluna": 17
+    },
+    {
+        "ID": 17,
+        "token": "resultado",
+        "tipo": "NOMEVARIAVEL",
+        "linha": 4,
+        "coluna": 1
+    },
+    {
+        "ID": 18,
+        "token": "==",
+        "tipo": "SINAL_COMPARAÇÃO",
+        "linha": 4,
+        "coluna": 11
+    },
+    {
+        "ID": 19,
+        "token": "100",
+        "tipo": "INTEIRO",
+        "linha": 4,
+        "coluna": 14
+    },
+    {
+        "ID": 20,
+        "token": "!=",
+        "tipo": "SINAL_COMPARAÇÃO",
+        "linha": 4,
+        "coluna": 18
+    },
+    {
+        "ID": 21,
+        "token": "0",
+        "tipo": "INTEIRO",
+        "linha": 4,
+        "coluna": 21
+    },
+    {
+        "ID": 22,
+        "token": ";",
+        "tipo": "PONTO_VIRGULA",
+        "linha": 4,
+        "coluna": 23
+    },
+    {
+        "ID": 23,
+        "token": "teste",
+        "tipo": "NOMEVARIAVEL",
+        "linha": 5,
+        "coluna": 1
+    },
+    {
+        "ID": 24,
+        "token": ">",
+        "tipo": "SINAL_COMPARAÇÃO",
+        "linha": 5,
+        "coluna": 7
+    },
+    {
+        "ID": 25,
+        "token": "1",
+        "tipo": "INTEIRO",
+        "linha": 5,
+        "coluna": 9
+    },
+    {
+        "ID": 26,
+        "token": "<",
+        "tipo": "SINAL_COMPARAÇÃO",
+        "linha": 5,
+        "coluna": 11
+    },
+    {
+        "ID": 27,
+        "token": "2",
+        "tipo": "INTEIRO",
+        "linha": 5,
+        "coluna": 13
+    },
+    {
+        "ID": 28,
+        "token": ",",
+        "tipo": "VÍRGULA",
+        "linha": 5,
+        "coluna": 15
+    },
+    {
+        "ID": 29,
+        "token": "fim",
+        "tipo": "NOMEVARIAVEL",
+        "linha": 5,
+        "coluna": 17
+    },
+    {
+        "ID": 30,
+        "token": ";",
+        "tipo": "PONTO_VIRGULA",
+        "linha": 5,
+        "coluna": 21
+    }
+]
