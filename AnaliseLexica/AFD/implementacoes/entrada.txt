@@ -1,0 +1,9 @@
+30 -30 3.5 abc _oi
+idade nome123 12.75 -8 x
+100 y_var 0.1 @erro #
+
+   42     -7.25    minhaVariavel
+
+
+-0.5    99    Var_2   3.14.15
+	tab_inicio	 -   .   +
