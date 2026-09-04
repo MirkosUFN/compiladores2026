@@ -90,7 +90,7 @@ def analisar(nome_arquivo, inicio, alfabeto, finais, transicoes):
                         "token": linha[posicao],
                         "tipo": "ERRO_LEXICO",
                         "linha": numero_linha,
-                        "coluna": posicao + 1
+                        "coluna": posicao
                     })
 
                     identificador += 1
@@ -104,7 +104,7 @@ def analisar(nome_arquivo, inicio, alfabeto, finais, transicoes):
                         "token": token,
                         "tipo": tipo,
                         "linha": numero_linha,
-                        "coluna": posicao + 1
+                        "coluna": posicao
                     })
 
                     identificador += 1
