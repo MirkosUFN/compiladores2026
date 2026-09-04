@@ -1,0 +1,4 @@
+﻿ID;token;tipo;linha;coluna
+1;N1;NOMEVARIAVEL;1;1
+2;=;ATRIBUIÇÃO;1;4
+3;5;INTEIRO;1;6
