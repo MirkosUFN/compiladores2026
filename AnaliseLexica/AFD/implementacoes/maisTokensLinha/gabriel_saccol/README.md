@@ -1,6 +1,4 @@
-# Analisador Léxico - Atualização (Gabriel Saccol)
-
-## O que foi modificado
+# Analisador Léxico - Atualizado!
 
 1. **Múltiplos tokens por linha**: `processarArquivo` agora varre cada linha
    caractere a caractere, separando os tokens por espaços em branco (ao invés
@@ -18,9 +16,6 @@
    tokens inválidos, sem interromper o processamento das próximas linhas.
 
 4. **Novos tipos de token no AFD** (arquivo `AFD_config.txt`):
-   - `INTEIRO` (já existia)
-   - `FRACIONARIO` (já existia)
-   - `NOMEVARIAVEL` (já existia)
    - `ATRIBUICAO` → símbolo `=`
    - `SINAL_COMPARACAO` → símbolos `<`, `>`, `==`, `<=`, `>=`
    - `VIRGULA` → símbolo `,`
@@ -35,9 +30,7 @@
 
 ## Como executar
 
-Requer JDK instalado (o ambiente de teste local só tinha JRE, então o
-código foi validado por simulação da lógica do AFD, mas segue os mesmos
-padrões de compilação Java do projeto original).
+Requer JDK instalado.
 
 ```bash
 javac ReconhecedorAFD.java
