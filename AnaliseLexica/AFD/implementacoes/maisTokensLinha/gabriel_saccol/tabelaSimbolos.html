@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Tabela de Simbolos - Reconhecedor AFD</title>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; background:#f4f6f8; margin:0; padding:32px; color:#1f2937; }
+  h1 { font-size: 22px; margin-bottom: 4px; }
+  p.subtitulo { color:#6b7280; margin-top:0; margin-bottom:24px; }
+  table { border-collapse: collapse; width:100%; max-width:900px; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+  th, td { padding:10px 16px; text-align:left; border-bottom:1px solid #e5e7eb; }
+  th { background:#111827; color:#fff; font-size:13px; text-transform:uppercase; letter-spacing:0.04em; }
+  tr:nth-child(even) { background:#f9fafb; }
+  tr:hover { background:#eef2ff; }
+  td.token { font-family: Consolas, monospace; font-weight:600; }
+  .tipo { display:inline-block; padding:2px 10px; border-radius:12px; font-size:12px; font-weight:600; }
+  .INTEIRO { background:#dbeafe; color:#1d4ed8; }
+  .FRACIONARIO { background:#dcfce7; color:#15803d; }
+  .NOMEVARIAVEL { background:#fef3c7; color:#a16207; }
+  .ATRIBUICAO { background:#ede9fe; color:#6d28d9; }
+  .SINAL_COMPARACAO { background:#ffe4e6; color:#be123c; }
+  .VIRGULA { background:#e0f2fe; color:#0369a1; }
+  .PONTO_VIRGULA { background:#f3e8ff; color:#7e22ce; }
+  .ERRO { background:#fee2e2; color:#b91c1c; }
+</style>
+</head>
+<body>
+<h1>Tabela de Simbolos</h1>
+<p class="subtitulo">Gerada automaticamente pelo Reconhecedor AFD (exemplo de saída)</p>
+<table>
+<thead>
+<tr><th>ID</th><th>Token</th><th>Tipo</th><th>Linha</th><th>Coluna</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td class="token">x</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>1</td><td>1</td></tr>
+<tr><td>2</td><td class="token">=</td><td><span class="tipo ATRIBUICAO">ATRIBUICAO</span></td><td>1</td><td>3</td></tr>
+<tr><td>3</td><td class="token">5</td><td><span class="tipo INTEIRO">INTEIRO</span></td><td>1</td><td>5</td></tr>
+<tr><td>4</td><td class="token">;</td><td><span class="tipo PONTO_VIRGULA">PONTO_VIRGULA</span></td><td>1</td><td>7</td></tr>
+<tr><td>5</td><td class="token">y</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>2</td><td>1</td></tr>
+<tr><td>6</td><td class="token">=</td><td><span class="tipo ATRIBUICAO">ATRIBUICAO</span></td><td>2</td><td>3</td></tr>
+<tr><td>7</td><td class="token">3.14</td><td><span class="tipo FRACIONARIO">FRACIONARIO</span></td><td>2</td><td>5</td></tr>
+<tr><td>8</td><td class="token">;</td><td><span class="tipo PONTO_VIRGULA">PONTO_VIRGULA</span></td><td>2</td><td>10</td></tr>
+<tr><td>9</td><td class="token">soma</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>3</td><td>1</td></tr>
+<tr><td>10</td><td class="token">=</td><td><span class="tipo ATRIBUICAO">ATRIBUICAO</span></td><td>3</td><td>6</td></tr>
+<tr><td>11</td><td class="token">x</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>3</td><td>8</td></tr>
+<tr><td>12</td><td class="token">,</td><td><span class="tipo VIRGULA">VIRGULA</span></td><td>3</td><td>10</td></tr>
+<tr><td>13</td><td class="token">y</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>3</td><td>12</td></tr>
+<tr><td>14</td><td class="token">;</td><td><span class="tipo PONTO_VIRGULA">PONTO_VIRGULA</span></td><td>3</td><td>14</td></tr>
+<tr><td>15</td><td class="token">teste</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>4</td><td>1</td></tr>
+<tr><td>16</td><td class="token">x</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>4</td><td>7</td></tr>
+<tr><td>17</td><td class="token">&lt;</td><td><span class="tipo SINAL_COMPARACAO">SINAL_COMPARACAO</span></td><td>4</td><td>9</td></tr>
+<tr><td>18</td><td class="token">10</td><td><span class="tipo INTEIRO">INTEIRO</span></td><td>4</td><td>11</td></tr>
+<tr><td>19</td><td class="token">,</td><td><span class="tipo VIRGULA">VIRGULA</span></td><td>4</td><td>14</td></tr>
+<tr><td>20</td><td class="token">y</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>4</td><td>16</td></tr>
+<tr><td>21</td><td class="token">&gt;=</td><td><span class="tipo SINAL_COMPARACAO">SINAL_COMPARACAO</span></td><td>4</td><td>18</td></tr>
+<tr><td>22</td><td class="token">2.5</td><td><span class="tipo FRACIONARIO">FRACIONARIO</span></td><td>4</td><td>21</td></tr>
+<tr><td>23</td><td class="token">;</td><td><span class="tipo PONTO_VIRGULA">PONTO_VIRGULA</span></td><td>4</td><td>25</td></tr>
+<tr><td>24</td><td class="token">z</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>5</td><td>1</td></tr>
+<tr><td>25</td><td class="token">=</td><td><span class="tipo ATRIBUICAO">ATRIBUICAO</span></td><td>5</td><td>3</td></tr>
+<tr><td>26</td><td class="token">-8</td><td><span class="tipo INTEIRO">INTEIRO</span></td><td>5</td><td>5</td></tr>
+<tr><td>27</td><td class="token">,</td><td><span class="tipo VIRGULA">VIRGULA</span></td><td>5</td><td>8</td></tr>
+<tr><td>28</td><td class="token">w</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>5</td><td>10</td></tr>
+<tr><td>29</td><td class="token">=</td><td><span class="tipo ATRIBUICAO">ATRIBUICAO</span></td><td>5</td><td>12</td></tr>
+<tr><td>30</td><td class="token">+12.5</td><td><span class="tipo FRACIONARIO">FRACIONARIO</span></td><td>5</td><td>14</td></tr>
+<tr><td>31</td><td class="token">;</td><td><span class="tipo PONTO_VIRGULA">PONTO_VIRGULA</span></td><td>5</td><td>20</td></tr>
+<tr><td>32</td><td class="token">resultado</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>6</td><td>1</td></tr>
+<tr><td>33</td><td class="token">==</td><td><span class="tipo SINAL_COMPARACAO">SINAL_COMPARACAO</span></td><td>6</td><td>11</td></tr>
+<tr><td>34</td><td class="token">final</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>6</td><td>14</td></tr>
+<tr><td>35</td><td class="token">;</td><td><span class="tipo PONTO_VIRGULA">PONTO_VIRGULA</span></td><td>6</td><td>20</td></tr>
+</tbody>
+</table>
+</body>
+</html>
