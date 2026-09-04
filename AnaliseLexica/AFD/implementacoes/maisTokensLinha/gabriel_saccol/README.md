@@ -9,13 +9,7 @@
    também a coluna (posição, em caracteres, 1-based) em que o token começa
    na linha original.
 
-3. **Correção de bug**: o método antigo usava uma variável `tipo` que nunca
-   era declarada em `processarArquivo` (erro de compilação). Isso foi
-   corrigido: `reconheceTermo` agora retorna diretamente o tipo do token
-   (ou `null` se não reconhecido), e o tipo "ERRO" é usado na tabela para
-   tokens inválidos, sem interromper o processamento das próximas linhas.
-
-4. **Novos tipos de token no AFD** (arquivo `AFD_config.txt`):
+3. **Novos tipos de token no AFD** (arquivo `AFD_config.txt`):
    - `ATRIBUICAO` → símbolo `=`
    - `SINAL_COMPARACAO` → símbolos `<`, `>`, `==`, `<=`, `>=`
    - `VIRGULA` → símbolo `,`
@@ -25,7 +19,7 @@
    (SINAL_COMPARACAO, para `==`, `<=`, `>=`), `Q9` e `Q10` (SINAL_COMPARACAO,
    para `<` e `>` isolados), `Q11` (VIRGULA) e `Q12` (PONTO_VIRGULA).
 
-5. **Tabela de símbolos** agora possui as colunas: `ID`, `Token`, `Tipo`,
+4. **Tabela de símbolos** agora possui as colunas: `ID`, `Token`, `Tipo`,
    `Linha` e `Coluna` (tanto no `System.out` quanto no HTML exportado).
 
 ## Como executar
