@@ -1,9 +1,46 @@
 import os
+import sys
 import json
+
+# Conjunto de palavras reservadas da linguagem C (ANSI C / C99)
+PALAVRAS_RESERVADAS_C = {
+    "auto", "break", "case", "char", "const", "continue", "default", "do",
+    "double", "else", "enum", "extern", "float", "for", "goto", "if",
+    "int", "long", "register", "return", "short", "signed", "sizeof", "static",
+    "struct", "switch", "typedef", "union", "unsigned", "void", "volatile", "while"
+}
+
+
+class Simbolo(dict):
+    """
+    Representa uma entrada na Tabela de Símbolos.
+    Permite acesso a campos tanto em minúsculas quanto maiúsculas
+    (ex: item['token'] ou item['TOKEN'], item['coluna'] ou item['COLUNA']).
+    """
+    def __getitem__(self, key):
+        if key in self:
+            return super().__getitem__(key)
+        key_str = str(key).lower()
+        for k in self:
+            if k.lower() == key_str:
+                return super().__getitem__(k)
+        return super().__getitem__(key)
+
+    def get(self, key, default=None):
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
 
 def carregar_afd(caminho_config):
     """
     Carrega as configurações do AFD a partir do arquivo de configuração.
+    Formato esperado:
+    - Linha 1: Estados separados por espaço (o primeiro é o inicial)
+    - Linha 2: Símbolos do alfabeto separados por espaço
+    - Linha 3: Estados finais e seus tokens no formato Estado:TOKEN separados por espaço
+    - Linhas 4+: Regras de transição no formato EstadoOrigem:Simbolo:EstadoDestino
     """
     with open(caminho_config, 'r', encoding='utf-8') as f:
         linhas = [linha.strip() for linha in f.readlines() if linha.strip()]
@@ -35,6 +72,8 @@ def carregar_afd(caminho_config):
 def extrair_proximo_token(linha, inicio, estado_inicial, simbolos, estados_finais, transicoes):
     """
     Extrai o maior token válido a partir da posição 'inicio' usando o AFD.
+    Retorna ((token, tipo, coluna), proxima_posicao) ou (None, proxima_posicao).
+    A coluna é calculada de forma 1-indexada onde o token se inicia na linha.
     """
     i = inicio
     while i < len(linha) and linha[i].isspace():
@@ -50,7 +89,7 @@ def extrair_proximo_token(linha, inicio, estado_inicial, simbolos, estados_finai
 
     for j in range(i, len(linha)):
         caractere = linha[j]
-        
+
         if caractere not in simbolos:
             break
 
@@ -64,16 +103,19 @@ def extrair_proximo_token(linha, inicio, estado_inicial, simbolos, estados_finai
         else:
             break
 
+    coluna = i + 1  # 1-indexada
+
     if ultimo_token_valido is None:
         termo_erro = linha[i]
-        return (termo_erro, "ERRO_LEXICO"), i + 1
+        return (termo_erro, "ERRO_LEXICO", coluna), i + 1
 
-    return (ultimo_token_valido, ultimo_tipo_valido), posicao_fim_valida
+    return (ultimo_token_valido, ultimo_tipo_valido, coluna), posicao_fim_valida
 
 
 def processar_codigo_fonte(caminho_fonte, estado_inicial, simbolos, estados_finais, transicoes):
     """
     Lê o arquivo de código-fonte e gera a Tabela de Símbolos.
+    Cada entrada contém as colunas: ID, token, tipo, linha e coluna.
     """
     tabela_simbolos = []
     id_counter = 1
@@ -91,18 +133,62 @@ def processar_codigo_fonte(caminho_fonte, estado_inicial, simbolos, estados_fina
                 if resultado is None:
                     break
 
-                termo, tipo = resultado
+                termo, tipo, coluna = resultado
 
-                tabela_simbolos.append({
+                tabela_simbolos.append(Simbolo({
                     "ID": id_counter,
-                    "TOKEN": termo,
-                    "TIPO": tipo,
-                    "LINHA": num_linha
-                })
+                    "token": termo,
+                    "tipo": tipo,
+                    "linha": num_linha,
+                    "coluna": coluna
+                }))
                 id_counter += 1
                 posicao = proxima_pos
 
     return tabela_simbolos
+
+
+def identificar_palavras_reservadas(tabela):
+    """
+    Percorre a Tabela de Símbolos e, para cada entrada com tipo 'NOMEVARIAVEL'
+    cujo token coincida com uma palavra reservada de C, atualiza o tipo
+    para 'PALAVRA_RESERVADA: <PALAVRA>'.
+    """
+    for item in tabela:
+        tipo = str(item.get("tipo", "")).upper()
+        if tipo == "NOMEVARIAVEL":
+            token = str(item.get("token", ""))
+            if token in PALAVRAS_RESERVADAS_C:
+                item["tipo"] = f"PALAVRA_RESERVADA: {token.upper()}"
+    return tabela
+
+
+def imprimir_tabela(tabela):
+    """
+    Exibe a Tabela de Símbolos formatada no terminal.
+    """
+    if not tabela:
+        print("\n[!] Tabela de símbolos vazia.")
+        return
+
+    colunas = ["ID", "token", "tipo", "linha", "coluna"]
+    larguras = {col: len(col) for col in colunas}
+    for item in tabela:
+        for col in colunas:
+            val = str(item.get(col, ""))
+            if len(val) > larguras[col]:
+                larguras[col] = len(val)
+
+    separador = "+" + "+".join("-" * (larguras[col] + 2) for col in colunas) + "+"
+    cabecalho = "|" + "|".join(f" {col:<{larguras[col]}} " for col in colunas) + "|"
+
+    print("\n" + separador)
+    print(cabecalho)
+    print(separador)
+    for item in tabela:
+        linha_str = "|" + "|".join(f" {str(item.get(col, '')):<{larguras[col]}} " for col in colunas) + "|"
+        print(linha_str)
+    print(separador + "\n")
 
 
 def salvar_tabela_json(tabela, caminho_saida):
@@ -111,27 +197,77 @@ def salvar_tabela_json(tabela, caminho_saida):
     """
     with open(caminho_saida, 'w', encoding='utf-8') as f:
         json.dump(tabela, f, ensure_ascii=False, indent=4)
-    print(f"[+] Tabela de símbolos gerada com sucesso em: {caminho_saida}")
+    print(f"[+] Tabela de símbolos salva com sucesso em: {caminho_saida}")
+
+
+def resolver_caminhos():
+    """
+    Resolve caminhos para configuração, código-fonte e JSON de saída.
+    Permite passar arquivos pela linha de comando:
+    python gerador_tabela_afd.py [caminho_fonte] [caminho_config] [caminho_json]
+    """
+    diretorio_atual = os.path.dirname(os.path.abspath(__file__))
+
+    # 1. Configuração do AFD (configAfd.md por padrão)
+    caminho_config = None
+    if len(sys.argv) > 2:
+        caminho_config = sys.argv[2]
+    else:
+        for nome in ['configAfd.md', 'AFD_config.txt']:
+            candidato_local = os.path.join(diretorio_atual, nome)
+            if os.path.exists(candidato_local):
+                caminho_config = candidato_local
+                break
+            if os.path.exists(nome):
+                caminho_config = os.path.abspath(nome)
+                break
+        if not caminho_config:
+            caminho_config = os.path.join(diretorio_atual, 'configAfd.md')
+
+    # 2. Arquivo-fonte (input.c ou codigo.txt)
+    caminho_fonte = None
+    if len(sys.argv) > 1:
+        caminho_fonte = sys.argv[1]
+    else:
+        for nome in ['input.c', 'codigo.txt']:
+            candidato_local = os.path.join(diretorio_atual, nome)
+            if os.path.exists(candidato_local):
+                caminho_fonte = candidato_local
+                break
+            if os.path.exists(nome):
+                caminho_fonte = os.path.abspath(nome)
+                break
+        if not caminho_fonte:
+            caminho_fonte = os.path.join(diretorio_atual, 'input.c')
+
+    # 3. JSON de saída
+    if len(sys.argv) > 3:
+        caminho_json = sys.argv[3]
+    else:
+        caminho_json = os.path.join(diretorio_atual, 'TabSimbolos.json')
+
+    return caminho_config, caminho_fonte, caminho_json
 
 
 def main():
-    diretorio_atual = os.path.dirname(os.path.abspath(__file__))
-    caminho_config = os.path.join(diretorio_atual, 'configAfd.md')
-    caminho_fonte = os.path.join(diretorio_atual, 'codigo.txt')
-    caminho_json = os.path.join(diretorio_atual, 'TabSimbolos.json')
+    caminho_config, caminho_fonte, caminho_json = resolver_caminhos()
 
     if not os.path.exists(caminho_config):
-        print(f"Erro: Arquivo '{caminho_config}' não encontrado.")
+        print(f"Erro: Arquivo de configuração '{caminho_config}' não encontrado.")
         return
 
+    print(f"[*] Carregando configuração do AFD: {os.path.basename(caminho_config)}")
     estado_inicial, simbolos, estados_finais, transicoes = carregar_afd(caminho_config)
 
     if os.path.exists(caminho_fonte):
-        print(f"Lendo código-fonte: {os.path.basename(caminho_fonte)}...")
+        print(f"[*] Processando código-fonte: {os.path.basename(caminho_fonte)}")
         tabela = processar_codigo_fonte(caminho_fonte, estado_inicial, simbolos, estados_finais, transicoes)
+        tabela = identificar_palavras_reservadas(tabela)
+        imprimir_tabela(tabela)
         salvar_tabela_json(tabela, caminho_json)
     else:
-        print(f"Arquivo '{caminho_fonte}' não encontrado. Crie o arquivo para testar.")
+        print(f"Erro: Arquivo-fonte '{caminho_fonte}' não encontrado. Crie o arquivo para testar.")
+
 
 if __name__ == '__main__':
     main()
