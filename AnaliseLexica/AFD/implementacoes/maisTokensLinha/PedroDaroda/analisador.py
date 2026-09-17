@@ -65,26 +65,35 @@ def analisar(nome_arquivo, inicio, alfabeto, finais, transicoes):
     tabela = []
     identificador = 1
 
-    with open (nome_arquivo, "r", encoding = "utf-8") as arquivo:
+    tipos_dados = {
+        "int": "INTEIRO",
+        "char": "CARACTERE",
+        "float": "FRACIONARIO",
+        "double": "REAL"
+    }
+
+    with open(nome_arquivo, "r", encoding="utf-8") as arquivo:
+
         for numero_linha, linha in enumerate(arquivo, start=1):
 
-            posicao = 0 
+            posicao = 0
 
             while posicao < len(linha):
 
                 if linha[posicao].isspace():
-                    posicao += 1 
-                    continue 
+                    posicao += 1
+                    continue
 
                 resultado = reconhecer(
                     linha[posicao:],
                     inicio,
                     alfabeto,
                     finais,
-                    transicoes    
+                    transicoes
                 )
 
                 if resultado is None:
+
                     tabela.append({
                         "ID": identificador,
                         "token": linha[posicao],
@@ -94,10 +103,16 @@ def analisar(nome_arquivo, inicio, alfabeto, finais, transicoes):
                     })
 
                     identificador += 1
-                    posicao += 1 
+                    posicao += 1
 
-                else: 
+                else:
+
                     token, tipo, quantidade = resultado
+
+                    if tipo == "NOMEVARIAVEL":
+
+                        if token in tipos_dados:
+                            tipo = "PR:" + tipos_dados[token]
 
                     tabela.append({
                         "ID": identificador,
