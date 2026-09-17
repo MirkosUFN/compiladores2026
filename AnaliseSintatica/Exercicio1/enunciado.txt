@@ -1,0 +1,5 @@
+A partir da sintaxe original de declaração de variável abaixo, criar uma NOVA SINTAXE para inicialização COM inicialização de variável.
+
+[TIPO] -> PR:INT | PR:CHAR | PR:FLOAT | PR:DOUBLE | PR:VOID | PR:BOOLEAN
+Declara -> [TIPO][NOMEVARIAVEL][PV] | [TIPO][NOMEVARIAVEL] DeclaraMultiplo [PV]
+DeclaraMultiplo -> [VG][NOMEVARIAVEL] | [VG][NOMEVARIAVEL] DeclaraMultiplo
