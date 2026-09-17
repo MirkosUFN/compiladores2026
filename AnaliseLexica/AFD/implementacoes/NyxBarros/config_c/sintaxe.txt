@@ -1,0 +1,22 @@
+[tipo] -> [PR:int] | [PR:char] | [PR:double] | [PR:float] | [PR:void] | [PR:boolean]
+
+Declara -> [tipo] [nome variável] [ponto e virgula] | [tipo] [nome variável] DeclaraMultiplo [ponto e virgula]
+DeclaraMultiplo -> [virgula] [nome variável] | [virgula] [nome variável] DeclaraMultiplo
+
+AtribuirInt -> [PR:int] [nome variável] [atribuição] [int] [ponto e virgula] | [PR:int] [nome variável] [atribuição] [int] AtribuirIntMultiplo [ponto e virgula]
+AtribuirIntMultiplo -> [virgula] [nome variável] [atribuição] [int] | [virgula] [nome variável] [atribuição] [int] DeclaraMultiplo
+
+AtribuirChar -> [PR:char] [nome variável] [atribuição] [char] [ponto e virgula] | [PR:char] [nome variável] [atribuição] [char] AtribuirCharMultiplo [ponto e virgula]
+AtribuirCharMultiplo -> [virgula] [nome variável] [atribuição] [char] | [virgula] [nome variável] [atribuição] [char] AtribuirCharMultiplo
+
+AtribuirDouble -> [PR:double] [nome variável] [atribuição] [double] [ponto e virgula] | [PR:double] [nome variável] [atribuição] [double] AtribuirDoubleMultiplo [ponto e virgula]
+AtribuirDoubleMultiplo -> [virgula] [nome variável] [atribuição] [double] | [virgula] [nome variável] [atribuição] [double] AtribuirDoubleMultiplo
+
+AtribuirFloat -> [PR:float] [nome variável] [atribuição] [float] [ponto e virgula] | [PR:float] [nome variável] [atribuição] [float] AtribuirFloatMultiplo [ponto e virgula]
+AtribuirFloatMultiplo -> [virgula] [nome variável] [atribuição] [float] | [virgula] [nome variável] [atribuição] [float] AtribuirFloatMultiplo
+
+AtribuirVoid -> [PR:void] [nome variável] [atribuição] [void] [ponto e virgula] | [PR:void] [nome variável] [atribuição] [void] AtribuirVoidMultiplo [ponto e virgula]
+AtribuirVoidMultiplo -> [virgula] [nome variável] [atribuição] [void] | [virgula] [nome variável] [atribuição] [void] AtribuirVoidMultiplo
+
+AtribuirBoolean -> [PR:boolean] [nome variável] [atribuição] [boolean] [ponto e virgula] | [PR:boolean] [nome variável] [atribuição] [boolean] AtribuirBooleanMultiplo [ponto e virgula]
+AtribuirBooleanMultiplo -> [virgula] [nome variável] [atribuição] [boolean] | [virgula] [nome variável] [atribuição] [boolean] AtribuirBooleanMultiplo
