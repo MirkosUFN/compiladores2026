@@ -334,6 +334,31 @@ def construir_arvore_derivacao(tipo: str, declaradores: List[Declarador]) -> Nod
     return raiz
 
 
+def carregar_sintaxe(caminho_sintaxe: str) -> List[str]:
+    """
+    Lê o arquivo sintaxe.txt e retorna as regras da gramática,
+    ignorando linhas de comentário (iniciadas com '#') e linhas em branco.
+    """
+    regras: List[str] = []
+    if not os.path.exists(caminho_sintaxe):
+        return regras
+    with open(caminho_sintaxe, "r", encoding="utf-8") as arq:
+        for linha in arq:
+            linha_limpa = linha.strip()
+            if linha_limpa and not linha_limpa.startswith("#"):
+                regras.append(linha_limpa)
+    return regras
+
+
+def exibir_sintaxe(regras: List[str], caminho_sintaxe: str) -> None:
+    """Exibe as regras da gramática carregadas do sintaxe.txt."""
+    nome = os.path.basename(caminho_sintaxe)
+    print(f"[*] Gramática carregada de: {nome}")
+    for regra in regras:
+        print(f"    {regra}")
+    print("=" * 65)
+
+
 def criar_tabela_simbolos(caminho_csv: str) -> None:
     """Cria o arquivo CSV de saída da análise léxica usada pelo exercício."""
     with open(caminho_csv, "w", newline="", encoding="utf-8-sig") as arquivo:
@@ -483,6 +508,7 @@ def main() -> None:
         caminho_entrada = os.path.join(diretorio, "input.c")
 
     caminho_csv = os.path.join(diretorio, "tabela_simbolos.csv")
+    caminho_sintaxe = os.path.join(diretorio, "sintaxe.txt")
 
     if not os.path.exists(caminho_entrada):
         raise FileNotFoundError(f"Arquivo de entrada não encontrado: {caminho_entrada}")
@@ -492,6 +518,11 @@ def main() -> None:
     print(" ANALISADOR SINTÁTICO - DECLARAÇÃO COM INICIALIZAÇÃO ")
     print(f" Arquivo analisado: {nome_arquivo}")
     print("=" * 65)
+
+    # Lê e exibe as regras da gramática definidas no sintaxe.txt
+    regras = carregar_sintaxe(caminho_sintaxe)
+    exibir_sintaxe(regras, caminho_sintaxe)
+
     processar_arquivo(caminho_entrada, caminho_csv)
     print(f"\n[+] Tabela de símbolos salva em: {caminho_csv}")
     print("=" * 65)

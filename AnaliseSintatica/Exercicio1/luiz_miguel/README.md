@@ -47,7 +47,24 @@ python3 analisador_sintatico.py
 ```
 *(ou `python analisador_sintatico.py` no Windows)*
 
-O programa mostra:
+Ao iniciar, o programa **lê as regras gramaticais definidas em [`sintaxe.txt`](sintaxe.txt)** e as exibe no cabeçalho:
+
+```text
+=================================================================
+ ANALISADOR SINTÁTICO - DECLARAÇÃO COM INICIALIZAÇÃO
+ Arquivo analisado: input.c
+=================================================================
+[*] Gramática carregada de: sintaxe.txt
+    [TIPO] -> PR:INT | PR:CHAR | PR:FLOAT | PR:DOUBLE | PR:VOID | PR:BOOLEAN
+    [VALOR] -> INTEIRO | FRACIONARIO | NOMEVARIAVEL | PR:TRUE | PR:FALSE | LITERAL_CARACTERE | LITERAL_TEXTO
+    [INICIALIZACAO] -> ATRIBUICAO VALOR
+    [DECLARADOR] -> NOMEVARIAVEL | NOMEVARIAVEL INICIALIZACAO
+    Declara -> TIPO DECLARADOR PV | TIPO DECLARADOR DeclaraMultiplo PV
+    DeclaraMultiplo -> VG DECLARADOR | VG DECLARADOR DeclaraMultiplo
+=================================================================
+```
+
+Em seguida exibe, para cada linha do arquivo de entrada:
 1. Os tokens de cada linha.
 2. A **Árvore de Derivação** para cada declaração aceita.
 3. O **Resumo da Análise Sintática** formatado em tabela ASCII.
@@ -149,7 +166,7 @@ Para `int a = 1, b = 2, c;`:
 
 ## Estrutura dos Arquivos
 
-- [`analisador_sintatico.py`](analisador_sintatico.py): Analisador léxico e sintático com geração de árvore de derivação, tabela sintática e exportação para CSV.
-- [`sintaxe.txt`](sintaxe.txt): Registro formal das produções da gramática.
+- [`analisador_sintatico.py`](analisador_sintatico.py): Analisador léxico e sintático. Lê as regras do `sintaxe.txt`, exibe a gramática no cabeçalho, gera a árvore de derivação e exporta para CSV.
+- [`sintaxe.txt`](sintaxe.txt): **Arquivo de definição da gramática** — lido e exibido pelo analisador ao iniciar.
 - [`input.c`](input.c): Arquivo de entrada com os códigos de teste.
 - [`tabela_simbolos.csv`](tabela_simbolos.csv): Tabela de símbolos gerada após a execução.
