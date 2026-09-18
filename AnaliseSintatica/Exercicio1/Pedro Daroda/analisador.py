@@ -213,6 +213,45 @@ def mostrar_tabela(tabela):
     print("╚" + "═" * largura + "╝")
     print()
 
+def mostrar_arvore(tabela):
+
+    print()
+    print("╔" + "═" * 38 + "╗")
+    print("║" + " " * 10 + "ÁRVORE DE DERIVAÇÃO" + " " * 8 + "║")
+    print("╚" + "═" * 38 + "╝")
+    print()
+
+    print("DECLARACAO")
+
+    for i, item in enumerate(tabela):
+
+        token = item["token"]
+        tipo = item["tipo"]
+
+        if tipo.startswith("PR:"):
+            nome = "TIPO"
+        elif tipo == "ATRIBUICAO":
+            nome = "ATRIBUICAO"
+        elif tipo == "PONTO_VIRGULA":
+            nome = "PONTO_VIRGULA"
+        elif tipo == "INTEIRO":
+            nome = "NUMERO"
+        elif tipo == "FRACIONÁRIO":
+            nome = "NUMERO"
+        elif tipo == "NOMEVARIAVEL":
+            nome = "IDENTIFICADOR"
+        else:
+            nome = tipo
+
+        if i == len(tabela) - 1:
+            print("└── " + nome)
+            print("    └── " + token)
+        else:
+            print("├── " + nome)
+            print("│   └── " + token)
+
+    print()
+
 def main():
 
     config = "configAFD.md"
@@ -229,6 +268,6 @@ def main():
     )
 
     mostrar_tabela(tabela)
-
+    mostrar_arvore(tabela)
 
 main()
