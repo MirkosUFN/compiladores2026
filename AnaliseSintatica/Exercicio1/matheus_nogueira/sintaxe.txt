@@ -1,0 +1,10 @@
+# Tipos definidos no enunciado
+[TIPO] -> PR:INT | PR:CHAR | PR:FLOAT | PR:DOUBLE | PR:VOID | PR:BOOLEAN
+
+# Nova sintaxe: cada variável pode ser declarada sem valor ou inicializada
+[VALOR] -> INTEIRO | FRACIONARIO | NOMEVARIAVEL | PR:TRUE | PR:FALSE
+[INICIALIZACAO] -> ATRIBUICAO VALOR
+[DECLARADOR] -> NOMEVARIAVEL | NOMEVARIAVEL INICIALIZACAO
+
+Declara -> TIPO DECLARADOR PV | TIPO DECLARADOR DeclaraMultiplo PV
+DeclaraMultiplo -> VG DECLARADOR | VG DECLARADOR DeclaraMultiplo
