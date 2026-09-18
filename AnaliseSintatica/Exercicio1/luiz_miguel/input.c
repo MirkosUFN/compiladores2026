@@ -7,6 +7,7 @@ char letra = 'a';
 char vazio = '';
 char mensagem = "compiladores";
 char texto_vazio = "";
+int nome, idade=23, filhos=3;
 int erro_atribuicao = ;
 float = 10;
 double sem_ponto_virgula

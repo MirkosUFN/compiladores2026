@@ -16,6 +16,7 @@ char letra = 'a';
 char vazio = '';
 char mensagem = "compiladores";
 char texto_vazio = "";
+int nome, idade=23, filhos=3;
 ```
 
 A gramática está registrada em [`sintaxe.txt`](sintaxe.txt). A regra de inicialização é:
@@ -54,8 +55,9 @@ O programa mostra:
 
 ---
 
-## Exemplo da Árvore de Derivação
+## Exemplos da Árvore de Derivação
 
+### Declaração Simples com Inicialização
 Para `int numero = 10;`:
 ```text
 Árvore de Derivação:
@@ -66,6 +68,31 @@ Para `int numero = 10;`:
       │   └── INICIALIZACAO
       │       ├── [ATRIBUICAO]: =
       │       └── [VALOR]: 10
+      └── [PV]: ;
+```
+
+### Declaração Múltipla Mista
+Para `int nome, idade=23, filhos=3;`:
+```text
+Árvore de Derivação:
+  └── Declara
+      ├── [TIPO]: PR:INT
+      ├── DECLARADOR
+      │   └── [NOMEVARIAVEL]: nome
+      ├── DeclaraMultiplo
+      │   ├── [VG]: ,
+      │   ├── DECLARADOR
+      │   │   ├── [NOMEVARIAVEL]: idade
+      │   │   └── INICIALIZACAO
+      │   │       ├── [ATRIBUICAO]: =
+      │   │       └── [VALOR]: 23
+      │   └── DeclaraMultiplo
+      │       ├── [VG]: ,
+      │       └── DECLARADOR
+      │           ├── [NOMEVARIAVEL]: filhos
+      │           └── INICIALIZACAO
+      │               ├── [ATRIBUICAO]: =
+      │               └── [VALOR]: 3
       └── [PV]: ;
 ```
 
@@ -99,22 +126,23 @@ Para `int a = 1, b = 2, c;`:
 
 ```text
 === RESUMO DA ANÁLISE SINTÁTICA ===
-+-------+---------------------------------+------------+------------------+-----------+---------------------------+
-| Linha | Código                          | Tipo       | Regra            | Status    | Declaradores              |
-+-------+---------------------------------+------------+------------------+-----------+---------------------------+
-| 1     | int numero;                     | PR:INT     | DECLARA          | ACEITA    | numero                    |
-| 2     | int numero = 10;                | PR:INT     | DECLARA          | ACEITA    | numero = 10               |
-| 3     | int a = 1, b = 2, c;            | PR:INT     | DECLARA_MULTIPLO | ACEITA    | a = 1, b = 2, c           |
-| 4     | float media = 7.5;              | PR:FLOAT   | DECLARA          | ACEITA    | media = 7.5               |
-| 5     | boolean ativo = true;           | PR:BOOLEAN | DECLARA          | ACEITA    | ativo = true              |
-| 6     | char letra = 'a';               | PR:CHAR    | DECLARA          | ACEITA    | letra = 'a'               |
-| 7     | char vazio = '';                | PR:CHAR    | DECLARA          | ACEITA    | vazio = ''                |
-| 8     | char mensagem = "compiladores"; | PR:CHAR    | DECLARA          | ACEITA    | mensagem = "compiladores" |
-| 9     | char texto_vazio = "";          | PR:CHAR    | DECLARA          | ACEITA    | texto_vazio = ""          |
-| 10    | int erro_atribuicao = ;         | PR:INT     | -                | REJEITADA | -                         |
-| 11    | float = 10;                     | PR:FLOAT   | -                | REJEITADA | -                         |
-| 12    | double sem_ponto_virgula        | PR:DOUBLE  | -                | REJEITADA | sem_ponto_virgula         |
-+-------+---------------------------------+------------+------------------+-----------+---------------------------+
++-------+---------------------------------+------------+------------------+-----------+------------------------------+
+| Linha | Código                          | Tipo       | Regra            | Status    | Declaradores                 |
++-------+---------------------------------+------------+------------------+-----------+------------------------------+
+| 1     | int numero;                     | PR:INT     | DECLARA          | ACEITA    | numero                       |
+| 2     | int numero = 10;                | PR:INT     | DECLARA          | ACEITA    | numero = 10                  |
+| 3     | int a = 1, b = 2, c;            | PR:INT     | DECLARA_MULTIPLO | ACEITA    | a = 1, b = 2, c              |
+| 4     | float media = 7.5;              | PR:FLOAT   | DECLARA          | ACEITA    | media = 7.5                  |
+| 5     | boolean ativo = true;           | PR:BOOLEAN | DECLARA          | ACEITA    | ativo = true                 |
+| 6     | char letra = 'a';               | PR:CHAR    | DECLARA          | ACEITA    | letra = 'a'                  |
+| 7     | char vazio = '';                | PR:CHAR    | DECLARA          | ACEITA    | vazio = ''                   |
+| 8     | char mensagem = "compiladores"; | PR:CHAR    | DECLARA          | ACEITA    | mensagem = "compiladores"    |
+| 9     | char texto_vazio = "";          | PR:CHAR    | DECLARA          | ACEITA    | texto_vazio = ""             |
+| 10    | int nome, idade=23, filhos=3;   | PR:INT     | DECLARA_MULTIPLO | ACEITA    | nome, idade = 23, filhos = 3 |
+| 11    | int erro_atribuicao = ;         | PR:INT     | -                | REJEITADA | -                            |
+| 12    | float = 10;                     | PR:FLOAT   | -                | REJEITADA | -                            |
+| 13    | double sem_ponto_virgula        | PR:DOUBLE  | -                | REJEITADA | sem_ponto_virgula            |
++-------+---------------------------------+------------+------------------+-----------+------------------------------+
 ```
 
 ---
