@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Tabela de Simbolos - Reconhecedor AFD</title>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; background:#f4f6f8; margin:0; padding:32px; color:#1f2937; }
+  h1 { font-size: 22px; margin-bottom: 4px; }
+  p.subtitulo { color:#6b7280; margin-top:0; margin-bottom:24px; }
+  table { border-collapse: collapse; width:100%; max-width:900px; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+  th, td { padding:10px 16px; text-align:left; border-bottom:1px solid #e5e7eb; }
+  th { background:#111827; color:#fff; font-size:13px; text-transform:uppercase; letter-spacing:0.04em; }
+  tr:nth-child(even) { background:#f9fafb; }
+  tr:hover { background:#eef2ff; }
+  td.token { font-family: Consolas, monospace; font-weight:600; }
+  .tipo { display:inline-block; padding:2px 10px; border-radius:12px; font-size:12px; font-weight:600; }
+  .INTEIRO { background:#dbeafe; color:#1d4ed8; }
+  .FRACIONARIO { background:#dcfce7; color:#15803d; }
+  .NOMEVARIAVEL { background:#fef3c7; color:#a16207; }
+  .ATRIBUICAO { background:#ede9fe; color:#6d28d9; }
+  .SINAL_COMPARACAO { background:#ffe4e6; color:#be123c; }
+  .VIRGULA { background:#e0f2fe; color:#0369a1; }
+  .PONTO_VIRGULA { background:#f3e8ff; color:#7e22ce; }
+  .PR_INT, .PR_CHAR, .PR_FLOAT, .PR_DOUBLE, .PR_VOID, .PR_BOOLEAN { background:#d1fae5; color:#065f46; }
+  .ERRO { background:#fee2e2; color:#b91c1c; }
+</style>
+</head>
+<body>
+<h1>Tabela de Simbolos</h1>
+<p class="subtitulo">Gerada automaticamente pelo Reconhecedor AFD</p>
+<table>
+<thead>
+<tr><th>ID</th><th>Token</th><th>Tipo</th><th>Linha</th><th>Coluna</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td class="token">int</td><td><span class="tipo PR_INT">PR_INT</span></td><td>1</td><td>0</td></tr>
+<tr><td>2</td><td class="token">x</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>1</td><td>4</td></tr>
+<tr><td>3</td><td class="token">=</td><td><span class="tipo ATRIBUICAO">ATRIBUICAO</span></td><td>1</td><td>6</td></tr>
+<tr><td>4</td><td class="token">10</td><td><span class="tipo INTEIRO">INTEIRO</span></td><td>1</td><td>8</td></tr>
+<tr><td>5</td><td class="token">;</td><td><span class="tipo PONTO_VIRGULA">PONTO_VIRGULA</span></td><td>1</td><td>11</td></tr>
+</tbody>
+</table>
+</body>
+</html>
