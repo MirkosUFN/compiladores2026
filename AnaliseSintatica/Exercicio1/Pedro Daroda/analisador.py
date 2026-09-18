@@ -1,3 +1,14 @@
+class NoArvore:
+
+    def __init__(self, nome):
+        self.nome = nome
+        self.filhos = []
+
+    def adicionar(self, filho):
+        self.filhos.append(filho)
+
+
+
 def leitura_config(nome_arquivo):
     with open(nome_arquivo,"r",encoding="utf-8") as arquivo:
         linhas = [linha.strip() for linha in arquivo if linha.strip()]
@@ -213,49 +224,172 @@ def mostrar_tabela(tabela):
     print("╚" + "═" * largura + "╝")
     print()
 
-def mostrar_arvore(tabela):
+def criar_arvore(tabela):
 
-    print()
-    print("╔" + "═" * 38 + "╗")
-    print("║" + " " * 10 + "ÁRVORE DE DERIVAÇÃO" + " " * 8 + "║")
-    print("╚" + "═" * 38 + "╝")
-    print()
+    raiz = NoArvore("PROGRAMA")
 
-    print("DECLARACAO")
+    declaracoes = NoArvore("DECLARACOES")
+    raiz.adicionar(declaracoes)
 
-    for i, item in enumerate(tabela):
+    inicio = 0
 
-        token = item["token"]
-        tipo = item["tipo"]
+    while inicio < len(tabela):
 
-        if tipo.startswith("PR:"):
-            nome = "TIPO"
-        elif tipo == "ATRIBUICAO":
-            nome = "ATRIBUICAO"
-        elif tipo == "PONTO_VIRGULA":
-            nome = "PONTO_VIRGULA"
-        elif tipo == "INTEIRO":
-            nome = "NUMERO"
-        elif tipo == "FRACIONÁRIO":
-            nome = "NUMERO"
-        elif tipo == "NOMEVARIAVEL":
-            nome = "IDENTIFICADOR"
-        else:
-            nome = tipo
+        fim = inicio
 
-        if i == len(tabela) - 1:
-            print("└── " + nome)
-            print("    └── " + token)
-        else:
-            print("├── " + nome)
-            print("│   └── " + token)
+        while fim < len(tabela) and tabela[fim]["token"] != ";":
+            fim += 1
 
-    print()
+        if fim < len(tabela):
+            fim += 1
+
+        tokens = tabela[inicio:fim]
+
+        if not tokens:
+            break
+
+        declaracao = NoArvore("DECLARACAO")
+
+        for item in tokens:
+
+            token = item["token"]
+            tipo = item["tipo"]
+
+            if tipo.startswith("PR:"):
+
+                no_tipo = NoArvore("TIPO")
+                no_tipo.adicionar(NoArvore(token))
+                declaracao.adicionar(no_tipo)
+
+            elif tipo == "NOMEVARIAVEL":
+
+                no_id = NoArvore("IDENTIFICADOR")
+                no_id.adicionar(NoArvore(token))
+                declaracao.adicionar(no_id)
+
+            elif tipo == "ATRIBUICAO":
+
+                no_atribuicao = NoArvore("ATRIBUICAO")
+                no_atribuicao.adicionar(NoArvore("="))
+                declaracao.adicionar(no_atribuicao)
+
+            elif tipo == "INTEIRO":
+
+                no_valor = NoArvore("VALOR")
+
+                no_inteiro = NoArvore("INTEIRO")
+                no_inteiro.adicionar(NoArvore(token))
+
+                no_valor.adicionar(no_inteiro)
+                declaracao.adicionar(no_valor)
+
+            elif tipo == "FRACIONÁRIO":
+
+                no_valor = NoArvore("VALOR")
+
+                no_fracionario = NoArvore("FRACIONÁRIO")
+                no_fracionario.adicionar(NoArvore(token))
+
+                no_valor.adicionar(no_fracionario)
+                declaracao.adicionar(no_valor)
+
+            elif tipo == "CARACTERE":
+
+                no_valor = NoArvore("VALOR")
+
+                no_caractere = NoArvore("CARACTERE")
+                no_caractere.adicionar(NoArvore(token))
+
+                no_valor.adicionar(no_caractere)
+                declaracao.adicionar(no_valor)
+
+            elif tipo == "BOOLEAN":
+
+                no_valor = NoArvore("VALOR")
+
+                no_boolean = NoArvore("BOOLEAN")
+                no_boolean.adicionar(NoArvore(token))
+
+                no_valor.adicionar(no_boolean)
+                declaracao.adicionar(no_valor)
+
+            elif tipo == "VIRGULA":
+
+                no_virgula = NoArvore("VIRGULA")
+                no_virgula.adicionar(NoArvore(","))
+                declaracao.adicionar(no_virgula)
+
+            elif tipo == "PONTO_VIRGULA":
+
+                no_ponto = NoArvore("PONTO_VIRGULA")
+                no_ponto.adicionar(NoArvore(";"))
+                declaracao.adicionar(no_ponto)
+
+        declaracoes.adicionar(declaracao)
+
+        inicio = fim
+
+    return raiz
+
+def mostrar_arvore(no, prefixo="", ultimo=True, raiz=True):
+
+    if raiz:
+        print(no.nome)
+    else:
+        simbolo = "└── " if ultimo else "├── "
+        print(prefixo + simbolo + no.nome)
+
+    if raiz:
+        novo_prefixo = ""
+    else:
+        novo_prefixo = prefixo + ("    " if ultimo else "│   ")
+
+    for i, filho in enumerate(no.filhos):
+
+        ultimo_filho = i == len(no.filhos) - 1
+
+        mostrar_arvore(
+            filho,
+            novo_prefixo,
+            ultimo_filho,
+            False
+        )
+
+def leitura_sintaxe(nome_arquivo):
+
+    regras = {}
+
+    with open(nome_arquivo, "r", encoding="utf-8") as arquivo:
+
+        for linha in arquivo:
+
+            linha = linha.strip()
+
+            if not linha:
+                continue
+
+            if "->" not in linha:
+                continue
+
+            esquerda, direita = linha.split("->", 1)
+
+            esquerda = esquerda.strip()
+            direita = direita.strip()
+
+            if esquerda not in regras:
+                regras[esquerda] = []
+
+            regras[esquerda].append(direita.split())
+
+    return regras
+
+
 
 def main():
 
     config = "configAFD.md"
     fonte = "input.c"
+    sintaxe = "sintaxe.txt"
 
     inicio, alfabeto, finais, transicoes = leitura_config(config)
 
@@ -267,7 +401,19 @@ def main():
         transicoes
     )
 
+    regras = leitura_sintaxe(sintaxe)
+
     mostrar_tabela(tabela)
-    mostrar_arvore(tabela)
+
+    arvore = criar_arvore(tabela)
+
+    print()
+    print("╔" + "═" * 38 + "╗")
+    print("║" + " " * 8 + "ÁRVORE DE DERIVAÇÃO" + " " * 10 + "║")
+    print("╚" + "═" * 38 + "╝")
+    print()
+
+    mostrar_arvore(arvore)
+
 
 main()
