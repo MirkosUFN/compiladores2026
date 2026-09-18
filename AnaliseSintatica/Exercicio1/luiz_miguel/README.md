@@ -1,6 +1,6 @@
 # Exercício 1 — Análise Sintática
 
-Esta implementação atende ao enunciado de **AnaliseSintatica/Exercicio1**, com suporte a literais numéricos, booleanos, caracteres (`'...'` / `''`) e cadeias de caracteres (`"..."` / `""`), reaproveitando o conceito e a visualização em tabela de [`analise_lexica/gerador_tabela_afd.py`](../analise_lexica/gerador_tabela_afd.py).
+Esta implementação atende ao enunciado de **AnaliseSintatica/Exercicio1**, com suporte a literais numéricos, booleanos, caracteres (`'...'` / `''`) e cadeias de caracteres (`"..."` / `""`), exibindo a **Árvore de Derivação Sintática** e o **Resumo da Análise Sintática** formatado em tabela ASCII.
 
 ## Sintaxe
 
@@ -47,40 +47,56 @@ python3 analisador_sintatico.py
 *(ou `python analisador_sintatico.py` no Windows)*
 
 O programa mostra:
-1. Os tokens e o resultado de cada linha analisada.
-2. A **Tabela de Símbolos (Léxica)** formatada no terminal (estilo `gerador_tabela_afd.py`).
-3. O **Resumo da Análise Sintática** formatado em tabela.
-4. Grava os tokens reconhecidos em [`tabela_simbolos.csv`](tabela_simbolos.csv).
+1. Os tokens de cada linha.
+2. A **Árvore de Derivação** para cada declaração aceita.
+3. O **Resumo da Análise Sintática** formatado em tabela ASCII.
+4. Grava os tokens reconhecidos no arquivo [`tabela_simbolos.csv`](tabela_simbolos.csv).
 
 ---
 
-## Exemplo de Saída em Tabela
+## Exemplo da Árvore de Derivação
 
-### Tabela de Símbolos (Léxica)
+Para `int numero = 10;`:
 ```text
-=== TABELA DE SÍMBOLOS (ANÁLISE LÉXICA) ===
-+----+-------------------+-------------------+-------+--------+
-| ID | token             | tipo              | linha | coluna |
-+----+-------------------+-------------------+-------+--------+
-| 30 | char              | PR:CHAR           | 6     | 1      |
-| 31 | letra             | NOMEVARIAVEL      | 6     | 6      |
-| 32 | =                 | ATRIBUICAO        | 6     | 12     |
-| 33 | 'a'               | LITERAL_CARACTERE | 6     | 14     |
-| 34 | ;                 | PONTO_VIRGULA     | 6     | 17     |
-| 35 | char              | PR:CHAR           | 7     | 1      |
-| 36 | vazio             | NOMEVARIAVEL      | 7     | 6      |
-| 37 | =                 | ATRIBUICAO        | 7     | 12     |
-| 38 | ''                | LITERAL_CARACTERE | 7     | 14     |
-| 39 | ;                 | PONTO_VIRGULA     | 7     | 16     |
-| 40 | char              | PR:CHAR           | 8     | 1      |
-| 41 | mensagem          | NOMEVARIAVEL      | 8     | 6      |
-| 42 | =                 | ATRIBUICAO        | 8     | 15     |
-| 43 | "compiladores"    | LITERAL_TEXTO     | 8     | 17     |
-| 44 | ;                 | PONTO_VIRGULA     | 8     | 31     |
-+----+-------------------+-------------------+-------+--------+
+Árvore de Derivação:
+  └── Declara
+      ├── [TIPO]: PR:INT
+      ├── DECLARADOR
+      │   ├── [NOMEVARIAVEL]: numero
+      │   └── INICIALIZACAO
+      │       ├── [ATRIBUICAO]: =
+      │       └── [VALOR]: 10
+      └── [PV]: ;
 ```
 
-### Resumo da Análise Sintática
+Para `int a = 1, b = 2, c;`:
+```text
+Árvore de Derivação:
+  └── Declara
+      ├── [TIPO]: PR:INT
+      ├── DECLARADOR
+      │   ├── [NOMEVARIAVEL]: a
+      │   └── INICIALIZACAO
+      │       ├── [ATRIBUICAO]: =
+      │       └── [VALOR]: 1
+      ├── DeclaraMultiplo
+      │   ├── [VG]: ,
+      │   ├── DECLARADOR
+      │   │   ├── [NOMEVARIAVEL]: b
+      │   │   └── INICIALIZACAO
+      │       │   ├── [ATRIBUICAO]: =
+      │       │   └── [VALOR]: 2
+      │   └── DeclaraMultiplo
+      │       ├── [VG]: ,
+      │       └── DECLARADOR
+      │           └── [NOMEVARIAVEL]: c
+      └── [PV]: ;
+```
+
+---
+
+## Exemplo de Saída da Tabela Sintática
+
 ```text
 === RESUMO DA ANÁLISE SINTÁTICA ===
 +-------+---------------------------------+------------+------------------+-----------+---------------------------+
@@ -105,7 +121,7 @@ O programa mostra:
 
 ## Estrutura dos Arquivos
 
-- [`analisador_sintatico.py`](analisador_sintatico.py): Analisador léxico e sintático com visualização em tabela e exportação para CSV.
+- [`analisador_sintatico.py`](analisador_sintatico.py): Analisador léxico e sintático com geração de árvore de derivação, tabela sintática e exportação para CSV.
 - [`sintaxe.txt`](sintaxe.txt): Registro formal das produções da gramática.
 - [`input.c`](input.c): Arquivo de entrada com os códigos de teste.
 - [`tabela_simbolos.csv`](tabela_simbolos.csv): Tabela de símbolos gerada após a execução.

@@ -85,6 +85,31 @@ class Declarador:
     valor: Optional[str] = None
 
 
+class NodoSintatico:
+    """Nó para representação hierárquica da Árvore de Derivação Sintática."""
+
+    def __init__(self, nome: str, valor: Optional[str] = None):
+        self.nome = nome
+        self.valor = valor
+        self.filhos: List["NodoSintatico"] = []
+
+    def adicionar_filho(self, filho: "NodoSintatico") -> "NodoSintatico":
+        self.filhos.append(filho)
+        return filho
+
+    def formatar(self, prefixo: str = "", eh_ultimo: bool = True) -> List[str]:
+        linhas = []
+        conector = "└── " if eh_ultimo else "├── "
+        rotulo = f"{self.nome}: {self.valor}" if self.valor is not None else self.nome
+        linhas.append(f"{prefixo}{conector}{rotulo}")
+
+        prefixo_filho = prefixo + ("    " if eh_ultimo else "│   ")
+        for i, filho in enumerate(self.filhos):
+            ultimo = i == len(self.filhos) - 1
+            linhas.extend(filho.formatar(prefixo_filho, ultimo))
+        return linhas
+
+
 @dataclass
 class ResultadoSintatico:
     """Resultado do reconhecimento da regra Declara."""
@@ -93,6 +118,7 @@ class ResultadoSintatico:
     tipo: Optional[str]
     declaradores: List[Declarador]
     mensagem: str
+    arvore: Optional[NodoSintatico] = None
 
 
 def classificar_lexema(lexema: str) -> Tuple[str, bool]:
@@ -259,6 +285,7 @@ def analisar_declaracao(tokens: List[Token]) -> ResultadoSintatico:
 
     qtd_declaracoes = len(declaradores)
     qtd_inicializacoes = sum(item.valor is not None for item in declaradores)
+    arvore = construir_arvore_derivacao(tipo, declaradores)
 
     return ResultadoSintatico(
         aceito=True,
@@ -268,7 +295,43 @@ def analisar_declaracao(tokens: List[Token]) -> ResultadoSintatico:
             f"Declaração aceita com {qtd_declaracoes} variável(is) e "
             f"{qtd_inicializacoes} inicialização(ões)."
         ),
+        arvore=arvore,
     )
+
+
+def construir_nodo_declarador(d: Declarador) -> NodoSintatico:
+    """Constrói o subnó para um DECLARADOR (com ou sem INICIALIZACAO)."""
+    nodo_dec = NodoSintatico("DECLARADOR")
+    nodo_dec.adicionar_filho(NodoSintatico("[NOMEVARIAVEL]", d.nome))
+    if d.valor is not None:
+        nodo_inic = NodoSintatico("INICIALIZACAO")
+        nodo_inic.adicionar_filho(NodoSintatico("[ATRIBUICAO]", "="))
+        nodo_inic.adicionar_filho(NodoSintatico("[VALOR]", d.valor))
+        nodo_dec.adicionar_filho(nodo_inic)
+    return nodo_dec
+
+
+def construir_arvore_derivacao(tipo: str, declaradores: List[Declarador]) -> NodoSintatico:
+    """
+    Gera a Árvore de Derivação Sintática conforme as regras:
+        Declara -> TIPO DECLARADOR PV | TIPO DECLARADOR DeclaraMultiplo PV
+        DeclaraMultiplo -> VG DECLARADOR | VG DECLARADOR DeclaraMultiplo
+    """
+    raiz = NodoSintatico("Declara")
+    raiz.adicionar_filho(NodoSintatico("[TIPO]", tipo))
+    raiz.adicionar_filho(construir_nodo_declarador(declaradores[0]))
+
+    if len(declaradores) > 1:
+        nodo_atual = raiz
+        for d in declaradores[1:]:
+            nodo_mult = NodoSintatico("DeclaraMultiplo")
+            nodo_mult.adicionar_filho(NodoSintatico("[VG]", ","))
+            nodo_mult.adicionar_filho(construir_nodo_declarador(d))
+            nodo_atual.adicionar_filho(nodo_mult)
+            nodo_atual = nodo_mult
+
+    raiz.adicionar_filho(NodoSintatico("[PV]", ";"))
+    return raiz
 
 
 def criar_tabela_simbolos(caminho_csv: str) -> None:
@@ -343,6 +406,11 @@ def mostrar_declaracao(resultado: ResultadoSintatico) -> None:
         print(f"  Declaradores: {', '.join(itens)}")
     print(f"  Mensagem: {resultado.mensagem}")
 
+    if resultado.arvore is not None:
+        print("  Árvore de Derivação:")
+        for linha in resultado.arvore.formatar(prefixo="    "):
+            print(linha)
+
 
 def processar_arquivo(caminho_entrada: str, caminho_csv: str) -> None:
     """Processa o arquivo-fonte, gerando a tabela de símbolos e executando a análise sintática."""
@@ -361,7 +429,9 @@ def processar_arquivo(caminho_entrada: str, caminho_csv: str) -> None:
             if not tokens:
                 continue
 
-            print(f"\nLinha {numero_linha}: {linha.rstrip()}")
+            print(f"\n{'-' * 65}")
+            print(f"Linha {numero_linha}: {linha.rstrip()}")
+            print(f"{'-' * 65}")
             mostrar_tokens(tokens)
 
             for token in tokens:
@@ -395,13 +465,7 @@ def processar_arquivo(caminho_entrada: str, caminho_csv: str) -> None:
                 "Mensagem": resultado.mensagem
             })
 
-    # Exibição das Tabelas Formatadas (estilo gerador_tabela_afd.py)
-    imprimir_tabela(
-        tabela_simbolos_memoria,
-        ["ID", "token", "tipo", "linha", "coluna"],
-        "TABELA DE SÍMBOLOS (ANÁLISE LÉXICA)"
-    )
-
+    # Exibição da Tabela de Resumo da Análise Sintática
     imprimir_tabela(
         relatorio_sintatico,
         ["Linha", "Código", "Tipo", "Regra", "Status", "Declaradores"],
@@ -423,11 +487,13 @@ def main() -> None:
     if not os.path.exists(caminho_entrada):
         raise FileNotFoundError(f"Arquivo de entrada não encontrado: {caminho_entrada}")
 
+    nome_arquivo = os.path.basename(caminho_entrada)
     print("=" * 65)
     print(" ANALISADOR SINTÁTICO - DECLARAÇÃO COM INICIALIZAÇÃO ")
+    print(f" Arquivo analisado: {nome_arquivo}")
     print("=" * 65)
     processar_arquivo(caminho_entrada, caminho_csv)
-    print(f"\nTabela de símbolos salva em: {caminho_csv}")
+    print(f"\n[+] Tabela de símbolos salva em: {caminho_csv}")
     print("=" * 65)
 
 
