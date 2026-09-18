@@ -1,0 +1,15 @@
+# Tipos base da linguagem
+[TIPO] -> PR:INT | PR:CHAR | PR:FLOAT | PR:DOUBLE | PR:VOID | PR:BOOLEAN
+
+# Definição do que é um valor aceitável
+[VALOR] -> INTEIRO | FRACIONARIO | NOMEVARIAVEL | PR:TRUE | PR:FALSE
+
+# Regra de inicialização (o sinal de '=' seguido do valor)
+[INICIALIZACAO] -> ATRIBUICAO VALOR
+
+# O Declarador pode ser apenas a variável ou a variável com inicialização
+[DECLARADOR] -> NOMEVARIAVEL | NOMEVARIAVEL INICIALIZACAO
+
+# Regras principais atualizadas para usar o DECLARADOR
+Declara -> TIPO DECLARADOR PV | TIPO DECLARADOR DeclaraMultiplo PV
+DeclaraMultiplo -> VG DECLARADOR | VG DECLARADOR DeclaraMultiplo
