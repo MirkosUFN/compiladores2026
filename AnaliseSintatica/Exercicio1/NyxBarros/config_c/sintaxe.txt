@@ -1,0 +1,22 @@
+[tipo] -> [PR:int] | [PR:char] | [PR:double] | [PR:float] | [PR:void] | [PR:boolean]
+
+Declara -> [tipo] DeclaraMultiplo
+DeclaraMultiplo -> [nome variável] [virgula] DeclaraMultiplo | [nome variável] [ponto e virgula]
+
+DeclaraAtribuirInt -> [PR:int] AtribuirInt
+AtribuirInt -> [nome variável] [virgula] AtribuirInt | [nome variável] [ponto e virgula] | [nome variável] [atribuição] [int] [virgula] AtribuirInt | [nome variável] [atribuição] [int] [ponto e virgula]
+
+DeclaraAtribuirFloat -> [PR:float] AtribuirFloat
+AtribuirFloat -> [nome variável] [virgula] AtribuirFloat | [nome variável] [ponto e virgula] | [nome variável] [atribuição] [float] [virgula] AtribuirFloat | [nome variável] [atribuição] [float] [ponto e virgula]
+
+DeclaraAtribuirDouble -> [PR:double] AtribuirDouble
+AtribuirDouble -> [nome variável] [virgula] AtribuirDouble | [nome variável] [ponto e virgula] | [nome variável] [atribuição] [double] [virgula] AtribuirDouble | [nome variável] [atribuição] [double] [ponto e virgula]
+
+DeclaraAtribuirChar -> [PR:char] AtribuirChar
+AtribuirChar -> [nome variável] [virgula] AtribuirChar | [nome variável] [ponto e virgula] | [nome variável] [atribuição] [char] [virgula] AtribuirChar | [nome variável] [atribuição] [char] [ponto e virgula]
+
+DeclaraAtribuirBoolean -> [PR:boolean] AtridbuirBoolean
+AtribuirBoolean -> [nome variável] [virgula] AtribuirBoolean | [nome variável] [ponto e virgula] | [nome variável] [atribuição] [boolean] [virgula] AtribuirBoolean | [nome variável] [atribuição] [boolean] [ponto e virgula]
+
+
+
