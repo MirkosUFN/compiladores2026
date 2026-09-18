@@ -1,9 +1,0 @@
-[TIPO] -> PR:INT | PR:CHAR | PR:FLOAT | PR:DOUBLE | PR:VOID | PR:BOOLEAN
-
-[VALOR] -> [NUMERO] | [TEXTO] | [CARACTERE] | [BOOLEANO] | [NOMEVARIAVEL]
-
-ItemDeclara -> [NOMEVARIAVEL] | [NOMEVARIAVEL][OP_ATRIB][VALOR]
-
-Declara -> [TIPO] ItemDeclara [PV] | [TIPO] ItemDeclara DeclaraMultiplo [PV]
-
-DeclaraMultiplo -> [VG] ItemDeclara | [VG] ItemDeclara DeclaraMultiplo
