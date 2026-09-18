@@ -5,7 +5,7 @@ Analisador Sintático e Léxico - Exercício 1: Análise Sintática.
 [TIPO] -> PR:INT | PR:CHAR | PR:FLOAT | PR:DOUBLE | PR:VOID | PR:BOOLEAN
 
 # Nova sintaxe: cada variável pode ser declarada sem valor ou inicializada
-[VALOR] -> INTEIRO | FRACIONARIO | NOMEVARIAVEL | PR:TRUE | PR:FALSE
+[VALOR] -> INTEIRO | FRACIONARIO | NOMEVARIAVEL | PR:TRUE | PR:FALSE | LITERAL_CARACTERE | LITERAL_TEXTO
 [INICIALIZACAO] -> ATRIBUICAO VALOR
 [DECLARADOR] -> NOMEVARIAVEL | NOMEVARIAVEL INICIALIZACAO
 
@@ -48,11 +48,21 @@ TIPOS_DE_VALOR = {
     "NOMEVARIAVEL",
     "PR:TRUE",
     "PR:FALSE",
+    "LITERAL_CARACTERE",
+    "LITERAL_TEXTO",
+    "CARACTERE",
+    "TEXTO",
+    "LITERAL_CHAR",
+    "LITERAL_STRING",
 }
 
 PADRAO_TOKEN = re.compile(
-    r"[+-]?(?:\d+\.\d+|\.\d+)|[+-]?\d+|"
-    r"[A-Za-z_][A-Za-z0-9_]*|==|<=|>=|!=|[,;=<>!]|[^\s]"
+    r'"(?:\\.|[^"\\])*"'
+    r"|'(?:\\.|[^'\\])*'"
+    r"|[+-]?(?:\d+\.\d+|\.\d+)|[+-]?\d+"
+    r"|[A-Za-z_][A-Za-z0-9_]*"
+    r"|==|<=|>=|!=|[,;=<>!]"
+    r"|[^\s]"
 )
 
 
@@ -92,6 +102,13 @@ def classificar_lexema(lexema: str) -> Tuple[str, bool]:
 
     if lexema in VALORES_BOOLEANOS:
         return VALORES_BOOLEANOS[lexema], True
+
+    # Suporte a literais de aspas simples ('...') e aspas duplas ("...")
+    if lexema.startswith("'") and lexema.endswith("'") and len(lexema) >= 2:
+        return "LITERAL_CARACTERE", True
+
+    if lexema.startswith('"') and lexema.endswith('"') and len(lexema) >= 2:
+        return "LITERAL_TEXTO", True
 
     if re.fullmatch(r"[+-]?\d+", lexema):
         return "INTEIRO", True
