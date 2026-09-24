@@ -1,6 +1,6 @@
 import os
 
-from code.afd import AFD
+from code.analizador_lexico import AnalizadorLexico
 
 
 
@@ -9,8 +9,10 @@ arquivo_palavras_reservadas = 'config_c/palavrasReservadas.txt'
 arquivo_teste = 'teste/teste.txt'
 
 # Criar a tabela e analisar automaticamente
-tabela_simbolos = AFD(arquivo_config_afd, arquivo_palavras_reservadas)
-tabela_simbolos.analisar_arquivo(arquivo_teste)
+tabela_simbolos = AnalizadorLexico(arquivo_config_afd, arquivo_palavras_reservadas)
+
+tabela_simbolos.tabela_simbolos = arquivo_teste
+
 tabela_simbolos.gerar_arquivo_csv()
 tabela_simbolos.gerar_arquivo_json()
-tabela_simbolos.gerar_arquivo_mk()
+tabela_simbolos.gerar_arquivo_md()

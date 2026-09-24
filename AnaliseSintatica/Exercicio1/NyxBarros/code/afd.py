@@ -9,8 +9,6 @@ class AFD:
         self.estados_finais = {}
         self.simbolos = {}
         self.palavras_reservadas: set[str] = set()
-        self.tabela_simbolos : list[dict[str, Any]] = []
-        self.buffer = {}
 
         self.reconhecer_palavras_reservadas(arquivo_palavras_reservadas)
         self.montar_automato(arquivo_config)
@@ -43,7 +41,13 @@ class AFD:
 
                 self.estados[linha[0]].regras_transicao[linha[1]] = self.estados[linha[2]]
 
+    def reconhecer_palavras_reservadas(self, arquivo_palavras_reservadas) -> None:
+        with open(arquivo_palavras_reservadas, 'r') as f:
+            self.palavras_reservadas = set(f.read().split('\n'))
+        print(self.palavras_reservadas)
+
     def analisar_arquivo(self, arquivo_para_analizar: str) -> list[dict[str, Any]]:
+        tabela_simbolos = []
         with open(arquivo_para_analizar, 'r', encoding='utf-8') as arquivo:
             id_token = 1
             for cont_linha, linha in enumerate(arquivo):
@@ -54,14 +58,9 @@ class AFD:
                         token = linha[i['coluna_inicio']:i['coluna_fim']]
                         tipo = f'PALAVRA_RESERVADA {token.upper()}'if token in self.palavras_reservadas else i['tipo']
                         coluna = i['coluna_inicio']
-                        self.tabela_simbolos.append({'ID': id_token, 'token': token, 'tipo': tipo, 'linha': cont_linha+1, 'coluna': coluna})
-                        self.buffer[token] = tipo
+                        tabela_simbolos.append({'ID': id_token, 'token': token, 'tipo': tipo, 'linha': cont_linha+1, 'coluna': coluna})
                         id_token += 1
-        return self.tabela_simbolos
-
-    def reconhecer_palavras_reservadas(self, arquivo_palavras_reservadas) -> None:
-        with open(arquivo_palavras_reservadas, 'r') as f:
-            self.palavras_reservadas = set(f.read().split('\n'))
+        return tabela_simbolos
 
     def reconhecer_linha(self, linha: str) -> list[dict[str, int]]|None:
         estado_atual = self.estado_inicial
@@ -70,6 +69,10 @@ class AFD:
 
         while coluna < len(linha):
             caractere = linha[coluna]
+
+            # Se o último token já foi fechado, inicia um novo
+            if 'tipo' in analise_linha[-1]:
+                analise_linha.append({'coluna_inicio': coluna})
 
             # Se for espaço, finaliza o token atual (se houver) e reseta
             if caractere == ' ':
@@ -96,9 +99,6 @@ class AFD:
                 continue
 
             # Se chegou aqui, há transição para o caractere
-            # Se o último token já foi fechado, inicia um novo
-            if 'tipo' in analise_linha[-1]:
-                analise_linha.append({'coluna_inicio': coluna})
 
             # Realiza a transição
             estado_atual = estado_atual.regras_transicao[caractere]
@@ -109,50 +109,4 @@ class AFD:
         analise_linha[-1]['coluna_fim'] = len(linha)
         estado_atual = self.estado_inicial
 
-        return analise_linha
-
-    def gerar_arquivo_csv(self, arquivo_final : str = 'teste/tabela_de_simbolos.csv'):
-        with open(arquivo_final, 'w') as arquivo_tabela:
-            arquivo_tabela.writelines(','.join(self.tabela_simbolos[0].keys())+'\n')
-            for linha_tabela in self.tabela_simbolos:
-                arquivo_tabela.writelines(','.join(str(v) for v in linha_tabela.values())+'\n')
-
-    def gerar_arquivo_json(self, arquivo_final : str = 'teste/tabela_de_simbolos.json'):
-        with open(arquivo_final, 'w') as arquivo_json:
-            json.dump(self.tabela_simbolos, arquivo_json, indent=4)
- 
-    def gerar_arquivo_md(self, arquivo_final : str = 'teste/tabela_de_simbolos.md'):
-        # planejar tabela
-        ## selecionar campos
-        campos = self.tabela_simbolos[0].keys()
-
-        ## selecionar tamanhos minimos
-        tamanhos_campos = {}
-        for campo in campos:
-            tamanhos_campos[campo] = len(campo)
-
-        ## varredura pela tabela
-        for linha in self.tabela_simbolos:
-            for campo in campos:
-                tamanhos_campos[campo] = max(tamanhos_campos[campo], len(str(linha[campo])))
-
-        # gerar tabela
-        md = []
-        
-        md.append('|') # cabeçalho
-        for i in campos:
-            md[-1] += f' {i:{tamanhos_campos[i]}} |'
-
-        md.append('|') # divisão do cabeçalho e corpo
-        for i in tamanhos_campos.values():
-            md[-1] += '-'*(i+2)+'|'
-        
-        for linha in self.tabela_simbolos: # corpo
-            md.append('|')
-            for campo in campos:
-                md[-1] += f' {linha[campo]:{tamanhos_campos[campo]}} |'
-                
-        print('\n'.join(md))
-
-        with open(arquivo_final, 'w') as arquivo_tabela:
-            arquivo_tabela.writelines('\n'.join(md))
+        return list(filter(lambda obj: obj['tipo'], analise_linha))

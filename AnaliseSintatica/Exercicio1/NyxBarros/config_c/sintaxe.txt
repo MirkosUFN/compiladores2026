@@ -1,7 +1,6 @@
 [tipo] -> [PR:int] | [PR:char] | [PR:double] | [PR:float] | [PR:void] | [PR:boolean]
 
-Declara -> [tipo] DeclaraMultiplo
-DeclaraMultiplo -> [nome variável] [virgula] DeclaraMultiplo | [nome variável] [ponto e virgula]
+Declara -> DeclaraAtribuirInt | DeclaraAtribuirFloat | DeclaraAtribuirDouble | DeclaraAtribuirChar | DeclaraAtribuirBoolean
 
 DeclaraAtribuirInt -> [PR:int] AtribuirInt
 AtribuirInt -> [nome variável] [virgula] AtribuirInt | [nome variável] [ponto e virgula] | [nome variável] [atribuição] [int] [virgula] AtribuirInt | [nome variável] [atribuição] [int] [ponto e virgula]
@@ -18,5 +17,8 @@ AtribuirChar -> [nome variável] [virgula] AtribuirChar | [nome variável] [pont
 DeclaraAtribuirBoolean -> [PR:boolean] AtridbuirBoolean
 AtribuirBoolean -> [nome variável] [virgula] AtribuirBoolean | [nome variável] [ponto e virgula] | [nome variável] [atribuição] [boolean] [virgula] AtribuirBoolean | [nome variável] [atribuição] [boolean] [ponto e virgula]
 
-
-
+SIF → [PR:if] [ABRE PARENTESES] Condicao [FECHA PARENTESES] [ABRE CHAVES] Bloco [FECHA CHAVE]
+Condicao → Compara
+Compara → [NOME VARIÁVEL] [COMPARACAO] [NOME VARIÁVEL] | Valor [COMPARACAO] Valor | Valor [COMPARACAO] [NOME VARIÁVEL] | [NOME VARIÁVEL] [COMPARACAO] Valor | PR:true | PR:false
+Valor → [INTEIRO] | [FRACIONADO] | PR:true | PR:false
+Bloco → ... | SIF

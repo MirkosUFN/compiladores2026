@@ -18,7 +18,7 @@ Informações remetentes aos diagramas e funcionamentos podem ser visualizados e
 
 O manual completo de como adaptar e utilizar o projeto para outras linguagens (ou até para uma linguagem que não existe oficialmente ainda) ser acessado pelo arquivo [como usar para outras linguagens.md](doc/como usar para outras linguagens.md)
 
-## Arvore:
+## Arvore exemplo da analise sintatica:
 
 Arvore: int nome, idade = 23, filhos = 3;
 

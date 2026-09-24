@@ -25,6 +25,15 @@ graph
     q9 --> |"="| q7
     q0 --> |";"| q10(((q10)))
     q0 --> |","| q11(((q11)))
+
+    q0 --> |"("| q12(((q12)))
+    q0 --> |")"| q13(((q13)))
+    q0 --> |"{"| q14(((q14)))
+    q0 --> |"}"| q15(((q15)))
+    q0 --> |"&"| q16([q16])
+    q16 --> |"&"| q17(((q17)))
+    q0 --> |"|"| q18([q18])
+    q18 --> |"|"| q17(((q17)))
 ```
 
 ### Tipos de Dados
@@ -39,6 +48,11 @@ graph
 | q8     | Comparativo      |
 | q10    | Ponto e Virgula  |
 | q11    | Virgula          |
+| q12    | Abre Parenteses  |
+| q13    | Fecha Parenteses |
+| q14    | Abre Chaves      |
+| q15    | Fecha Chaves     |
+| q17    | Operador Lógico  |
 
 ## Diagrama de Classe
 

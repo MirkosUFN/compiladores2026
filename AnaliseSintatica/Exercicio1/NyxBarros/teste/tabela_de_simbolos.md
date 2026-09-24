@@ -1,23 +1,22 @@
-| ID | token | tipo                  | linha | coluna |
-|----|-------|-----------------------|-------|--------|
-|  1 | 54    | INTEIRO               |     1 |      0 |
-|  2 | 5     | INTEIRO               |     2 |      0 |
-|  3 | 19.4  | FRACIONADO            |     3 |      0 |
-|  4 | int   | PALAVRA_RESERVADA INT |     5 |      0 |
-|  5 | x     | NOME_VARIAVEL         |     5 |      4 |
-|  6 | =     | ATRIUCAO              |     5 |      6 |
-|  7 | 0     | INTEIRO               |     5 |      8 |
-|  8 | ;     | PONTO_VIRGULA         |     5 |     10 |
-|  9 | int   | PALAVRA_RESERVADA INT |     6 |      0 |
-| 10 | x     | NOME_VARIAVEL         |     6 |      4 |
-| 11 | =     | ATRIUCAO              |     6 |      5 |
-| 12 | 0     | INTEIRO               |     6 |      6 |
-| 13 | ;     | PONTO_VIRGULA         |     6 |      7 |
-| 14 | n1    | NOME_VARIAVEL         |     7 |      0 |
-| 15 | =     | ATRIUCAO              |     7 |      2 |
-| 16 | 5     | INTEIRO               |     7 |      3 |
-| 17 | ;     | PONTO_VIRGULA         |     7 |      4 |
-| 18 | n1    | NOME_VARIAVEL         |     8 |      0 |
-| 19 | =     | ATRIUCAO              |     8 |      2 |
-| 20 | 5.5   | FRACIONADO            |     8 |      3 |
-| 21 | ;     | PONTO_VIRGULA         |     8 |      6 |
+| ID | token | tipo                 | linha | coluna |
+|----|-------|----------------------|-------|--------|
+|  1 | if    | PALAVRA_RESERVADA IF |     1 |      0 |
+|  2 | (     | ABRE_PARENTESES      |     1 |      2 |
+|  3 | x     | NOME_VARIAVEL        |     1 |      3 |
+|  4 | >     | COMPARACAO           |     1 |      4 |
+|  5 | 0     | INTEIRO              |     1 |      5 |
+|  6 | )     | FECHA_PARENTESES     |     1 |      6 |
+|  7 | {     | ABRE_CHAVES          |     1 |      7 |
+|  8 | if    | PALAVRA_RESERVADA IF |     2 |      4 |
+|  9 | (     | ABRE_PARENTESES      |     2 |      6 |
+| 10 | y     | NOME_VARIAVEL        |     2 |      7 |
+| 11 | >     | COMPARACAO           |     2 |      8 |
+| 12 | 0     | INTEIRO              |     2 |      9 |
+| 13 | )     | FECHA_PARENTESES     |     2 |     10 |
+| 14 | {     | ABRE_CHAVES          |     2 |     11 |
+| 15 | z     | NOME_VARIAVEL        |     2 |     12 |
+| 16 | =     | ATRIUCAO             |     2 |     13 |
+| 17 | 0     | INTEIRO              |     2 |     14 |
+| 18 | ;     | PONTO_VIRGULA        |     2 |     15 |
+| 19 | }     | FECHA_CHAVES         |     2 |     16 |
+| 20 | }     | FECHA_CHAVES         |     3 |      0 |
