@@ -1,9 +1,30 @@
-[TIPO] -> PR:INT | PR:CHAR | PR:FLOAT | PR:DOUBLE | PR:VOID | PR:BOOLEAN
+Programa        -> ListaComandos
+ListaComandos   -> Comando ListaComandos | ε
 
-[VALOR] -> [NUMERO] | [TEXTO] | [CARACTERE] | [BOOLEANO] | [NOMEVARIAVEL]
+Comando         -> Declara 
+                 | Atribuicao 
+                 | Se
 
-ItemDeclara -> [NOMEVARIAVEL] | [NOMEVARIAVEL][OP_ATRIB][VALOR]
+Bloco           -> [AC] ListaComandos [FC]
 
-Declara -> [TIPO] ItemDeclara [PV] | [TIPO] ItemDeclara DeclaraMultiplo [PV]
+Se              -> PR:IF [AP] Condicao [FP] Bloco
 
-DeclaraMultiplo -> [VG] ItemDeclara | [VG] ItemDeclara DeclaraMultiplo
+Condicao        -> [VALOR] [OP_REL] [VALOR]
+
+Atribuicao      -> [NOMEVARIAVEL] [OP_ATRIB] [VALOR] [PV]
+
+Declara         -> [TIPO] ItemDeclara [PV] 
+                 | [TIPO] ItemDeclara DeclaraMultiplo [PV]
+
+DeclaraMultiplo -> [VG] ItemDeclara 
+                 | [VG] ItemDeclara DeclaraMultiplo
+
+ItemDeclara     -> [NOMEVARIAVEL] 
+                 | [NOMEVARIAVEL] [OP_ATRIB] [VALOR]
+
+[TIPO]          -> PR:INT | PR:CHAR | PR:FLOAT | PR:DOUBLE | PR:VOID | PR:BOOLEAN
+
+[VALOR]         -> [NUMERO] | [TEXTO] | [CARACTERE] | [BOOLEANO] | [NOMEVARIAVEL]
+
+[OP_REL]        -> SINAL_COMPARACAO
+[OP_ATRIB]      -> ATRIBUICAO
