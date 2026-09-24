@@ -1,3 +1,5 @@
-int i = 0 ;
-float taxa = 20.5 ;
-while i < 10 ;
+if (x > 0) {
+    if (y > 0) {
+        z = 0;
+    }
+}

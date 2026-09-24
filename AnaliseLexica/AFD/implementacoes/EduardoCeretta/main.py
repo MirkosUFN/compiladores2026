@@ -1,4 +1,5 @@
 import csv
+import re
 
 # Conjunto com as palavras reservadas da linguagem C
 palavras_reservadas_c = {
@@ -32,6 +33,7 @@ with open(caminho, encoding='utf-8') as config:
                 regrasTransicao.append(r)
         linha = config.readline()
 
+
 def reconheceTermo(termo):
     estadoAtual = estadoInicial
     numCaracteres = len(termo)
@@ -61,31 +63,30 @@ def reconheceTermo(termo):
     return 'ERRO LEXICO (Terminou em estado não-final)'
 
 
+# Expressão regular para isolar identificadores, números, operadores compostos, delimitadores e símbolos () {}
+PADRAO_TOKEN = re.compile(
+    r"[0-9]+\.[0-9]+|[0-9]+|[A-Za-z_][A-Za-z0-9_]*|==|<=|>=|!=|[=><!;,(){}]|[^\s]"
+)
+
 resultados = []
 id_incrementavel = 1
 
 with open('./input.c', encoding='utf-8') as arquivo:
     for numero_linha, linha in enumerate(arquivo, start=1):
-        linha_pura = linha.strip('\n') 
-        tokens = [t for t in linha_pura.split(' ') if t]
-        
-        coluna_atual = 1 
-        
-        for termo in tokens:
-            indice_coluna = linha_pura.find(termo, coluna_atual - 1)
-            coluna_final = indice_coluna + 1 
+        # Localiza cada token mantendo a coluna inicial exata
+        for match in PADRAO_TOKEN.finditer(linha):
+            termo = match.group(0)
+            coluna_inicial = match.start() + 1
             
-            # Reconhece o tipo original pelo AFD (provavelmente NOMEVARIAVEL para textos)
+            # Reconhece o tipo original pelo AFD
             tipo = reconheceTermo(termo)
             
-            # ATUALIZAÇÃO: Verifica se é uma palavra reservada da linguagem C
+            # Verifica se é uma palavra reservada da linguagem C
             if tipo == 'NOMEVARIAVEL' and termo in palavras_reservadas_c:
                 tipo = 'PALAVRA_RESERVADA'
             
-            resultados.append([id_incrementavel, termo, tipo, numero_linha, coluna_final])
-            
+            resultados.append([id_incrementavel, termo, tipo, numero_linha, coluna_inicial])
             id_incrementavel += 1
-            coluna_atual = indice_coluna + len(termo)
 
 caminho_csv = './tabela_simbolos.csv'
 

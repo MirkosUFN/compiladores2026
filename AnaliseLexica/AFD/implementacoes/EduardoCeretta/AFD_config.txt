@@ -1,6 +1,6 @@
-q0 qInt qFrac1 qFrac2 qVar qAtr qComp1 qComp2 qExcl qVirg qPVirg
-a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 . = > < ! , ;
-qInt:INTEIRO qFrac2:FRACIONARIO qVar:NOMEVARIAVEL qAtr:ATRIBUIÇÃO qComp1:SINAL_COMPARAÇÃO qComp2:SINAL_COMPARAÇÃO qVirg:VÍRGULA qPVirg:PONTO_VIRGULA
+q0 qInt qFrac1 qFrac2 qVar qAtr qComp1 qComp2 qExcl qVirg qPVirg qAP qFP qAC qFC
+a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 . = > < ! , ; ( ) { }
+qInt:INTEIRO qFrac2:FRACIONARIO qVar:NOMEVARIAVEL qAtr:ATRIBUICAO qComp1:SINAL_COMPARACAO qComp2:SINAL_COMPARACAO qVirg:VIRGULA qPVirg:PONTO_VIRGULA qAP:AP qFP:FP qAC:AC qFC:FC
 q0:a:qVar qVar:a:qVar q0:b:qVar qVar:b:qVar q0:c:qVar qVar:c:qVar q0:d:qVar qVar:d:qVar q0:e:qVar qVar:e:qVar
 q0:f:qVar qVar:f:qVar q0:g:qVar qVar:g:qVar q0:h:qVar qVar:h:qVar q0:i:qVar qVar:i:qVar q0:j:qVar qVar:j:qVar
 q0:k:qVar qVar:k:qVar q0:l:qVar qVar:l:qVar q0:m:qVar qVar:m:qVar q0:n:qVar qVar:n:qVar q0:o:qVar qVar:o:qVar
@@ -17,4 +17,4 @@ qFrac1:1:qFrac2 qFrac2:1:qFrac2 q0:2:qInt qInt:2:qInt qFrac1:2:qFrac2 qFrac2:2:q
 q0:4:qInt qInt:4:qInt qFrac1:4:qFrac2 qFrac2:4:qFrac2 q0:5:qInt qInt:5:qInt qFrac1:5:qFrac2 qFrac2:5:qFrac2 q0:6:qInt qInt:6:qInt
 qFrac1:6:qFrac2 qFrac2:6:qFrac2 q0:7:qInt qInt:7:qInt qFrac1:7:qFrac2 qFrac2:7:qFrac2 q0:8:qInt qInt:8:qInt qFrac1:8:qFrac2 qFrac2:8:qFrac2
 q0:9:qInt qInt:9:qInt qFrac1:9:qFrac2 qFrac2:9:qFrac2 qInt:.:qFrac1 q0:=:qAtr qAtr:=:qComp2 q0:>:qComp1 q0:<:qComp1 qComp1:=:qComp2
-q0:!:qExcl qExcl:=:qComp2 q0:,:qVirg q0:;:qPVirg
+q0:!:qExcl qExcl:=:qComp2 q0:,:qVirg q0:;:qPVirg q0:(:qAP q0:):qFP q0:{:qAC q0:}:qFC
