@@ -19,17 +19,38 @@ char texto_vazio = "";
 int nome, idade=23, filhos=3;
 ```
 
-A gramática está registrada em [`sintaxe.txt`](sintaxe.txt). A regra de inicialização é:
+A gramática está registrada em [`sintaxe.txt`](sintaxe.txt):
 
 ```text
 # Tipos definidos no enunciado
 [TIPO] -> PR:INT | PR:CHAR | PR:FLOAT | PR:DOUBLE | PR:VOID | PR:BOOLEAN
 
-# Nova sintaxe: cada variável pode ser declarada sem valor ou inicializada
+# Valores e Identificadores
 [VALOR] -> INTEIRO | FRACIONARIO | NOMEVARIAVEL | PR:TRUE | PR:FALSE | LITERAL_CARACTERE | LITERAL_TEXTO
+
+# Operadores e Delimitadores
+[ATRIBUICAO] -> '='
+[SINAL_COMPARACAO] -> '>' | '<' | '>=' | '<=' | '==' | '!='
+[DELIMITADORES] -> AP | FP | AC | FC | PV | VG
+
+# Estrutura do Programa e Comandos
+Programa -> ListaComandos
+ListaComandos -> Comando | Comando ListaComandos
+Comando -> Condicional | Atribuicao | Declara | Bloco
+
+# Regras de Estrutura Condicional (IF / Blocos aninhados)
+Condicional -> PR:IF AP ExpressaoRelacional FP Bloco | PR:IF AP ExpressaoRelacional FP Bloco PR:ELSE Bloco | PR:IF AP ExpressaoRelacional FP Comando
+Bloco -> AC ListaComandos FC | AC FC
+
+# Regras de Expressão e Comparação
+ExpressaoRelacional -> VALOR SINAL_COMPARACAO VALOR
+
+# Regra de Comando de Atribuição Simples
+Atribuicao -> NOMEVARIAVEL ATRIBUICAO VALOR PV
+
+# Regras de Declaração de Variáveis (com ou sem inicialização)
 [INICIALIZACAO] -> ATRIBUICAO VALOR
 [DECLARADOR] -> NOMEVARIAVEL | NOMEVARIAVEL INICIALIZACAO
-
 Declara -> TIPO DECLARADOR PV | TIPO DECLARADOR DeclaraMultiplo PV
 DeclaraMultiplo -> VG DECLARADOR | VG DECLARADOR DeclaraMultiplo
 ```
@@ -135,6 +156,52 @@ Para `int a = 1, b = 2, c;`:
       │       └── DECLARADOR
       │           └── [NOMEVARIAVEL]: c
       └── [PV]: ;
+```
+
+### Estrutura Condicional Aninhada (IF Aninhado com Bloco)
+Para:
+```c
+if (x > 0) {
+ if (y > 0) { z = 0 ; }
+}
+```
+
+```text
+Árvore de Derivação:
+  └── Programa
+      └── ListaComandos
+          └── Comando
+              └── Condicional
+                  ├── [PR:IF]: if
+                  ├── [AP]: (
+                  ├── ExpressaoRelacional
+                  │   ├── [VALOR]: x
+                  │   ├── [SINAL_COMPARACAO]: >
+                  │   └── [VALOR]: 0
+                  ├── [FP]: )
+                  └── Bloco
+                      ├── [AC]: {
+                      ├── ListaComandos
+                      │   └── Comando
+                      │       └── Condicional
+                      │           ├── [PR:IF]: if
+                      │           ├── [AP]: (
+                      │           ├── ExpressaoRelacional
+                      │           │   ├── [VALOR]: y
+                      │           │   ├── [SINAL_COMPARACAO]: >
+                      │           │   └── [VALOR]: 0
+                      │           ├── [FP]: )
+                      │           └── Bloco
+                      │               ├── [AC]: {
+                      │               ├── ListaComandos
+                      │               │   └── Comando
+                      │               │       └── Atribuicao
+                      │               │           ├── [NOMEVARIAVEL]: z
+                      │               │           ├── [ATRIBUICAO]: =
+                      │               │           ├── [VALOR]: 0
+                      │               │           └── [PV]: ;
+                      │               └── [FC]: }
+                      └── [FC]: }
 ```
 
 ---
