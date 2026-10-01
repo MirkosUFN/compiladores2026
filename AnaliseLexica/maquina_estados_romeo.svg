@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="440" viewBox="0 0 860 440" font-family="Arial, Helvetica, sans-serif">
+  <title>Máquina de estados - números e nomes de variável - Romeo Noro Guterres</title>
+  <defs>
+    <marker id="seta" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#222"/>
+    </marker>
+  </defs>
+  <rect width="860" height="440" fill="#ffffff"/>
+
+  <text x="430" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">AFD — INTEIRO, FRACIONARIO e NOMEVARIAVEL</text>
+
+  <g stroke="#222" stroke-width="2" fill="none" marker-end="url(#seta)">
+    <!-- inicio -> Q0 -->
+    <line x1="40" y1="200" x2="88" y2="200"/>
+    <!-- Q0 -> Q4 (+,-) -->
+    <line x1="126" y1="180" x2="262" y2="112"/>
+    <!-- Q4 -> Q1 (digito) -->
+    <line x1="320" y1="100" x2="418" y2="180"/>
+    <!-- Q0 -> Q1 (digito) -->
+    <line x1="130" y1="200" x2="408" y2="200"/>
+    <!-- Q1 -> Q2 (.) -->
+    <line x1="452" y1="200" x2="568" y2="200"/>
+    <!-- Q2 -> Q3 (digito) -->
+    <line x1="612" y1="200" x2="718" y2="200"/>
+    <!-- Q0 -> Q5 (letra, _) -->
+    <line x1="124" y1="222" x2="402" y2="340"/>
+    <!-- lacos -->
+    <path d="M418,180 C400,130 460,130 442,180"/>
+    <path d="M728,180 C710,130 770,130 752,180"/>
+    <path d="M446,336 C500,320 500,375 450,362"/>
+  </g>
+
+  <!-- estados -->
+  <g stroke="#222" stroke-width="2" fill="#f3f6fb">
+    <circle cx="110" cy="200" r="22"/>
+    <circle cx="290" cy="100" r="22"/>
+    <circle cx="430" cy="200" r="22"/><circle cx="430" cy="200" r="17" fill="none"/>
+    <circle cx="590" cy="200" r="22"/>
+    <circle cx="740" cy="200" r="22"/><circle cx="740" cy="200" r="17" fill="none"/>
+    <circle cx="430" cy="350" r="22"/><circle cx="430" cy="350" r="17" fill="none"/>
+  </g>
+  <g font-size="15" font-weight="bold" text-anchor="middle" fill="#222">
+    <text x="110" y="205">Q0</text>
+    <text x="290" y="105">Q4</text>
+    <text x="430" y="205">Q1</text>
+    <text x="590" y="205">Q2</text>
+    <text x="740" y="205">Q3</text>
+    <text x="430" y="355">Q5</text>
+  </g>
+
+  <!-- rotulos das transicoes -->
+  <g font-size="13" fill="#1f4e9c" text-anchor="middle">
+    <text x="55" y="190" fill="#222">início</text>
+    <text x="180" y="132">+ , -</text>
+    <text x="378" y="160">0-9</text>
+    <text x="270" y="194">0-9</text>
+    <text x="510" y="190" font-size="22" font-weight="bold">.</text>
+    <text x="665" y="192">0-9</text>
+    <text x="232" y="296">a-z A-Z _</text>
+    <text x="430" y="132">0-9</text>
+    <text x="740" y="132">0-9</text>
+    <text x="540" y="372">a-z A-Z 0-9 _</text>
+  </g>
+
+  <!-- nomes dos tokens -->
+  <g font-size="13" font-weight="bold" fill="#0a7a3d" text-anchor="middle">
+    <text x="430" y="242">INTEIRO</text>
+    <text x="740" y="242">FRACIONARIO</text>
+    <text x="430" y="392">NOMEVARIAVEL</text>
+  </g>
+
+  <!-- legenda -->
+  <g font-size="12" fill="#444">
+    <text x="640" y="300">Círculo duplo = estado final</text>
+    <text x="640" y="320">Q2 e Q4 não são finais:</text>
+    <text x="640" y="338">"12." e "-" sozinho são rejeitados</text>
+    <text x="640" y="356">Sem transição = token inválido</text>
+  </g>
+</svg>
