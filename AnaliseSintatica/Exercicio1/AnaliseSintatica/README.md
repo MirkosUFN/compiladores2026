@@ -1,4 +1,4 @@
-# Exercício — Análise Sintática: declaração de variável com inicialização
+# Exercício — Análise Sintática - Bruno Difante
 
 Analisador léxico/sintático em Python que reconhece declarações de variáveis
 em um subconjunto de linguagem C-like, com duas gramáticas:
