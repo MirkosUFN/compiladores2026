@@ -1,0 +1,23 @@
+Arvore de derivação - Gabriel Pinheiro
+SIF
+├── PR:IF ("if")
+├── AP ("(")
+├── CONDICAO
+│   ├── NOMEVAR ("x")
+│   ├── COMPARACAO (">")
+│   └── VALOR ("0")
+├── FP (")")
+├── ACH ("{")
+├── BLOCO
+│   └── SIF
+│       ├── PR:IF ("if")
+│       ├── AP ("(")
+│       ├── CONDICAO
+│       │   ├── NOMEVAR ("y")
+│       │   ├── COMPARACAO (">")
+│       │   └── VALOR ("0")
+│       ├── FP (")")
+│       ├── ACH ("{")
+│       ├── BLOCO ("w=10;")
+│       └── FCH ("}")
+└── FCH ("}")
