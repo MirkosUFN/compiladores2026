@@ -1,0 +1,44 @@
+# Nova sintaxe: declaração de variável COM inicialização - Romeo Noro Guterres
+#
+# Ideia: em vez de ter uma regra para "todas inicializadas" e outra para
+# "nenhuma inicializada", cada variável da lista é um ITEM que pode ou não
+# ter inicialização. O valor aceito na inicialização depende do tipo
+# (inteiro só recebe INTEIRO, char só recebe caractere entre aspas etc.).
+
+[TIPO] -> PR:INT | PR:CHAR | PR:FLOAT | PR:DOUBLE | PR:VOID | PR:BOOLEAN
+
+Declara      -> DeclaraInt | DeclaraFrac | DeclaraChar | DeclaraBool | DeclaraVoid
+
+# int
+DeclaraInt   -> PR:INT ItemInt [PV] | PR:INT ItemInt ListaInt [PV]
+ListaInt     -> [VG] ItemInt | [VG] ItemInt ListaInt
+ItemInt      -> [NOMEVARIAVEL] | [NOMEVARIAVEL][SATR][INTEIRO]
+
+# float / double (aceita inteiro também, ex: float x = 2;)
+DeclaraFrac  -> TipoFrac ItemFrac [PV] | TipoFrac ItemFrac ListaFrac [PV]
+TipoFrac     -> PR:FLOAT | PR:DOUBLE
+ListaFrac    -> [VG] ItemFrac | [VG] ItemFrac ListaFrac
+ItemFrac     -> [NOMEVARIAVEL] | [NOMEVARIAVEL][SATR] ValorFrac
+ValorFrac    -> [FRACIONARIO] | [INTEIRO]
+
+# char
+DeclaraChar  -> PR:CHAR ItemChar [PV] | PR:CHAR ItemChar ListaChar [PV]
+ListaChar    -> [VG] ItemChar | [VG] ItemChar ListaChar
+ItemChar     -> [NOMEVARIAVEL] | [NOMEVARIAVEL][SATR][ASPAS][CARACTER][ASPAS]
+
+# boolean
+DeclaraBool  -> PR:BOOLEAN ItemBool [PV] | PR:BOOLEAN ItemBool ListaBool [PV]
+ListaBool    -> [VG] ItemBool | [VG] ItemBool ListaBool
+ItemBool     -> [NOMEVARIAVEL] | [NOMEVARIAVEL][SATR] ValorBool
+ValorBool    -> PR:TRUE | PR:FALSE
+
+# void não possui valor, então não aceita inicialização
+DeclaraVoid  -> PR:VOID [NOMEVARIAVEL][PV] | PR:VOID [NOMEVARIAVEL] ListaVoid [PV]
+ListaVoid    -> [VG][NOMEVARIAVEL] | [VG][NOMEVARIAVEL] ListaVoid
+
+# Tokens (léxico)
+# [NOMEVARIAVEL] -> (letra | _)(letra | dígito | _)*   (que não seja palavra reservada)
+# [INTEIRO]      -> (+|-)? dígito+
+# [FRACIONARIO]  -> (+|-)? dígito+ . dígito+
+# [SATR] -> =     [VG] -> ,     [PV] -> ;     [ASPAS] -> '
+# [CARACTER]     -> qualquer caractere único entre aspas simples

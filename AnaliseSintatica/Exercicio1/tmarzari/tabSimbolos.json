@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1,
+    "token": "int",
+    "tipo": "PALAVRARESERVA",
+    "linha": 1,
+    "coluna": 0
+  },
+  {
+    "id": 2,
+    "token": "x",
+    "tipo": "NOMEVARIAVEL",
+    "linha": 1,
+    "coluna": 4
+  },
+  {
+    "id": 3,
+    "token": ",",
+    "tipo": "VÍRGULA",
+    "linha": 1,
+    "coluna": 5
+  },
+  {
+    "id": 4,
+    "token": "y",
+    "tipo": "NOMEVARIAVEL",
+    "linha": 1,
+    "coluna": 6
+  },
+  {
+    "id": 5,
+    "token": ",",
+    "tipo": "VÍRGULA",
+    "linha": 1,
+    "coluna": 7
+  },
+  {
+    "id": 6,
+    "token": "w",
+    "tipo": "NOMEVARIAVEL",
+    "linha": 1,
+    "coluna": 8
+  },
+  {
+    "id": 7,
+    "token": ";",
+    "tipo": "PONTO_VIRGULA",
+    "linha": 1,
+    "coluna": 9
+  }
+]

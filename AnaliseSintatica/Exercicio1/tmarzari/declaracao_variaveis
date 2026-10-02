@@ -1,0 +1,2 @@
+declara -> [Tipo][NomeVariavel][PV] | [Tipo][NomeVariavel] DeclaraMultiplo
+DeclaraMultiplo -> [Vg][NomeVariavel] | 

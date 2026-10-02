@@ -1,0 +1,6 @@
+Os tokens  ( ), { } e [ ] (abre e fecha) devem possuir contagem idêntica, ou seja, o mesmo número de abre chaves deve ser o fecha chaves.
+O número de abre parêntesis deve ser igual ao número de fecha parêntesis e assim com colchetes também.
+
+Na tabela de símbolos, cada fecha (chaves, colchete ou parêntesis) deve indicar qual o token de abrir seu respectivo ele se referencia, 
+em uma coluna chamada Ref.
+

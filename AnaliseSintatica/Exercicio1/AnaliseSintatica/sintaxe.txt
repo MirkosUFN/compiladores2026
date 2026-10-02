@@ -1,0 +1,45 @@
+# Gramatica original: declaracao de variavel SEM inicializacao
+
+[TIPO] -> PR:INT | PR:CHAR | PR:FLOAT | PR:DOUBLE | PR:VOID | PR:BOOLEAN
+
+Declara -> [TIPO][NOMEVARIAVEL][PV]
+         | [TIPO][NOMEVARIAVEL] DeclaraMultiplo [PV]
+DeclaraMultiplo -> [VG][NOMEVARIAVEL]
+                  | [VG][NOMEVARIAVEL] DeclaraMultiplo
+
+# Nova sintaxe: declaracao de variavel COM inicializacao
+#
+# Cada tipo tem sua propria regra DecIni*, exigindo que o valor
+# inicial seja do literal correspondente ao TIPO declarado (nao ha
+# um VALOR generico compartilhado entre tipos). PR:VOID nao possui
+# forma de inicializacao, pois void nao e um tipo de valor.
+#
+# Tokens: [SATR] = "="  [VG] = ","  [PV] = ";"  [ASPAS] = "'"
+
+DeclaraIni -> DecIniInt | DecIniFrac | DecIniChar | DecIniBool
+
+DecIniInt -> PR:INT [NOMEVARIAVEL][SATR][INTEIRO][PV]
+           | PR:INT [NOMEVARIAVEL][SATR][INTEIRO][REPINIINT][PV]
+REPINIINT -> [VG][NOMEVARIAVEL][SATR][INTEIRO]
+           | [VG][NOMEVARIAVEL][SATR][INTEIRO][REPINIINT]
+
+DecIniFrac -> PR:FLOAT [NOMEVARIAVEL][SATR][FRACIONARIO][PV]
+            | PR:FLOAT [NOMEVARIAVEL][SATR][FRACIONARIO][REPINIFRAC][PV]
+            | PR:DOUBLE [NOMEVARIAVEL][SATR][FRACIONARIO][PV]
+            | PR:DOUBLE [NOMEVARIAVEL][SATR][FRACIONARIO][REPINIFRAC][PV]
+REPINIFRAC -> [VG][NOMEVARIAVEL][SATR][FRACIONARIO]
+            | [VG][NOMEVARIAVEL][SATR][FRACIONARIO][REPINIFRAC]
+
+DecIniChar -> PR:CHAR [NOMEVARIAVEL][SATR][ASPAS][CARACTER][ASPAS][PV]
+            | PR:CHAR [NOMEVARIAVEL][SATR][ASPAS][CARACTER][ASPAS][REPINICHAR][PV]
+REPINICHAR -> [VG][NOMEVARIAVEL][SATR][ASPAS][CARACTER][ASPAS]
+            | [VG][NOMEVARIAVEL][SATR][ASPAS][CARACTER][ASPAS][REPINICHAR]
+
+DecIniBool -> PR:BOOLEAN [NOMEVARIAVEL][SATR] PR:TRUE [PV]
+            | PR:BOOLEAN [NOMEVARIAVEL][SATR] PR:FALSE [PV]
+            | PR:BOOLEAN [NOMEVARIAVEL][SATR] PR:TRUE [REPINIBOOL][PV]
+            | PR:BOOLEAN [NOMEVARIAVEL][SATR] PR:FALSE [REPINIBOOL][PV]
+REPINIBOOL -> [VG][NOMEVARIAVEL][SATR] PR:TRUE
+            | [VG][NOMEVARIAVEL][SATR] PR:FALSE
+            | [VG][NOMEVARIAVEL][SATR] PR:TRUE [REPINIBOOL]
+            | [VG][NOMEVARIAVEL][SATR] PR:FALSE [REPINIBOOL]

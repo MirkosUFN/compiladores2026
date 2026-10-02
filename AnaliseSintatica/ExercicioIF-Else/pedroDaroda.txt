@@ -1,0 +1,52 @@
+
+PROGRAMA
+└── SIF
+    ├── PR:IF
+    │   └── if
+    ├── AP
+    │   └── (
+    ├── CONDICAO
+    │   ├── NOMEVARIAVEL
+    │   │   └── x
+    │   ├── COMPARACAO
+    │   │   └── >
+    │   └── VALOR
+    │       └── INTEIRO
+    │           └── 0
+    ├── FP
+    │   └── )
+    ├── ACH
+    │   └── {
+    ├── BLOCO
+    │   └── SIF
+    │       ├── PR:IF
+    │       │   └── if
+    │       ├── AP
+    │       │   └── (
+    │       ├── CONDICAO
+    │       │   ├── NOMEVARIAVEL
+    │       │   │   └── y
+    │       │   ├── COMPARACAO
+    │       │   │   └── >
+    │       │   └── VALOR
+    │       │       └── INTEIRO
+    │       │           └── 0
+    │       ├── FP
+    │       │   └── )
+    │       ├── ACH
+    │       │   └── {
+    │       ├── BLOCO
+    │       │   └── DECLARACAO
+    │       │       ├── NOMEVARIAVEL
+    │       │       │   └── w
+    │       │       ├── ATRIBUICAO
+    │       │       │   └── =
+    │       │       ├── VALOR
+    │       │       │   └── INTEIRO
+    │       │       │       └── 10
+    │       │       └── PONTO_VIRGULA
+    │       │           └── ;
+    │       └── FCH
+    │           └── }
+    └── FCH
+        └── }
