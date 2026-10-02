@@ -4,139 +4,303 @@
         "token": "if",
         "tipo": "PALAVRA_RESERVADA IF",
         "linha": 1,
-        "coluna": 0
+        "coluna": 0,
+        "ref": ""
     },
     {
         "ID": 2,
         "token": "(",
         "tipo": "ABRE_PARENTESES",
         "linha": 1,
-        "coluna": 2
+        "coluna": 2,
+        "ref": ""
     },
     {
         "ID": 3,
-        "token": "x",
+        "token": "true",
         "tipo": "NOME_VARIAVEL",
         "linha": 1,
-        "coluna": 3
+        "coluna": 3,
+        "ref": ""
     },
     {
         "ID": 4,
-        "token": ">",
-        "tipo": "COMPARACAO",
+        "token": ")",
+        "tipo": "FECHA_PARENTESES",
         "linha": 1,
-        "coluna": 4
+        "coluna": 7,
+        "ref": 4
     },
     {
         "ID": 5,
-        "token": "0",
-        "tipo": "INTEIRO",
+        "token": "{",
+        "tipo": "ABRE_CHAVES",
         "linha": 1,
-        "coluna": 5
+        "coluna": 8,
+        "ref": ""
     },
     {
         "ID": 6,
-        "token": ")",
-        "tipo": "FECHA_PARENTESES",
-        "linha": 1,
-        "coluna": 6
-    },
-    {
-        "ID": 7,
-        "token": "{",
-        "tipo": "ABRE_CHAVES",
-        "linha": 1,
-        "coluna": 7
-    },
-    {
-        "ID": 8,
         "token": "if",
         "tipo": "PALAVRA_RESERVADA IF",
         "linha": 2,
-        "coluna": 4
+        "coluna": 4,
+        "ref": ""
     },
     {
-        "ID": 9,
+        "ID": 7,
         "token": "(",
         "tipo": "ABRE_PARENTESES",
         "linha": 2,
-        "coluna": 6
+        "coluna": 6,
+        "ref": ""
     },
     {
-        "ID": 10,
-        "token": "y",
+        "ID": 8,
+        "token": "true",
         "tipo": "NOME_VARIAVEL",
         "linha": 2,
-        "coluna": 7
+        "coluna": 7,
+        "ref": ""
     },
     {
-        "ID": 11,
-        "token": ">",
-        "tipo": "COMPARACAO",
-        "linha": 2,
-        "coluna": 8
-    },
-    {
-        "ID": 12,
-        "token": "0",
-        "tipo": "INTEIRO",
-        "linha": 2,
-        "coluna": 9
-    },
-    {
-        "ID": 13,
+        "ID": 9,
         "token": ")",
         "tipo": "FECHA_PARENTESES",
         "linha": 2,
-        "coluna": 10
+        "coluna": 11,
+        "ref": 9
     },
     {
-        "ID": 14,
+        "ID": 10,
         "token": "{",
         "tipo": "ABRE_CHAVES",
         "linha": 2,
-        "coluna": 11
+        "coluna": 12,
+        "ref": ""
+    },
+    {
+        "ID": 11,
+        "token": "x",
+        "tipo": "NOME_VARIAVEL",
+        "linha": 3,
+        "coluna": 8,
+        "ref": ""
+    },
+    {
+        "ID": 12,
+        "token": "=",
+        "tipo": "ATRIUCAO",
+        "linha": 3,
+        "coluna": 9,
+        "ref": ""
+    },
+    {
+        "ID": 13,
+        "token": "0",
+        "tipo": "INTEIRO",
+        "linha": 3,
+        "coluna": 10,
+        "ref": ""
+    },
+    {
+        "ID": 14,
+        "token": ";",
+        "tipo": "PONTO_VIRGULA",
+        "linha": 3,
+        "coluna": 11,
+        "ref": ""
     },
     {
         "ID": 15,
-        "token": "z",
-        "tipo": "NOME_VARIAVEL",
-        "linha": 2,
-        "coluna": 12
+        "token": "}",
+        "tipo": "FECHA_CHAVES",
+        "linha": 4,
+        "coluna": 4,
+        "ref": 15
     },
     {
         "ID": 16,
-        "token": "=",
-        "tipo": "ATRIUCAO",
-        "linha": 2,
-        "coluna": 13
+        "token": "}",
+        "tipo": "FECHA_CHAVES",
+        "linha": 5,
+        "coluna": 0,
+        "ref": 16
     },
     {
         "ID": 17,
-        "token": "0",
-        "tipo": "INTEIRO",
-        "linha": 2,
-        "coluna": 14
+        "token": "if",
+        "tipo": "PALAVRA_RESERVADA IF",
+        "linha": 6,
+        "coluna": 0,
+        "ref": ""
     },
     {
         "ID": 18,
-        "token": ";",
-        "tipo": "PONTO_VIRGULA",
-        "linha": 2,
-        "coluna": 15
+        "token": "(",
+        "tipo": "ABRE_PARENTESES",
+        "linha": 6,
+        "coluna": 2,
+        "ref": ""
     },
     {
         "ID": 19,
-        "token": "}",
-        "tipo": "FECHA_CHAVES",
-        "linha": 2,
-        "coluna": 16
+        "token": "(",
+        "tipo": "ABRE_PARENTESES",
+        "linha": 6,
+        "coluna": 3,
+        "ref": ""
     },
     {
         "ID": 20,
-        "token": "}",
-        "tipo": "FECHA_CHAVES",
-        "linha": 3,
-        "coluna": 0
+        "token": "a",
+        "tipo": "NOME_VARIAVEL",
+        "linha": 6,
+        "coluna": 4,
+        "ref": ""
+    },
+    {
+        "ID": 21,
+        "token": ">",
+        "tipo": "COMPARACAO",
+        "linha": 6,
+        "coluna": 5,
+        "ref": ""
+    },
+    {
+        "ID": 22,
+        "token": "b",
+        "tipo": "NOME_VARIAVEL",
+        "linha": 6,
+        "coluna": 6,
+        "ref": ""
+    },
+    {
+        "ID": 23,
+        "token": ")",
+        "tipo": "FECHA_PARENTESES",
+        "linha": 6,
+        "coluna": 7,
+        "ref": 23
+    },
+    {
+        "ID": 24,
+        "token": "&&",
+        "tipo": "LOGICO",
+        "linha": 6,
+        "coluna": 8,
+        "ref": ""
+    },
+    {
+        "ID": 25,
+        "token": "(",
+        "tipo": "ABRE_PARENTESES",
+        "linha": 6,
+        "coluna": 10,
+        "ref": ""
+    },
+    {
+        "ID": 26,
+        "token": "(",
+        "tipo": "ABRE_PARENTESES",
+        "linha": 6,
+        "coluna": 11,
+        "ref": ""
+    },
+    {
+        "ID": 27,
+        "token": "a",
+        "tipo": "NOME_VARIAVEL",
+        "linha": 6,
+        "coluna": 12,
+        "ref": ""
+    },
+    {
+        "ID": 28,
+        "token": ">",
+        "tipo": "COMPARACAO",
+        "linha": 6,
+        "coluna": 13,
+        "ref": ""
+    },
+    {
+        "ID": 29,
+        "token": "c",
+        "tipo": "NOME_VARIAVEL",
+        "linha": 6,
+        "coluna": 14,
+        "ref": ""
+    },
+    {
+        "ID": 30,
+        "token": ")",
+        "tipo": "FECHA_PARENTESES",
+        "linha": 6,
+        "coluna": 15,
+        "ref": 30
+    },
+    {
+        "ID": 31,
+        "token": "||",
+        "tipo": "LOGICO",
+        "linha": 6,
+        "coluna": 16,
+        "ref": ""
+    },
+    {
+        "ID": 32,
+        "token": "(",
+        "tipo": "ABRE_PARENTESES",
+        "linha": 6,
+        "coluna": 18,
+        "ref": ""
+    },
+    {
+        "ID": 33,
+        "token": "b",
+        "tipo": "NOME_VARIAVEL",
+        "linha": 6,
+        "coluna": 19,
+        "ref": ""
+    },
+    {
+        "ID": 34,
+        "token": "<=",
+        "tipo": "COMPARACAO",
+        "linha": 6,
+        "coluna": 20,
+        "ref": ""
+    },
+    {
+        "ID": 35,
+        "token": "c",
+        "tipo": "NOME_VARIAVEL",
+        "linha": 6,
+        "coluna": 22,
+        "ref": ""
+    },
+    {
+        "ID": 36,
+        "token": ")",
+        "tipo": "FECHA_PARENTESES",
+        "linha": 6,
+        "coluna": 23,
+        "ref": 36
+    },
+    {
+        "ID": 37,
+        "token": ")",
+        "tipo": "FECHA_PARENTESES",
+        "linha": 6,
+        "coluna": 24,
+        "ref": 37
+    },
+    {
+        "ID": 38,
+        "token": ")",
+        "tipo": "FECHA_PARENTESES",
+        "linha": 6,
+        "coluna": 25,
+        "ref": 38
     }
 ]

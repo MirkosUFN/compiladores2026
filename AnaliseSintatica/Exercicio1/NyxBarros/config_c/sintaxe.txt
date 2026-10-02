@@ -17,7 +17,7 @@ AtribuirChar -> [nome variável] [virgula] AtribuirChar | [nome variável] [pont
 DeclaraAtribuirBoolean -> [PR:boolean] AtridbuirBoolean
 AtribuirBoolean -> [nome variável] [virgula] AtribuirBoolean | [nome variável] [ponto e virgula] | [nome variável] [atribuição] [boolean] [virgula] AtribuirBoolean | [nome variável] [atribuição] [boolean] [ponto e virgula]
 
-SIF → [PR:if] [ABRE PARENTESES] Condicao [FECHA PARENTESES] [ABRE CHAVES] Bloco [FECHA CHAVE]
+SIF → [PR:if] [ABRE PARENTESES] Condicao [FECHA PARENTESES] [ABRE CHAVES] Bloco [FECHA CHAVE] | [PR:if] [ABRE PARENTESES] Condicao [FECHA PARENTESES] [ABRE CHAVES] Bloco [FECHA CHAVE] [PR:else] [ABRE CHAVES] Bloco [FECHA CHAVE]
 Condicao → Compara
 Compara → [NOME VARIÁVEL] [COMPARACAO] [NOME VARIÁVEL] | Valor [COMPARACAO] Valor | Valor [COMPARACAO] [NOME VARIÁVEL] | [NOME VARIÁVEL] [COMPARACAO] Valor | PR:true | PR:false
 Valor → [INTEIRO] | [FRACIONADO] | PR:true | PR:false

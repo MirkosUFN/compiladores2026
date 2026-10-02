@@ -1,6 +1,7 @@
 import json
 from code.no import No
 from typing import Any
+import sys
 
 class AFD:
     def __init__(self, arquivo_config: str, arquivo_palavras_reservadas: str = '') -> None:
@@ -9,6 +10,7 @@ class AFD:
         self.estados_finais = {}
         self.simbolos = {}
         self.palavras_reservadas: set[str] = set()
+        self.pilha_ref: list[list[str|int]] = []
 
         self.reconhecer_palavras_reservadas(arquivo_palavras_reservadas)
         self.montar_automato(arquivo_config)
@@ -44,7 +46,6 @@ class AFD:
     def reconhecer_palavras_reservadas(self, arquivo_palavras_reservadas) -> None:
         with open(arquivo_palavras_reservadas, 'r') as f:
             self.palavras_reservadas = set(f.read().split('\n'))
-        print(self.palavras_reservadas)
 
     def analisar_arquivo(self, arquivo_para_analizar: str) -> list[dict[str, Any]]:
         tabela_simbolos = []
@@ -55,12 +56,56 @@ class AFD:
                 analise_linha = self.reconhecer_linha(linha)
                 if analise_linha:
                     for i in analise_linha:
+                        # cria tupla da tabela
                         token = linha[i['coluna_inicio']:i['coluna_fim']]
                         tipo = f'PALAVRA_RESERVADA {token.upper()}'if token in self.palavras_reservadas else i['tipo']
                         coluna = i['coluna_inicio']
-                        tabela_simbolos.append({'ID': id_token, 'token': token, 'tipo': tipo, 'linha': cont_linha+1, 'coluna': coluna})
+                        ref = ''
+                        if token == '(':
+                            self.pilha_ref.append(['()',id_token])
+                        elif token == ')':
+                            if len(self.pilha_ref) == 0 or self.pilha_ref[-1][0] != '()':
+                                print('um parenteses foi fechado, mas não aberto')
+                                print(f'posição: [{cont_linha+1}:{coluna}]')
+                                sys.exit()
+                            else:
+                                ref = id_token
+                                self.pilha_ref.pop()
+                        elif token == '[':
+                            self.pilha_ref.append(['[]',id_token])
+                        elif token == ']':
+                            if len(self.pilha_ref) == 0 or self.pilha_ref[-1][0] != '[]':
+                                print('um colchetes foi fechado, mas não aberto')
+                                print(f'posição: [{cont_linha+1}:{coluna}]')
+                                sys.exit()
+                            else:
+                                ref = id_token
+                                self.pilha_ref.pop()
+                        elif token == '{':
+                            self.pilha_ref.append(['{}',id_token])
+                        elif token == '}':
+                            if len(self.pilha_ref) == 0 or self.pilha_ref[-1][0] != '{}':
+                                print('uma chaves foi fechada, mas não aberta')
+                                print(f'posição: [{cont_linha+1}:{coluna}]')
+                                sys.exit()
+                            else:
+                                ref = id_token
+                                self.pilha_ref.pop()
+
+                        # adiciona na tabela
+                        tabela_simbolos.append({'ID': id_token, 'token': token, 'tipo': tipo, 'linha': cont_linha+1, 'coluna': coluna, 'ref': ref})
                         id_token += 1
-        return tabela_simbolos
+        if len(self.pilha_ref) != 0:
+            if self.pilha_ref[0][0] == '()':
+                print('um parenteses foi aberto, mas não fechado')
+            elif self.pilha_ref[0][0] == '[]':
+                print('um colchete foi aberto, mas não fechado')
+            elif self.pilha_ref[0][0] == '{}':
+                print('uma chaves foi aberta, mas não fechada')
+            print(f'posição: [{tabela_simbolos[self.pilha_ref[0][1]-1]["linha"]}:{tabela_simbolos[self.pilha_ref[0][1]-1]["coluna"]}]')
+            sys.exit()
+        else:
+            return tabela_simbolos
 
     def reconhecer_linha(self, linha: str) -> list[dict[str, int]]|None:
         estado_atual = self.estado_inicial
