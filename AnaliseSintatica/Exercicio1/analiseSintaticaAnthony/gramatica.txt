@@ -1,0 +1,76 @@
+================================================================================
+PROPOSTA DE NOVA SINTAXE PARA DECLARAÇÃO COM INICIALIZAÇÃO DE VARIÁVEIS
+Disciplina: Compiladores
+================================================================================
+
+1. MOTIVAÇÃO E PROBLEMAS DA SINTAXE ORIGINAL
+--------------------------------------------------------------------------------
+A sintaxe original apresentada no enunciado possuía diversas limitações:
+  a) Proliferação excessiva de regras: criava uma regra separada para cada tipo 
+     de dado (DecIniInt, DecIniFrac, DecIniChar, DecIniBool), além de regras 
+     recursivas específicas para cada um (REPINIINT, REPINIFRAC, etc.).
+  b) Inflexibilidade na declaração múltipla: na sintaxe original, se uma 
+     declaração com inicialização fosse iniciada, TODAS as variáveis da linha 
+     eram obrigadas a possuir inicialização. Não era permitido mesclar variáveis 
+     inicializadas e não inicializadas (ex.: int a, b = 20, c;).
+  c) Separação artificial entre declaração sem valor (Declara) e declaração 
+     com valor (DeclaraIni).
+
+2. NOVA SINTAXE UNIFICADA (BNF)
+--------------------------------------------------------------------------------
+A nova sintaxe unifica a declaração simples, a declaração múltipla e a inicialização 
+opcional em um conjunto enxuto e extensível de produções:
+
+[TIPO]            -> PR:INT | PR:CHAR | PR:FLOAT | PR:DOUBLE | PR:VOID | PR:BOOLEAN
+
+[VALOR]           -> INTEIRO | FRACIONARIO | CARACTER | NOMEVARIAVEL | PR:TRUE | PR:FALSE
+
+[INICIALIZADOR]   -> ATRIBUICAO [VALOR]
+
+[ITEM_DECLARADO]  -> NOMEVARIAVEL | NOMEVARIAVEL [INICIALIZADOR]
+
+Declara           -> [TIPO] [ITEM_DECLARADO] [PV] 
+                   | [TIPO] [ITEM_DECLARADO] DeclaraMultiplo [PV]
+
+DeclaraMultiplo   -> [VG] [ITEM_DECLARADO] 
+                   | [VG] [ITEM_DECLARADO] DeclaraMultiplo
+
+
+3. REPRESENTAÇÃO EM EBNF (FORMA ESTENDIDA DE BACKUS-NAUR)
+--------------------------------------------------------------------------------
+Para maior clareza visual, a mesma gramática pode ser descrita em notação EBNF, 
+onde colchetes [ ] denotam opcionalidade e chaves { } denotam repetição (0 ou mais vezes):
+
+  Declara          = TIPO ITEM_DECLARADO { VG ITEM_DECLARADO } PV ;
+  ITEM_DECLARADO   = NOMEVARIAVEL [ ATRIBUICAO VALOR ] ;
+  VALOR            = INTEIRO | FRACIONARIO | CARACTER | NOMEVARIAVEL | PR:TRUE | PR:FALSE ;
+  TIPO             = PR:INT | PR:CHAR | PR:FLOAT | PR:DOUBLE | PR:VOID | PR:BOOLEAN ;
+
+
+4. TERMINAIS (TOKENS) UTILIZADOS
+--------------------------------------------------------------------------------
+- Palavras Reservadas: PR:INT, PR:CHAR, PR:FLOAT, PR:DOUBLE, PR:VOID, PR:BOOLEAN, PR:TRUE, PR:FALSE
+- Identificadores:     NOMEVARIAVEL (ex.: numero, media, taxa)
+- Operadores/Pontos:   ATRIBUICAO (=), VIRGULA (,), PONTO_VIRGULA (;)
+- Literais:            INTEIRO (ex.: 10, 20), FRACIONARIO (ex.: 7.5, -2.25), CARACTER (ex.: 'A')
+
+
+5. EXEMPLOS DE DERIVAÇÃO
+--------------------------------------------------------------------------------
+Exemplo 1: int numero = 10;
+  Declara 
+  => [TIPO] [ITEM_DECLARADO] [PV]
+  => PR:INT [ITEM_DECLARADO] [PV]
+  => PR:INT NOMEVARIAVEL [INICIALIZADOR] [PV]
+  => PR:INT NOMEVARIAVEL ATRIBUICAO [VALOR] [PV]
+  => PR:INT NOMEVARIAVEL ATRIBUICAO INTEIRO [PV]
+  (Reconhece: "int numero = 10;")
+
+Exemplo 2: int numero1, numero2 = 20, numero3;
+  Declara
+  => [TIPO] [ITEM_DECLARADO] DeclaraMultiplo [PV]
+  => PR:INT NOMEVARIAVEL DeclaraMultiplo [PV]
+  => PR:INT NOMEVARIAVEL [VG] [ITEM_DECLARADO] DeclaraMultiplo [PV]
+  => PR:INT NOMEVARIAVEL [VG] NOMEVARIAVEL ATRIBUICAO INTEIRO DeclaraMultiplo [PV]
+  => PR:INT NOMEVARIAVEL [VG] NOMEVARIAVEL ATRIBUICAO INTEIRO [VG] NOMEVARIAVEL [PV]
+  (Reconhece: "int numero1, numero2 = 20, numero3;")
