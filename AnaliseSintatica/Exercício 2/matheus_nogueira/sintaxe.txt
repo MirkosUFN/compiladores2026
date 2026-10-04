@@ -1,0 +1,11 @@
+# Exercício 2 — balanceamento de delimitadores
+
+DELIMITADOR -> PARENTESE | CHAVE | COLCHETE
+
+PARENTESE -> ( CONTEUDO )
+CHAVE -> { CONTEUDO }
+COLCHETE -> [ CONTEUDO ]
+
+# Os delimitadores podem aparecer aninhados.
+# Todo fechamento deve corresponder ao último delimitador aberto.
+# O fechamento referencia, na coluna Ref, o ID de sua abertura.
