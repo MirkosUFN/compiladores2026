@@ -1,0 +1,24 @@
+# Exercício 2 - balanceamento de ( ), { } e [ ] - Romeo Noro Guterres
+#
+# Tokens dos delimitadores
+[AP]  -> (        [FP]  -> )
+[ACH] -> {        [FCH] -> }
+[ACO] -> [        [FCO] -> ]
+
+# Um trecho de código é uma sequência de tokens comuns e grupos delimitados.
+# Cada grupo começa com uma abertura e termina com o fechamento do MESMO tipo,
+# e pode conter outros grupos dentro (aninhamento).
+Sequencia   -> Elemento Sequencia | ε
+Elemento    -> Grupo | [OUTRO]
+Grupo       -> [AP]  Sequencia [FP]
+             | [ACH] Sequencia [FCH]
+             | [ACO] Sequencia [FCO]
+
+# [OUTRO] é qualquer token que não seja delimitador
+# (PR:*, NOMEVARIAVEL, INTEIRO, FRACIONARIO, SATR, VG, PV, operadores...).
+
+# Regras verificadas:
+#  1. nº de [AP] = nº de [FP], nº de [ACH] = nº de [FCH], nº de [ACO] = nº de [FCO];
+#  2. todo fechamento corresponde à última abertura ainda não fechada (pilha);
+#  3. na tabela de símbolos, a coluna Ref de cada fechamento recebe o ID da
+#     abertura correspondente; os demais tokens deixam Ref vazia.
