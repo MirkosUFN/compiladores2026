@@ -7,7 +7,7 @@
 # Operadores e Delimitadores
 [ATRIBUICAO] -> '='
 [SINAL_COMPARACAO] -> '>' | '<' | '>=' | '<=' | '==' | '!='
-[DELIMITADORES] -> AP | FP | AC | FC | PV | VG
+[DELIMITADORES] -> ABRE_PARENTESE | FECHA_PARENTESE | ABRE_CHAVE | FECHA_CHAVE | ABRE_COLCHETE | FECHA_COLCHETE | PONTO_VIRGULA | VIRGULA
 
 # Estrutura do Programa e Comandos
 Programa -> ListaComandos
@@ -15,17 +15,23 @@ ListaComandos -> Comando | Comando ListaComandos
 Comando -> Condicional | Atribuicao | Declara | Bloco
 
 # Regras de Estrutura Condicional (IF / Blocos aninhados)
-Condicional -> PR:IF AP ExpressaoRelacional FP Bloco | PR:IF AP ExpressaoRelacional FP Bloco PR:ELSE Bloco | PR:IF AP ExpressaoRelacional FP Comando
-Bloco -> AC ListaComandos FC | AC FC
+Condicional -> PR:IF ABRE_PARENTESE ExpressaoRelacional FECHA_PARENTESE Bloco | PR:IF ABRE_PARENTESE ExpressaoRelacional FECHA_PARENTESE Bloco PR:ELSE Bloco | PR:IF ABRE_PARENTESE ExpressaoRelacional FECHA_PARENTESE Comando
+
+# Regras de Delimitadores de Bloco e Aninhamento
+Bloco -> ABRE_CHAVE ListaComandos FECHA_CHAVE | ABRE_CHAVE FECHA_CHAVE
+Delimitador -> Parenteses | Chaves | Colchetes
+Parenteses -> ABRE_PARENTESE Conteudo FECHA_PARENTESE
+Chaves -> ABRE_CHAVE Conteudo FECHA_CHAVE
+Colchetes -> ABRE_COLCHETE Conteudo FECHA_COLCHETE
 
 # Regras de Expressão e Comparação
 ExpressaoRelacional -> VALOR SINAL_COMPARACAO VALOR
 
 # Regra de Comando de Atribuição Simples
-Atribuicao -> NOMEVARIAVEL ATRIBUICAO VALOR PV
+Atribuicao -> NOMEVARIAVEL ATRIBUICAO VALOR PONTO_VIRGULA
 
 # Regras de Declaração de Variáveis (com ou sem inicialização)
 [INICIALIZACAO] -> ATRIBUICAO VALOR
 [DECLARADOR] -> NOMEVARIAVEL | NOMEVARIAVEL INICIALIZACAO
-Declara -> TIPO DECLARADOR PV | TIPO DECLARADOR DeclaraMultiplo PV
-DeclaraMultiplo -> VG DECLARADOR | VG DECLARADOR DeclaraMultiplo
+Declara -> TIPO DECLARADOR PONTO_VIRGULA | TIPO DECLARADOR DeclaraMultiplo PONTO_VIRGULA
+DeclaraMultiplo -> VIRGULA DECLARADOR | VIRGULA DECLARADOR DeclaraMultiplo
