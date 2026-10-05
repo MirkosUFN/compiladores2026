@@ -1,0 +1,76 @@
+================================================================================
+ANÁLISE SINTÁTICA - EXERCÍCIO 2: BALANCEAMENTO E REFERENCIAÇÃO DE DELIMITADORES
+Disciplina: Compiladores
+Aluno: Anthony
+================================================================================
+
+1. OBJETIVO E ESPECIFICAÇÃO DO PROBLEMA
+--------------------------------------------------------------------------------
+O Exercício 2 propõe o reconhecimento, balanceamento e vinculação relacional
+dos delimitadores fundamentais das linguagens de programação:
+  - Parênteses: ( )
+  - Chaves: { }
+  - Colchetes: [ ]
+
+Requisitos estabelecidos:
+  a) Contagem idêntica:
+     - Número de '(' deve ser idêntico ao número de ')'.
+     - Número de '{' deve ser idêntico ao número de '}'.
+     - Número de '[' deve ser idêntico ao número de ']'.
+  b) Referenciação na Tabela de Símbolos (Coluna 'Ref'):
+     - Cada token de fechamento deve identificar explicitamente qual token de
+       abertura ele fecha, registrando o ID numérico do abre correspondente.
+  c) Aninhamento e Consistência Estrutural:
+     - A estrutura deve respeitar a ordem LIFO (Last-In, First-Out), impedindo
+       cruzamentos incorretos como "( [ ) ]" ou fechamentos órfãos.
+
+
+2. FUNDAMENTAÇÃO TEÓRICA: AUTÔMATO COM PILHA (PDA)
+--------------------------------------------------------------------------------
+O balanceamento de delimitadores é um problema clássico da Teoria da Computação 
+que não pode ser resolvido por Autômatos Finitos (Linguagens Regulares), pois 
+requer contagem e aninhamento arbitrário de profundidade.
+
+Pertence à classe das Linguagens Livres de Contexto (Linguagem de Dyck generalizada), 
+cuja gramática formal é expressa como:
+
+  S -> ( S ) S | { S } S | [ S ] S | ε
+
+O reconhecimento é implementado através de um Autômato com Pilha:
+  - Ao encontrar token de abertura: EMPILHA(token_abre).
+  - Ao encontrar token de fechamento:
+      1. Se PILHA_VAZIA: ERRO (Fechamento sem abertura correspondente).
+      2. Se TOPO == respectivo(token_fecha):
+           abertura = DESEMPILHA()
+           token_fecha.ref = abertura.id
+      3. Se TOPO != respectivo(token_fecha):
+           ERRO (Cruzamento ou fechamento incorreto de bloco).
+  - Ao final do fluxo de tokens:
+      Se NÃO PILHA_VAZIA: ERRO (Tokens de abertura não foram fechados).
+
+
+3. ESTRUTURA DA TABELA DE SÍMBOLOS COM A COLUNA 'Ref'
+--------------------------------------------------------------------------------
+A tabela de símbolos exportada em formato CSV utiliza ponto e vírgula (;) como
+delimitador e codificação UTF-8:
+
+  ID;token;tipo;linha;coluna;Ref
+
+Regras de preenchimento da coluna 'Ref':
+  - Tokens comuns (identificadores, palavras-chave, operadores): Ref vazia ("")
+  - Tokens de abertura ('(', '{', '['): Ref vazia ("")
+  - Tokens de fechamento (')', '}', ']'): Ref preenchida com o ID do token de abertura
+
+
+4. EXEMPLO PRÁTICO DE DERIVAÇÃO E PAREAMENTO
+--------------------------------------------------------------------------------
+Código:
+  int total = (numero + (vetor[0] * 2));
+
+Mapeamento de referências gerado:
+  - ID 41 '[' (L4, C29)  <--- Pareado com ---> ID 43 ']' (L4, C31, Ref = 41)
+  - ID 39 '(' (L4, C23)  <--- Pareado com ---> ID 46 ')' (L4, C36, Ref = 39)
+  - ID 36 '(' (L4, C13)  <--- Pareado com ---> ID 47 ')' (L4, C37, Ref = 36)
+
+Todas as contagens resultam em diferença zero (Idênticas).
+================================================================================
