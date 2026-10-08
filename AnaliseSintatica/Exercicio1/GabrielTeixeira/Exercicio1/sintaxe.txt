@@ -1,0 +1,55 @@
+# Nova sintaxe: declaração de variável COM inicialização - Gabriel Teixeira
+# Baseado na especificação da disciplina de Compiladores (Prof. Mirkos)
+#
+# Proposta:
+# Em vez de ter uma regra engessada para "todas variáveis não-inicializadas" e
+# regras duplicadas e extensas para cada tipo inicializado, cada variável declarada
+# é representada como um ITEM que pode ou não conter inicialização (declaração mista).
+#
+# A compatibilidade entre tipo e valor é verificada de acordo com as regras da linguagem:
+# - int: aceita literal INTEIRO
+# - float / double: aceita FRACIONARIO ou INTEIRO (coerção implícita)
+# - char: aceita caractere delimitado por aspas simples ('c')
+# - boolean: aceita PR:TRUE ou PR:FALSE
+# - void: não aceita valor/inicialização
+
+[TIPO] -> PR:INT | PR:CHAR | PR:FLOAT | PR:DOUBLE | PR:VOID | PR:BOOLEAN
+
+Declara      -> DeclaraInt | DeclaraFrac | DeclaraChar | DeclaraBool | DeclaraVoid
+
+# --- int ---
+DeclaraInt   -> PR:INT ItemInt [PV] | PR:INT ItemInt ListaInt [PV]
+ListaInt     -> [VG] ItemInt | [VG] ItemInt ListaInt
+ItemInt      -> [NOMEVARIAVEL] | [NOMEVARIAVEL][SATR][INTEIRO]
+
+# --- float / double ---
+DeclaraFrac  -> TipoFrac ItemFrac [PV] | TipoFrac ItemFrac ListaFrac [PV]
+TipoFrac     -> PR:FLOAT | PR:DOUBLE
+ListaFrac    -> [VG] ItemFrac | [VG] ItemFrac ListaFrac
+ItemFrac     -> [NOMEVARIAVEL] | [NOMEVARIAVEL][SATR] ValorFrac
+ValorFrac    -> [FRACIONARIO] | [INTEIRO]
+
+# --- char ---
+DeclaraChar  -> PR:CHAR ItemChar [PV] | PR:CHAR ItemChar ListaChar [PV]
+ListaChar    -> [VG] ItemChar | [VG] ItemChar ListaChar
+ItemChar     -> [NOMEVARIAVEL] | [NOMEVARIAVEL][SATR][ASPAS][CARACTER][ASPAS]
+
+# --- boolean ---
+DeclaraBool  -> PR:BOOLEAN ItemBool [PV] | PR:BOOLEAN ItemBool ListaBool [PV]
+ListaBool    -> [VG] ItemBool | [VG] ItemBool ListaBool
+ItemBool     -> [NOMEVARIAVEL] | [NOMEVARIAVEL][SATR] ValorBool
+ValorBool    -> PR:TRUE | PR:FALSE
+
+# --- void (não aceita inicialização) ---
+DeclaraVoid  -> PR:VOID [NOMEVARIAVEL][PV] | PR:VOID [NOMEVARIAVEL] ListaVoid [PV]
+ListaVoid    -> [VG][NOMEVARIAVEL] | [VG][NOMEVARIAVEL] ListaVoid
+
+# Tokens Léxicos:
+# [NOMEVARIAVEL] -> (letra | _)(letra | dígito | _)*
+# [INTEIRO]      -> (+|-)? dígito+
+# [FRACIONARIO]  -> (+|-)? dígito+ . dígito+
+# [SATR]         -> '='
+# [VG]           -> ','
+# [PV]           -> ';'
+# [ASPAS]        -> '\''
+# [CARACTER]     -> qualquer caractere ASCII entre aspas simples
