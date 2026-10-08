@@ -1,0 +1,35 @@
+# Exercício 2 - Análise Sintática: Balanceamento de ( ), { } e [ ]
+# Autor: Gabriel Teixeira (Compiladores - Prof. Mirkos)
+#
+# Definição dos tokens dos delimitadores:
+[AP]  -> (        [FP]  -> )
+[ACH] -> {        [FCH] -> }
+[ACO] -> [        [FCO] -> ]
+
+# Gramática Livre de Contexto (GLC) para blocos delimitados:
+# Um programa ou trecho de código é uma sequência de elementos (tokens ou grupos aninhados).
+# Cada grupo deve obrigatoriamente abrir e fechar com o delimitador correspondente.
+
+Sequencia   -> Elemento Sequencia | ε
+Elemento    -> Grupo | [OUTRO]
+Grupo       -> [AP]  Sequencia [FP]
+             | [ACH] Sequencia [FCH]
+             | [ACO] Sequencia [FCO]
+
+# [OUTRO] representa qualquer token que não seja delimitador:
+# (Palavras reservadas, identificadores, literais inteiros/fracionários,
+# operadores relacionais, lógicos, aritméticos, atribuição, pontuação...).
+
+# Regras e Restrições Sintáticas:
+# 1. Contagem Idêntica:
+#    - total([AP])  == total([FP])
+#    - total([ACH]) == total([FCH])
+#    - total([ACO]) == total([FCO])
+#
+# 2. Casamento e Aninhamento (Autômato com Pilha):
+#    - Todo token de fechamento deve casar exatamente com o token de abertura no topo da pilha.
+#    - Nenhum delimitador de abertura pode permanecer sem fechamento ao final do arquivo.
+#
+# 3. Referência Cruzada na Tabela de Símbolos:
+#    - A coluna 'Ref' de cada token de fechamento recebe o 'ID' do token de abertura correspondente.
+#    - Os demais tokens mantêm o campo 'Ref' vazio.
