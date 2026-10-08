@@ -2,7 +2,6 @@
 
 **Autor:** Gabriel Teixeira  
 **Disciplina:** Compiladores (Prof. Mirkos)  
-**Projeto de Referência:** [`MirkosUFN/compiladores2026/.../Exercício 2/Romeo`](https://github.com/MirkosUFN/compiladores2026/tree/main/AnaliseSintatica/Exerc%C3%ADcio%202/Romeo)
 
 ---
 
