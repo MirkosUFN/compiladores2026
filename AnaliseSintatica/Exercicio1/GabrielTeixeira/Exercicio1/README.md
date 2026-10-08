@@ -1,8 +1,7 @@
 # 📚 Exercício 1 — Análise Sintática: Declaração com Inicialização
 
 **Autor:** Gabriel Teixeira  
-**Disciplina:** Compiladores (Prof. Mirkos)  
-**Projeto de Referência:** [`MirkosUFN/compiladores2026/.../Romeo`](https://github.com/MirkosUFN/compiladores2026/tree/main/AnaliseSintatica/Exercicio1/Romeo)
+**Disciplina:** Compiladores (Prof. Mirkos)
 
 ---
 
