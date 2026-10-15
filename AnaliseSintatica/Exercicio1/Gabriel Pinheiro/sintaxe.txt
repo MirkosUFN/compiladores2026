@@ -1,0 +1,26 @@
+# Gramática de declaração de variáveis (com ou sem inicialização)
+#
+# Ideia: a ordem dos tokens é avaliada por uma máquina de estados. A regra de
+# valor é única e o que muda é o conjunto de valores aceitos por cada tipo
+# (tabela de compatibilidade no final do arquivo).
+
+Programa         -> ListaDeclaracoes
+ListaDeclaracoes -> Declaracao | Declaracao ListaDeclaracoes
+Declaracao       -> [TIPO] ListaDeclarador [PV]
+ListaDeclarador  -> Declarador | Declarador [VG] ListaDeclarador
+Declarador       -> [NOMEVARIAVEL] | [NOMEVARIAVEL] Inicializacao
+Inicializacao    -> [ATRIBUICAO] [VALOR]
+
+# Tabela de compatibilidade tipo -> valores aceitos em [VALOR]
+int      : INTEIRO
+float    : FRACIONARIO | INTEIRO
+double   : FRACIONARIO | INTEIRO
+char     : LITERAL_CARACTERE            (exatamente um caractere entre ' ')
+boolean  : PR:TRUE | PR:FALSE
+void     : (nenhum - não aceita inicialização)
+
+# Terminais
+[NOMEVARIAVEL] -> (letra | _)(letra | dígito | _)*, exceto palavra reservada
+[INTEIRO]      -> dígito+            (sinal permitido logo após '=')
+[FRACIONARIO]  -> dígito+ . dígito+  (sinal permitido logo após '=')
+[ATRIBUICAO] -> =     [VG] -> ,     [PV] -> ;
