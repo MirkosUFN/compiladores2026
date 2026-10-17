@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Tabela de Simbolos - Reconhecedor AFD</title>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; background:#f4f6f8; margin:0; padding:32px; color:#1f2937; }
+  h1 { font-size: 22px; margin-bottom: 4px; }
+  p.subtitulo { color:#6b7280; margin-top:0; margin-bottom:24px; }
+  table { border-collapse: collapse; width:100%; max-width:950px; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+  th, td { padding:10px 16px; text-align:left; border-bottom:1px solid #e5e7eb; }
+  th { background:#111827; color:#fff; font-size:13px; text-transform:uppercase; letter-spacing:0.04em; }
+  tr:nth-child(even) { background:#f9fafb; }
+  tr:hover { background:#eef2ff; }
+  td.token { font-family: Consolas, monospace; font-weight:600; }
+  td.ref { font-family: Consolas, monospace; color:#4b5563; font-weight:600; }
+  .tipo { display:inline-block; padding:2px 10px; border-radius:12px; font-size:12px; font-weight:600; }
+  .INTEIRO { background:#dbeafe; color:#1d4ed8; }
+  .FRACIONARIO { background:#dcfce7; color:#15803d; }
+  .NOMEVARIAVEL { background:#fef3c7; color:#a16207; }
+  .ATRIBUICAO { background:#ede9fe; color:#6d28d9; }
+  .SINAL_COMPARACAO { background:#ffe4e6; color:#be123c; }
+  .VIRGULA { background:#e0f2fe; color:#0369a1; }
+  .PONTO_VIRGULA { background:#f3e8ff; color:#7e22ce; }
+  .ABRE_PAR, .FECHA_PAR { background:#e0e7ff; color:#3730a3; }
+  .ABRE_CHAVE, .FECHA_CHAVE { background:#fce7f3; color:#9d174d; }
+  .ABRE_COLCHETE, .FECHA_COLCHETE { background:#ffedd5; color:#c2410c; }
+  .PR_INT, .PR_CHAR, .PR_FLOAT, .PR_DOUBLE, .PR_VOID, .PR_BOOLEAN { background:#d1fae5; color:#065f46; }
+  .ERRO { background:#fee2e2; color:#b91c1c; }
+</style>
+</head>
+<body>
+<h1>Tabela de Simbolos</h1>
+<p class="subtitulo">Gerada automaticamente pelo Reconhecedor AFD</p>
+<table>
+<thead>
+<tr><th>ID</th><th>Token</th><th>Tipo</th><th>Linha</th><th>Coluna</th><th>Ref.</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td class="token">int</td><td><span class="tipo PR_INT">PR_INT</span></td><td>1</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>2</td><td class="token">nome</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>1</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>3</td><td class="token">,</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>1</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>4</td><td class="token">idade</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>1</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>5</td><td class="token">=</td><td><span class="tipo ATRIBUICAO">ATRIBUICAO</span></td><td>1</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>6</td><td class="token">(</td><td><span class="tipo ABRE_PAR">ABRE_PAR</span></td><td>1</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>7</td><td class="token">23</td><td><span class="tipo INTEIRO">INTEIRO</span></td><td>1</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>8</td><td class="token">+</td><td><span class="tipo SINAL_MAT">SINAL_MAT</span></td><td>1</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>9</td><td class="token">[</td><td><span class="tipo ABRE_COLCHETE">ABRE_COLCHETE</span></td><td>1</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>10</td><td class="token">fillas</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>1</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>11</td><td class="token">*</td><td><span class="tipo SINAL_MAT">SINAL_MAT</span></td><td>1</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>12</td><td class="token">3</td><td><span class="tipo INTEIRO">INTEIRO</span></td><td>1</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>13</td><td class="token">]</td><td><span class="tipo FECHA_COLCHETE">FECHA_COLCHETE</span></td><td>1</td><td>0</td><td class="ref">ID 9</td></tr>
+<tr><td>14</td><td class="token">)</td><td><span class="tipo FECHA_PAR">FECHA_PAR</span></td><td>1</td><td>0</td><td class="ref">ID 6</td></tr>
+<tr><td>15</td><td class="token">;</td><td><span class="tipo PONTO_VIRGULA">PONTO_VIRGULA</span></td><td>1</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>16</td><td class="token">{</td><td><span class="tipo ABRE_CHAVE">ABRE_CHAVE</span></td><td>2</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>17</td><td class="token">float</td><td><span class="tipo PR_FLOAT">PR_FLOAT</span></td><td>3</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>18</td><td class="token">val</td><td><span class="tipo NOMEVARIAVEL">NOMEVARIAVEL</span></td><td>3</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>19</td><td class="token">=</td><td><span class="tipo ATRIBUICAO">ATRIBUICAO</span></td><td>3</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>20</td><td class="token">(</td><td><span class="tipo ABRE_PAR">ABRE_PAR</span></td><td>3</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>21</td><td class="token">3.14</td><td><span class="tipo FRACIONARIO">FRACIONARIO</span></td><td>3</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>22</td><td class="token">)</td><td><span class="tipo FECHA_PAR">FECHA_PAR</span></td><td>3</td><td>0</td><td class="ref">ID 20</td></tr>
+<tr><td>23</td><td class="token">;</td><td><span class="tipo PONTO_VIRGULA">PONTO_VIRGULA</span></td><td>3</td><td>0</td><td class="ref">-</td></tr>
+<tr><td>24</td><td class="token">}</td><td><span class="tipo FECHA_CHAVE">FECHA_CHAVE</span></td><td>4</td><td>0</td><td class="ref">ID 16</td></tr>
+</tbody>
+</table>
+</body>
+</html>
