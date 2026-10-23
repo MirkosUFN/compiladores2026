@@ -1,7 +1,5 @@
 # Análise de Consumo de Memória em C
 
-Este documento apresenta um exemplo de código fonte simples em linguagem C, a identificação dos elementos alocados na memória, os tamanhos padrão de cada tipo de dado e o cálculo do total de memória consumida para dados.
-
 ## Código Fonte em C
 
 ```c
@@ -19,8 +17,6 @@ int main() {
 ```
 
 ## Identificação e Tamanho dos Elementos em Memória
-
-Com base nos tamanhos padrão dos tipos primitivos em sistemas modernos de 32 e 64 bits (conforme especificado pelo padrão da linguagem C e arquiteturas comuns):
 
 | Variável | Tipo de Dados | Quantidade de Elementos | Tamanho Unitário | Memória Total Utilizada |
 | :--- | :--- | :--- | :--- | :--- |
