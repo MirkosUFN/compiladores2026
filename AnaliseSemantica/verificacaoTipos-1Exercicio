@@ -1,0 +1,1 @@
+Utilizando um código fonte em linguagem C, verifique quantos elementos são alocados em memória. Identifique seus tipos e de acordo com a informação (coletada na Internet) sobre quanto cada tipo consome de memória, calcule quanto o trecho de código utiliza de memória para DADOS.
