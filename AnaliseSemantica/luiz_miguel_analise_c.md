@@ -1,6 +1,10 @@
 # Análise de memória de um programa simples em C
 
-## 1. Tabela dos tipos de dados em C
+## 1. Objetivo
+
+Identificar os elementos de dados declarados ou utilizados em um programa em C, seus tipos e tamanhos, e calcular uma estimativa da memória destinada aos dados.
+
+## 2. Tabela dos tipos de dados em C
 
 Tamanhos típicos em **Linux x86-64, modelo LP64**, assumindo `CHAR_BIT == 8` (8 bits por byte):
 
@@ -15,9 +19,9 @@ Tamanhos típicos em **Linux x86-64, modelo LP64**, assumindo `CHAR_BIT == 8` (8
 | `double` | 8 | 64 |
 | `long double` | 16 | 128 |
 
-> Esses valores dependem da implementação. Em particular, `long double` pode ter tamanho diferente em outras plataformas. `sizeof` mede o tamanho em bytes de C, e `CHAR_BIT` informa quantos bits há em cada byte.
+> Esses tamanhos dependem da implementação. `sizeof` mede o tamanho em bytes de C, e `CHAR_BIT` indica quantos bits há em cada byte. O tamanho de `long double`, em particular, pode variar entre plataformas.
 
-## 2. Código C de entrada
+## 3. Código analisado
 
 ```c
 #include <stdio.h>
@@ -36,11 +40,11 @@ int main(void) {
 }
 ```
 
-O programa declara **3 variáveis** e utiliza **4 ocorrências de strings literais**. O `printf` produz saída no terminal, mas os bytes impressos não são, por si só, a medida da memória ocupada pelos dados.
+O código possui **3 variáveis locais** e **4 ocorrências de strings literais**, totalizando **7 elementos de dados identificados no código-fonte**. Os bytes enviados ao terminal por `printf` não representam, por si só, a memória ocupada pelos dados do programa.
 
-## 3. Resultado da análise de memória
+## 4. Análise da memória para dados
 
-### 3.1 Variáveis
+### 4.1. Variáveis locais (pilha / *stack*)
 
 | Variável | Tipo | Bytes | Bits |
 |---|---|---:|---:|
@@ -51,40 +55,39 @@ O programa declara **3 variáveis** e utiliza **4 ocorrências de strings litera
 
 **Cálculo:** 4 + 4 + 1 = **9 bytes**, ou **72 bits**.
 
-### 3.2 Strings literais
+### 4.2. Strings literais (normalmente em `.rodata`)
 
-Cada string literal em C inclui um caractere nulo final (`\0`). O escape `\n` representa **um único caractere** de nova linha. Neste exemplo, os caracteres são ASCII, com um byte cada na plataforma adotada.
+Cada string literal inclui um terminador nulo (`\0`), e o escape `\n` representa **um único caractere** de nova linha. Considerando a codificação usual de um byte por caractere neste exemplo:
 
-| String literal | Bytes de conteúdo (inclui `\n`) | `\0` | Total |
+| String literal | Conteúdo (inclui `\n`) | Terminador `\0` | Total |
 |---|---:|---:|---:|
 | `"Hello World!\n"` | 13 | 1 | 14 |
 | `"Idade: %d\n"` | 10 | 1 | 11 |
 | `"Altura: %.2f\n"` | 13 | 1 | 14 |
 | `"Inicial: %c\n"` | 12 | 1 | 13 |
-| **Total: 4 literais** | **48** | **4** | **52** |
+| **Total: 4 strings** | **48** | **4** | **52** |
 
 **Cálculo:** 14 + 11 + 14 + 13 = **52 bytes**, ou **416 bits**.
 
-### 3.3 Total nominal dos dados
+### 4.3. Resultado geral
 
-| Categoria | Bytes | Bits |
-|---|---:|---:|
-| 3 variáveis | 9 | 72 |
-| 4 strings literais | 52 | 416 |
-| **Soma nominal** | **61** | **488** |
+| Região / categoria | Elementos | Bytes | Bits |
+|---|---:|---:|---:|
+| Pilha — variáveis locais | 3 | 9 | 72 |
+| Dados somente leitura — strings literais | 4 | 52 | 416 |
+| **Total nominal** | **7** | **61** | **488** |
 
 **Cálculo:** 9 + 52 = **61 bytes**; 61 × 8 = **488 bits**.
 
-Essa é uma **soma didática dos tamanhos dos objetos de dados**, não uma medição da memória total do processo nem uma garantia de 61 bytes distintos alocados em execução. O compilador pode otimizar ou compartilhar literais. Não foram incluídos alinhamento, instruções de máquina, bibliotecas, pilha e outras estruturas de execução.
+Assim, o programa tem **9 bytes de variáveis declaradas** e uma **soma nominal de 61 bytes ao incluir as strings literais**.
 
-### 3.4 Conferência com `sizeof` em C
+> O total de 61 bytes é uma soma didática dos tamanhos dos objetos identificados, **não** uma medição da memória efetivamente consumida pelo processo. O compilador pode otimizar ou compartilhar literais e variáveis. Além disso, o alinhamento pode aumentar o espaço reservado na pilha.
 
-O trecho abaixo pode ser inserido antes de `return 0;` para verificar os tamanhos no compilador utilizado:
+### 4.4. Conferência com `sizeof`
+
+Para verificar os tamanhos usando o compilador, acrescente `#include <limits.h>` no início do arquivo e insira o seguinte trecho dentro de `main`, antes de `return 0;`:
 
 ```c
-#include <limits.h> /* acrescentar no inicio do arquivo */
-
-/* Dentro de main, antes de return 0: */
 size_t bytes_variaveis = sizeof(idade) + sizeof(altura) + sizeof(inicial);
 size_t bytes_literais = sizeof("Hello World!\n")
                        + sizeof("Idade: %d\n")
@@ -98,13 +101,15 @@ printf("Soma nominal: %zu bytes (%zu bits)\n",
        (bytes_variaveis + bytes_literais) * CHAR_BIT);
 ```
 
-> `sizeof("texto")` inclui o `\0`. Esse cálculo soma cada ocorrência de literal separadamente, sem afirmar que o compilador necessariamente reserva blocos distintos para todas elas.
+O operador `sizeof` inclui o `\0` no tamanho de cada string literal. Essa conferência calcula os tamanhos nominais dos objetos, mas não determina o tamanho total do processo em execução.
 
-### 3.5 O que foi contabilizado
+### 4.5. O que não foi contabilizado
 
-- **Variáveis:** `idade`, `altura` e `inicial` são objetos de dados.
-- **Strings literais:** os quatro textos usados nos `printf` também são objetos de dados, com terminador `\0`.
-- **Não contabilizados:** `main`, `printf`, `return`, diretivas `#include`, instruções compiladas e bytes enviados ao terminal não são variáveis adicionais. As bibliotecas e estruturas de execução podem consumir memória, mas não entram nesta soma nominal.
+Não entram nessa soma as instruções de máquina, o código de `main` e `printf`, as bibliotecas, os dados internos do ambiente de execução nem os bytes impressos no terminal. Diretivas `#include` e a instrução `return` também não são variáveis a serem somadas. Eventuais bytes extras de alinhamento não foram calculados.
+
+## 5. Conclusão
+
+O código analisado contém **3 variáveis locais** (`idade`, `altura` e `inicial`), que somam **9 bytes**, e **4 strings literais**, que somam **52 bytes**. Portanto, a **soma nominal dos dados é de 61 bytes (488 bits)**, considerando os tamanhos adotados. Esse resultado é uma estimativa dos objetos de dados identificados, e não o consumo total de memória do programa.
 
 ## Referências
 
