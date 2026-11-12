@@ -1,0 +1,10 @@
+Leia o arquivo atribuicoes_palindromo.pdf para compreender como 
+identificar atribuições em um código fonte em linguagem C.
+
+A partir do exemplo, contar o número de atribuições (marcando no texto também)
+no arquivo ordena_vetor.pdf contendo o código em linguagem C.
+
+CRITÉRIO DE AVALIAÇÃO
+Contagem Correta: 5,0 pontos
+Identificação dos tipos (atribuição explícita e implícita): 3,0 pontos
+Arquivo enviado corretamente: 2,0 pontos
