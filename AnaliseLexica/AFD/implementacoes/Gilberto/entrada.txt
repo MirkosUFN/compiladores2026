@@ -1,0 +1,15 @@
+30
+-8
++15
+3.5
+-0.25
+contador
+_temp
+nota2
+valor_final
+12.
+.5
+2abc
+x-y
+3.1.4
+--5
