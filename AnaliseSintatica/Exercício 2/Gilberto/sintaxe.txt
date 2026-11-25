@@ -1,0 +1,17 @@
+Regras de agrupamento (balanceamento de ( ), { } e [ ])
+
+Agrupamento -> [AP] Conteudo [FP]
+             | [ACH] Conteudo [FCH]
+             | [ACO] Conteudo [FCO]
+
+Conteudo    -> Elemento Conteudo | ε
+Elemento    -> Agrupamento | [QUALQUER_TOKEN_QUE_NAO_SEJA_ABRE_OU_FECHA]
+
+[AP]  -> (     [FP]  -> )
+[ACH] -> {     [FCH] -> }
+[ACO] -> [     [FCO] -> ]
+
+Restrições:
+- #AP == #FP, #ACH == #FCH, #ACO == #FCO
+- O fecha sempre corresponde ao ÚLTIMO abre ainda não fechado (pilha).
+- Na tabela de símbolos, a coluna Ref de cada fecha guarda o ID do seu abre.
