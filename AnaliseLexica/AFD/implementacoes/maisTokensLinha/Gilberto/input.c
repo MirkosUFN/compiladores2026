@@ -1,0 +1,10 @@
+idade = 20 ;
+altura = 1.75 , peso = -72.5 ;
+x = 10 , y = 3 , z = -4 ;
+idade >= 18 ;
+nota < 7.0 ;
+total != 0 ;
+a == b ;
+contador <= limite ;
+maior > menor ;
+soma=x;
