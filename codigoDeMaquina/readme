@@ -1,0 +1,4 @@
+Implementar um conversor de código C3E (Código de 3 endereços) de operações (soma, subtração, multiplicação e divisão) de variáveis para Assembly (Intel ou AMD).
+O input do programa é um arquivo contendo várias linhas de código C3E e a saída deve ser um código de máquina correspondente.
+
+A data de entrega é dia 10/11 via commit nessa pasta do repositório, com um arquivo zip [nomeAluno].zip contendo: *implementação *input_exemplo *output_correspondente
